@@ -57,8 +57,7 @@ private fun TopToolbar() {
             Text(
                 text = stringResource(id = R.string.app_name),
                 color = MaterialTheme.colors.onPrimary,
-                style = MaterialTheme.typography.h6,
-                modifier = Modifier.padding(16.dp)
+                style = MaterialTheme.typography.h6
             )
         },
         backgroundColor = MaterialTheme.colors.primaryVariant,
