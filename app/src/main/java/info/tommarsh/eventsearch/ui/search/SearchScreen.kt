@@ -7,9 +7,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import info.tommarsh.eventsearch.EventSearchApp
+import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.ui.search.model.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.reflect.KProperty
@@ -60,8 +62,7 @@ fun CenteredCircularProgress() {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ErrorSnackbar(snackbarHostState: SnackbarHostState) {
-    val message = "Error!"
-
+    val message = stringResource(id = R.string.error_loading_events)
     launchInComposition {
         snackbarHostState.showSnackbar(message = message)
     }
@@ -86,5 +87,3 @@ fun DefaultPreview() {
         )
     }
 }
-
-operator fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T = value

@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Event Search</string>
 
-    <string name="coming_soon">Coming Soon</string>
-    <string name="on_sale">On Sale</string>
-    <string name="pre_sale">Pre Sale</string>
+    <!-- Toolbar -->
+    <string name="toolbar_hint_text">Search by Artist, Event or Venue</string>
+    <string name="failed_to_load_categories">Failed to load categories.</string>
+
+    <!-- Search List -->
+    <string name="error_loading_events">"Error loading Events"</string>
 </resources>

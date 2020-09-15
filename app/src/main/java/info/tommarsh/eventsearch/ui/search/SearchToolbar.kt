@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
+import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.ui.search.model.CategoryViewModel
 import info.tommarsh.eventsearch.ui.search.model.FetchState
@@ -48,11 +50,9 @@ private fun SearchField(categoryState: FetchState<CategoryViewModel>) {
         Column {
             SearchTextField()
             when (categoryState) {
-                is FetchState.Loading -> {
-                }
+                is FetchState.Loading -> { /**No need to do anything here.**/}
                 is FetchState.Success -> CategoriesList(categoryState.items)
-                is FetchState.Failure -> {
-                }
+                is FetchState.Failure -> ErrorText()
             }
         }
     }
@@ -64,7 +64,7 @@ private fun SearchTextField() {
     TextField(
         value = textState.value,
         onValueChange = { textState.value = it },
-        label = { Text(text = "Search by Artist, Event or Venue") },
+        label = { Text(text = stringResource(id = R.string.toolbar_hint_text)) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
@@ -110,5 +110,21 @@ private fun BorderTextButton(
             .height(52.dp) then modifier
     ) {
         Text(text = text, color = textColor)
+    }
+}
+
+@Composable
+private fun ErrorText() {
+    Text(
+        text = stringResource(id = R.string.failed_to_load_categories),
+        color = Color.Red
+    )
+}
+
+@Preview
+@Composable
+private fun ToolbarFailingToLoadCategories() {
+    EventSearchApp {
+        SearchToolbar(categoryState = FetchState.Failure(Throwable()))
     }
 }
