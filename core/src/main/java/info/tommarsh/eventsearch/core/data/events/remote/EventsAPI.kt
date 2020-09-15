@@ -1,6 +1,6 @@
-package info.tommarsh.eventsearch.core.data.remote
+package info.tommarsh.eventsearch.core.data.events.remote
 
-import info.tommarsh.eventsearch.core.data.model.EventResponse
+import info.tommarsh.eventsearch.core.data.events.model.EventResponse
 import retrofit2.http.GET
 
 interface EventsAPI

@@ -46,8 +46,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = "1.4.0"
-        kotlinCompilerExtensionVersion = "1.0.0-alpha01"
+        kotlinCompilerVersion = "1.4.10"
+        kotlinCompilerExtensionVersion = "1.0.0-alpha02"
     }
 }
 
@@ -95,8 +95,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs = listOf(
             "-Xopt-in=kotlin.RequiresOptIn",
             "-Xopt-in=kotlin.Experimental",
-            "-Xallow-jvm-ir-dependencies"
-
+            "-Xallow-jvm-ir-dependencies",
+            "-Xskip-prerelease-check"
         )
         // Set JVM target to 1.8
         jvmTarget = Versions.java

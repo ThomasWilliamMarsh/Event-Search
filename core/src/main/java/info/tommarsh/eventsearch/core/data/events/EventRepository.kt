@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.core.data
+package info.tommarsh.eventsearch.core.data.events
 
 import info.tommarsh.eventsearch.domain.EventModel
 

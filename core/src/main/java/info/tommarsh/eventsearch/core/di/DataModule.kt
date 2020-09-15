@@ -3,16 +3,17 @@ package info.tommarsh.eventsearch.core.di
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import info.tommarsh.eventsearch.core.data.EventRepository
-import info.tommarsh.eventsearch.core.data.EventRepositoryImpl
-import info.tommarsh.eventsearch.core.data.model.EventResponse
-import info.tommarsh.eventsearch.core.data.remote.EventsAPI
-import info.tommarsh.eventsearch.core.data.remote.EventsAPIInterceptor
+import info.tommarsh.eventsearch.core.data.category.CategoryRepository
+import info.tommarsh.eventsearch.core.data.category.CategoryRepositoryImpl
+import info.tommarsh.eventsearch.core.data.events.EventRepository
+import info.tommarsh.eventsearch.core.data.events.EventRepositoryImpl
+import info.tommarsh.eventsearch.core.data.events.model.EventResponse
+import info.tommarsh.eventsearch.core.data.events.remote.EventsAPI
+import info.tommarsh.eventsearch.core.data.events.remote.EventsAPIInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -26,6 +27,10 @@ internal object DataModule {
     @Provides
     fun bindEventRepository(repository: EventRepositoryImpl): EventRepository =
         repository
+
+    @Provides
+    fun bindCategoryRepository(repository: CategoryRepositoryImpl) : CategoryRepository =
+            repository
 
     @Provides
     fun providesMoshi(): Moshi {

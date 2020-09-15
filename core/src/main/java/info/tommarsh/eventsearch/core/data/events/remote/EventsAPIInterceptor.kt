@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.core.data.remote
+package info.tommarsh.eventsearch.core.data.events.remote
 
 import okhttp3.Interceptor
 import okhttp3.Response

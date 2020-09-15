@@ -6,7 +6,24 @@ import info.tommarsh.eventsearch.domain.PublicModel
 import org.joda.time.DateTime
 import java.util.*
 
-fun List<info.tommarsh.eventsearch.domain.EventModel>.toViewModel(): List<EventViewModel> {
+data class EventViewModel(
+    val id: String,
+    val name: String,
+    val venue: String,
+    val dates: String,
+    val saleStatus: SaleStatus,
+    val imageUrl: String
+)
+
+enum class SaleStatus {
+    PRESALE,
+    SALE,
+    COMING_SOON,
+    UNKNOWN
+}
+
+//Mappers
+fun List<EventModel>.toViewModel(): List<EventViewModel> {
     val todaysDate = DateTime(Date().time)
 
     return map { domain ->
@@ -28,7 +45,7 @@ private fun String?.toDateString(): String {
     }
 }
 
-private fun info.tommarsh.eventsearch.domain.EventModel.salesStatus(todaysDate: DateTime): SaleStatus {
+private fun EventModel.salesStatus(todaysDate: DateTime): SaleStatus {
     if (presales.isOnPresale(todaysDate)) return SaleStatus.PRESALE
     if (publicSales.isSaleDateAnnounced()) {
         return if (publicSales.isOnPublicSale(todaysDate)) SaleStatus.SALE
@@ -38,16 +55,16 @@ private fun info.tommarsh.eventsearch.domain.EventModel.salesStatus(todaysDate: 
     return SaleStatus.UNKNOWN
 }
 
-private fun List<info.tommarsh.eventsearch.domain.PresalesModel>?.isOnPresale(todaysDate: DateTime): Boolean {
+private fun List<PresalesModel>?.isOnPresale(todaysDate: DateTime): Boolean {
     return this?.any { presale -> todaysDate.isBetween(presale.startDateTime, presale.endDateTime) }
         ?: false
 }
 
-private fun info.tommarsh.eventsearch.domain.PublicModel?.isSaleDateAnnounced(): Boolean {
+private fun PublicModel?.isSaleDateAnnounced(): Boolean {
     return this == null || (!startTBA && !startTBD)
 }
 
-private fun info.tommarsh.eventsearch.domain.PublicModel?.isOnPublicSale(todaysDate: DateTime): Boolean {
+private fun PublicModel?.isOnPublicSale(todaysDate: DateTime): Boolean {
     return if (this == null) false else {
         todaysDate.isBetween(startDateTime, endDateTime)
     }

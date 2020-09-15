@@ -1,7 +1,7 @@
-package info.tommarsh.eventsearch.core.data
+package info.tommarsh.eventsearch.core.data.events
 
-import info.tommarsh.eventsearch.core.data.model.toDomainModel
-import info.tommarsh.eventsearch.core.data.remote.EventsAPI
+import info.tommarsh.eventsearch.core.data.events.model.toDomainModel
+import info.tommarsh.eventsearch.core.data.events.remote.EventsAPI
 import info.tommarsh.eventsearch.domain.EventModel
 import javax.inject.Inject
 

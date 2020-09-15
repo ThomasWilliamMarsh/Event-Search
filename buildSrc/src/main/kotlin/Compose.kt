@@ -1,7 +1,7 @@
 object Compose {
 
     val ComposeDependencies = listOf(
-        "com.github.mvarnagiris:compose-glide-image:${Versions.glideImage}",
+        "dev.chrisbanes.accompanist:accompanist-coil:${Versions.accompanist}",
         "androidx.compose.runtime:runtime-dispatch:${Versions.compose}",
         "androidx.compose.runtime:runtime:${Versions.compose}",
         "androidx.compose.animation:animation:${Versions.compose}",
