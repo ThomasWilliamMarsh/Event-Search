@@ -23,22 +23,29 @@ fun SearchScreen() {
     val events by viewModel.eventState.collectAsState()
     val categories by viewModel.categoriesState.collectAsState()
 
-    SearchScreen(events, categories)
+    SearchScreen(
+        eventState = events,
+        categoryState = categories,
+        onSearch = viewModel::searchFor
+    )
 }
 
 @Composable
-fun SearchScreen(eventState: FetchState<EventViewModel>,
-                 categoryState: FetchState<CategoryViewModel>) {
+fun SearchScreen(
+    eventState: FetchState<EventViewModel>,
+    categoryState: FetchState<CategoryViewModel>,
+    onSearch: (query: String) -> Unit
+) {
     val scaffoldState = rememberScaffoldState()
-    Scaffold(topBar = { SearchToolbar(categoryState) },
-            scaffoldState = scaffoldState,
-            bodyContent = {
-                when (eventState) {
-                    is FetchState.Loading -> CenteredCircularProgress()
-                    is FetchState.Success -> SearchList(events = eventState.items)
-                    is FetchState.Failure -> ErrorSnackbar(scaffoldState.snackbarHostState)
-                }
+    Scaffold(topBar = { SearchToolbar(categoryState, onSearch) },
+        scaffoldState = scaffoldState,
+        bodyContent = {
+            when (eventState) {
+                is FetchState.Loading -> CenteredCircularProgress()
+                is FetchState.Success -> SearchList(events = eventState.items)
+                is FetchState.Failure -> ErrorSnackbar(scaffoldState.snackbarHostState)
             }
+        }
     )
 }
 
@@ -51,11 +58,12 @@ fun SearchList(events: List<EventViewModel>) {
 
 @Composable
 fun CenteredCircularProgress() {
-    Column(modifier = Modifier
+    Column(
+        modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(),
-            horizontalGravity = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+        horizontalGravity = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) { CircularProgressIndicator() }
 }
 
@@ -73,17 +81,22 @@ fun ErrorSnackbar(snackbarHostState: SnackbarHostState) {
 fun DefaultPreview() {
     EventSearchApp {
         SearchScreen(
-                eventState = FetchState.Success(items = listOf(
-                        onSaleEvent,
-                        comingSoonEvent,
-                        presaleEvent
-                )),
-                categoryState = FetchState.Success(items = listOf(
-                        musicCategory,
-                        sportCategory,
-                        artCategory,
-                        familyCategory
-                ))
+            eventState = FetchState.Success(
+                items = listOf(
+                    onSaleEvent,
+                    comingSoonEvent,
+                    presaleEvent
+                )
+            ),
+            categoryState = FetchState.Success(
+                items = listOf(
+                    musicCategory,
+                    sportCategory,
+                    artCategory,
+                    familyCategory
+                )
+            ),
+            onSearch = {}
         )
     }
 }

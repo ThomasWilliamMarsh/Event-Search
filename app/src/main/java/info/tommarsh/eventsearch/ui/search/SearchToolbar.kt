@@ -7,9 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -20,12 +18,16 @@ import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.ui.search.model.CategoryViewModel
 import info.tommarsh.eventsearch.ui.search.model.FetchState
+import kotlinx.coroutines.delay
 
 @Composable
-fun SearchToolbar(categoryState: FetchState<CategoryViewModel>) {
+fun SearchToolbar(
+    categoryState: FetchState<CategoryViewModel>,
+    onSearch: (keyword: String) -> Unit
+) {
     Column {
         TopToolbar()
-        SearchField(categoryState = categoryState)
+        SearchField(categoryState = categoryState, onSearch = onSearch)
     }
 }
 
@@ -45,12 +47,17 @@ private fun TopToolbar() {
 }
 
 @Composable
-private fun SearchField(categoryState: FetchState<CategoryViewModel>) {
+private fun SearchField(
+    categoryState: FetchState<CategoryViewModel>,
+    onSearch: (keyword: String) -> Unit
+) {
     Surface(color = MaterialTheme.colors.primaryVariant) {
         Column {
-            SearchTextField()
+            SearchTextField(onSearch)
             when (categoryState) {
-                is FetchState.Loading -> { /**No need to do anything here.**/}
+                is FetchState.Loading -> {
+                    /**No need to do anything here.**/
+                }
                 is FetchState.Success -> CategoriesList(categoryState.items)
                 is FetchState.Failure -> ErrorText()
             }
@@ -59,8 +66,13 @@ private fun SearchField(categoryState: FetchState<CategoryViewModel>) {
 }
 
 @Composable
-private fun SearchTextField() {
+private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
     val textState = remember { mutableStateOf(TextFieldValue()) }
+    launchInComposition(textState.value) {
+        delay(1000)
+        onSearch(textState.value.text)
+    }
+
     TextField(
         value = textState.value,
         onValueChange = { textState.value = it },
@@ -125,6 +137,6 @@ private fun ErrorText() {
 @Composable
 private fun ToolbarFailingToLoadCategories() {
     EventSearchApp {
-        SearchToolbar(categoryState = FetchState.Failure(Throwable()))
+        SearchToolbar(categoryState = FetchState.Failure(Throwable())) {}
     }
 }

@@ -41,4 +41,13 @@ class SearchViewModel @ViewModelInject constructor(
             }
         }
     }
+
+    fun searchFor(query: String) = viewModelScope.launch(Dispatchers.IO){
+        _eventState.value = FetchState.Loading(false)
+        try {
+            _eventState.value = FetchState.Success(eventRepository.searchForEvents(query).toViewModel())
+        } catch(throwable: Throwable) {
+            _eventState.value = FetchState.Failure(throwable)
+        }
+    }
 }

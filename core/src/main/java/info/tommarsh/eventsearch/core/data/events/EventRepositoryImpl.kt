@@ -10,4 +10,8 @@ class EventRepositoryImpl @Inject constructor(private val api: EventsAPI) : Even
     override suspend fun getEvents(): List<EventModel> {
         return api.getEvents().toDomainModel()
     }
+
+    override suspend fun searchForEvents(query: String): List<EventModel> {
+        return api.searchForEvents(query).toDomainModel()
+    }
 }
