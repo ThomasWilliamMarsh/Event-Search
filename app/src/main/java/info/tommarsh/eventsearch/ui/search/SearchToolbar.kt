@@ -101,16 +101,17 @@ private fun CategoriesList(categories: List<CategoryViewModel>) {
         items = categories,
         modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) { category ->
-        BorderTextButton(text = category.name, modifier = Modifier.padding(8.dp))
+        BorderButton(modifier = Modifier.padding(8.dp)){
+            Text(text = category.name, color = MaterialTheme.colors.onPrimary)
+        }
     }
 }
 
 @Composable
-private fun BorderTextButton(
-    text: String,
+private fun BorderButton(
     borderColor: Color = MaterialTheme.colors.onPrimary,
-    textColor: Color = MaterialTheme.colors.onPrimary,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
     TextButton(
         onClick = {},
@@ -121,7 +122,7 @@ private fun BorderTextButton(
             .wrapContentWidth()
             .height(52.dp) then modifier
     ) {
-        Text(text = text, color = textColor)
+        content()
     }
 }
 

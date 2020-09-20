@@ -11,7 +11,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import info.tommarsh.eventsearch.EventSearchApp
+import info.tommarsh.eventsearch.Navigator
 import info.tommarsh.eventsearch.R
+import info.tommarsh.eventsearch.navigation.NavigationViewModel
 import info.tommarsh.eventsearch.ui.search.model.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.reflect.KProperty
@@ -19,15 +21,18 @@ import kotlin.reflect.KProperty
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun SearchScreen() {
+    val navigator = NavigationViewModel()
     val viewModel = viewModel<SearchViewModel>()
     val events by viewModel.eventState.collectAsState()
     val categories by viewModel.categoriesState.collectAsState()
 
-    SearchScreen(
-        eventState = events,
-        categoryState = categories,
-        onSearch = viewModel::searchFor
-    )
+    Providers(Navigator provides navigator) {
+        SearchScreen(
+            eventState = events,
+            categoryState = categories,
+            onSearch = viewModel::searchFor
+        )
+    }
 }
 
 @Composable

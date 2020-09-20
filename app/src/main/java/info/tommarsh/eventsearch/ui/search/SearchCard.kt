@@ -47,7 +47,7 @@ fun SearchCard(item: EventViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable(onClick = { })
+            .clickable(onClick = {   })
     ) {
 
         Column(modifier = Modifier.padding(16.dp)) {
@@ -72,7 +72,6 @@ private fun WatchedOverlay() {
             .fillMaxWidth()
             .height(200.dp)
     ) {
-
         Box(
             backgroundColor = Color.Red,
             modifier = Modifier
