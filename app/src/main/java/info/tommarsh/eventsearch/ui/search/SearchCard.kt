@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import dev.chrisbanes.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.EventSearchApp
+import info.tommarsh.eventsearch.Navigator
 import info.tommarsh.eventsearch.R
+import info.tommarsh.eventsearch.navigation.Screen
 import info.tommarsh.eventsearch.theme.*
 import info.tommarsh.eventsearch.ui.search.model.EventViewModel
 import info.tommarsh.eventsearch.ui.search.model.SaleStatus
@@ -42,14 +44,14 @@ private val WatchedDefinition = transitionDefinition<WatchedState> {
 
 @Composable
 fun SearchCard(item: EventViewModel) {
+    val navigator = Navigator.current
 
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable(onClick = {   })
+            .clickable(onClick = { navigator.navigate(Screen.EVENT) })
     ) {
-
         Column(modifier = Modifier.padding(16.dp)) {
 
             PosterImage(url = item.imageUrl)

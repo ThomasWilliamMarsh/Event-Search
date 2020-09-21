@@ -21,18 +21,15 @@ import kotlin.reflect.KProperty
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun SearchScreen() {
-    val navigator = NavigationViewModel()
     val viewModel = viewModel<SearchViewModel>()
     val events by viewModel.eventState.collectAsState()
     val categories by viewModel.categoriesState.collectAsState()
 
-    Providers(Navigator provides navigator) {
-        SearchScreen(
-            eventState = events,
-            categoryState = categories,
-            onSearch = viewModel::searchFor
-        )
-    }
+    SearchScreen(
+        eventState = events,
+        categoryState = categories,
+        onSearch = viewModel::searchFor
+    )
 }
 
 @Composable

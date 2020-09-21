@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
 import dagger.hilt.android.AndroidEntryPoint
 import info.tommarsh.eventsearch.EventSearchApp
+import info.tommarsh.eventsearch.TopLevel
 import info.tommarsh.eventsearch.ui.search.SearchScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             EventSearchApp {
-                SearchScreen()
+                TopLevel()
             }
         }
     }
