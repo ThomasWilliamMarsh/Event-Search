@@ -1,6 +1,7 @@
 package info.tommarsh.eventsearch
 
 import android.app.Application
+import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.getValue
@@ -28,9 +29,11 @@ fun TopLevel() {
     val navigator = viewModel<NavigationViewModel>()
     Providers(Navigator provides navigator) {
         val currentScreen by navigator.currentScreen.observeAsState(initial = Screen.SEARCH)
-        when(currentScreen) {
-            Screen.SEARCH -> SearchScreen()
-            Screen.EVENT -> EventScreen()
+        Crossfade(currentScreen) {
+            when(currentScreen) {
+                Screen.SEARCH -> SearchScreen()
+                Screen.EVENT -> EventScreen()
+            }
         }
     }
 }
