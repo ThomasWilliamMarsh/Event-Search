@@ -7,4 +7,6 @@ interface EventRepository {
     suspend fun getEvents(): List<EventModel>
 
     suspend fun searchForEvents(query: String) : List<EventModel>
+
+    suspend fun eventsFromCategory(category: String) : List<EventModel>
 }

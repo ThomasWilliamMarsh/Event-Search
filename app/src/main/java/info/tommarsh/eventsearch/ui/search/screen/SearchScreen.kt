@@ -1,34 +1,29 @@
-package info.tommarsh.eventsearch.ui.search
+package info.tommarsh.eventsearch.ui.search.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import info.tommarsh.eventsearch.EventSearchApp
-import info.tommarsh.eventsearch.Navigator
 import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.navigation.NavigationViewModel
-import info.tommarsh.eventsearch.ui.search.model.*
+import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.ui.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.reflect.KProperty
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun SearchScreen() {
-    val viewModel = viewModel<SearchViewModel>()
-    val events by viewModel.eventState.collectAsState()
-    val categories by viewModel.categoriesState.collectAsState()
+fun SearchScreen(searchViewModel: SearchViewModel) {
+    val events by searchViewModel.eventState.collectAsState()
+    val categories by searchViewModel.categoriesState.collectAsState()
 
     SearchScreen(
         eventState = events,
         categoryState = categories,
-        onSearch = viewModel::searchFor
+        onSearch = searchViewModel::getEvents
     )
 }
 
@@ -36,7 +31,7 @@ fun SearchScreen() {
 fun SearchScreen(
     eventState: FetchState<EventViewModel>,
     categoryState: FetchState<CategoryViewModel>,
-    onSearch: (query: String) -> Unit
+    onSearch: (query: String) -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
     Scaffold(topBar = { SearchToolbar(categoryState, onSearch) },
@@ -54,7 +49,7 @@ fun SearchScreen(
 @Composable
 fun SearchList(events: List<EventViewModel>) {
     LazyColumnFor(events) { event ->
-        SearchCard(item = event)
+        SearchCard(event = event)
     }
 }
 
@@ -64,7 +59,7 @@ fun CenteredCircularProgress() {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(),
-        horizontalGravity = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) { CircularProgressIndicator() }
 }
@@ -80,7 +75,7 @@ fun ErrorSnackbar(snackbarHostState: SnackbarHostState) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun EventScreenPreview() {
     EventSearchApp {
         SearchScreen(
             eventState = FetchState.Success(

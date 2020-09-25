@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.ui.search.model
+package info.tommarsh.eventsearch.model
 
 import info.tommarsh.eventsearch.domain.EventModel
 import info.tommarsh.eventsearch.domain.PresalesModel

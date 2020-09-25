@@ -3,6 +3,7 @@ import Compose.ComposeDependencies
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
+    id("androidx.navigation.safeargs")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
@@ -46,8 +47,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion = "1.4.10"
-        kotlinCompilerExtensionVersion = "1.0.0-alpha02"
+        kotlinCompilerVersion = Versions.kotlin
+        kotlinCompilerExtensionVersion = Versions.compose
     }
 }
 
@@ -67,7 +68,8 @@ dependencies {
     implementation("androidx.compose.material:material:${Versions.compose}")
     implementation("androidx.ui:ui-tooling:${Versions.compose}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
-
+    implementation("androidx.navigation:navigation-fragment-ktx:${Versions.navigation}")
+    implementation("androidx.navigation:navigation-ui-ktx:${Versions.navigation}")
 
     //Data
     implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
@@ -94,6 +96,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         // Treat all Kotlin warnings as errors
         freeCompilerArgs = listOf(
             "-Xopt-in=kotlin.RequiresOptIn",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=androidx.compose.foundation.lazy.ExperimentalLazyDsl",
             "-Xopt-in=kotlin.Experimental",
             "-Xallow-jvm-ir-dependencies",
             "-Xskip-prerelease-check"

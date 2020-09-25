@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.ui.search.model
+package info.tommarsh.eventsearch.model
 
 val onSaleEvent = EventViewModel(
     "id",

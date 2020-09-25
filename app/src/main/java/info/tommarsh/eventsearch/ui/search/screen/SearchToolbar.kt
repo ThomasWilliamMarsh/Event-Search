@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.ui.search
+package info.tommarsh.eventsearch.ui.search.screen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -11,14 +11,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.ui.search.model.CategoryViewModel
-import info.tommarsh.eventsearch.ui.search.model.FetchState
+import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.ui.common.TopToolbar
+import info.tommarsh.eventsearch.ui.search.navigation.Navigator
 import kotlinx.coroutines.delay
+
+private const val DEBOUNCE_MS = 1000L
 
 @Composable
 fun SearchToolbar(
@@ -26,24 +29,9 @@ fun SearchToolbar(
     onSearch: (keyword: String) -> Unit
 ) {
     Column {
-        TopToolbar()
+        TopToolbar(title = stringResource(id = R.string.app_name))
         SearchField(categoryState = categoryState, onSearch = onSearch)
     }
-}
-
-@Composable
-private fun TopToolbar() {
-    TopAppBar(
-        title = {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                color = MaterialTheme.colors.onPrimary,
-                style = MaterialTheme.typography.h6
-            )
-        },
-        backgroundColor = MaterialTheme.colors.primaryVariant,
-        elevation = 0.dp
-    )
 }
 
 @Composable
@@ -67,15 +55,16 @@ private fun SearchField(
 
 @Composable
 private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
-    val textState = remember { mutableStateOf(TextFieldValue()) }
-    launchInComposition(textState.value) {
-        delay(1000)
-        onSearch(textState.value.text)
+    val (text, setText) = remember { mutableStateOf("") }
+
+    launchInComposition(text) {
+        delay(DEBOUNCE_MS)
+        if (text.isNotEmpty()) onSearch(text)
     }
 
     TextField(
-        value = textState.value,
-        onValueChange = { textState.value = it },
+        value = text,
+        onValueChange = { setText(it) },
         label = { Text(text = stringResource(id = R.string.toolbar_hint_text)) },
         modifier = Modifier
             .fillMaxWidth()
@@ -83,6 +72,7 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
             .border(1.dp, MaterialTheme.colors.onPrimary, RoundedCornerShape(4.dp)),
         textStyle = MaterialTheme.typography.subtitle1,
         activeColor = MaterialTheme.colors.onPrimary,
+        imeAction = ImeAction.NoAction,
         inactiveColor = MaterialTheme.colors.onPrimary,
         trailingIcon = {
             Icon(
@@ -97,11 +87,14 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
 
 @Composable
 private fun CategoriesList(categories: List<CategoryViewModel>) {
+    val navigator = Navigator.current
     LazyRowFor(
         items = categories,
         modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) { category ->
-        BorderButton(modifier = Modifier.padding(8.dp)){
+        BorderButton(
+            modifier = Modifier.padding(8.dp),
+            onClick = { navigator.navigateToCategory(category.name, category.id) }) {
             Text(text = category.name, color = MaterialTheme.colors.onPrimary)
         }
     }
@@ -111,10 +104,11 @@ private fun CategoriesList(categories: List<CategoryViewModel>) {
 private fun BorderButton(
     borderColor: Color = MaterialTheme.colors.onPrimary,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
     TextButton(
-        onClick = {},
+        onClick = { onClick() },
         elevation = 0.dp,
         backgroundColor = Color.Transparent,
         border = BorderStroke(1.dp, borderColor),
@@ -139,5 +133,23 @@ private fun ErrorText() {
 private fun ToolbarFailingToLoadCategories() {
     EventSearchApp {
         SearchToolbar(categoryState = FetchState.Failure(Throwable())) {}
+    }
+}
+
+@Preview
+@Composable
+private fun ToolbarWithCategories() {
+    EventSearchApp {
+        SearchToolbar(
+            categoryState = FetchState.Success(
+                items = listOf(
+                    musicCategory,
+                    sportCategory,
+                    artCategory,
+                    familyCategory
+                )
+            ),
+            onSearch = {}
+        )
     }
 }

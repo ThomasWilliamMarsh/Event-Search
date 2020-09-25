@@ -1,11 +1,16 @@
 package info.tommarsh.eventsearch.ui.search
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.tommarsh.eventsearch.core.data.category.CategoryRepository
 import info.tommarsh.eventsearch.core.data.events.EventRepository
-import info.tommarsh.eventsearch.ui.search.model.*
+import info.tommarsh.eventsearch.model.CategoryViewModel
+import info.tommarsh.eventsearch.model.EventViewModel
+import info.tommarsh.eventsearch.model.FetchState
+import info.tommarsh.eventsearch.model.toViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +20,8 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 class SearchViewModel @ViewModelInject constructor(
     private val eventRepository: EventRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
+    @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _eventState = MutableStateFlow<FetchState<EventViewModel>>(FetchState.Loading(true))
@@ -26,28 +32,25 @@ class SearchViewModel @ViewModelInject constructor(
     val categoriesState: StateFlow<FetchState<CategoryViewModel>> = _categoriesState
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        getEvents()
+        getCategories()
+    }
 
-            _eventState.value = try {
-                FetchState.Success(eventRepository.getEvents().toViewModel())
-            } catch (throwable: Throwable) {
-                FetchState.Failure(throwable)
-            }
-
-            _categoriesState.value = try {
-                FetchState.Success(categoryRepository.getCategories().toViewModel())
-            } catch (throwable: Throwable) {
-                FetchState.Failure(throwable)
-            }
+    fun getEvents(query: String = "") = viewModelScope.launch(Dispatchers.IO) {
+        _eventState.value = FetchState.Loading(false)
+        try {
+            _eventState.value =
+                FetchState.Success(eventRepository.searchForEvents(query).toViewModel())
+        } catch (throwable: Throwable) {
+            _eventState.value = FetchState.Failure(throwable)
         }
     }
 
-    fun searchFor(query: String) = viewModelScope.launch(Dispatchers.IO){
-        _eventState.value = FetchState.Loading(false)
-        try {
-            _eventState.value = FetchState.Success(eventRepository.searchForEvents(query).toViewModel())
-        } catch(throwable: Throwable) {
-            _eventState.value = FetchState.Failure(throwable)
+    private fun getCategories() = viewModelScope.launch(Dispatchers.IO) {
+        _categoriesState.value = try {
+            FetchState.Success(categoryRepository.getCategories().toViewModel())
+        } catch (throwable: Throwable) {
+            FetchState.Failure(throwable)
         }
     }
 }

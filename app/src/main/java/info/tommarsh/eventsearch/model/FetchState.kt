@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.ui.search.model
+package info.tommarsh.eventsearch.model
 
 sealed class FetchState<T> {
     data class Loading<T>(val initialLoad: Boolean) : FetchState<T>()

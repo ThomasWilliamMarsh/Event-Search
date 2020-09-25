@@ -29,6 +29,10 @@ dependencies {
 
     api(project(":domain"))
 
+    //Android
+    api("androidx.fragment:fragment-ktx:${Versions.fragment}")
+    api("androidx.activity:activity-ktx:${Versions.activity}")
+
     //Kotlin
     api("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
     api("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}")

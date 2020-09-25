@@ -10,4 +10,7 @@ interface EventsAPI {
 
     @GET("discovery/v2/events.json")
     suspend fun searchForEvents(@Query("keyword") query: String): EventResponse
+
+    @GET("discovery/v2/events.json")
+    suspend fun eventsFromCategory(@Query("classificationName") category: String) : EventResponse
 }
