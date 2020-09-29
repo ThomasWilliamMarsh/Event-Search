@@ -29,11 +29,11 @@ fun SearchCard(event: EventViewModel) {
             PosterImage(url = event.imageUrl)
 
             ProvideEmphasis(EmphasisAmbient.current.high) {
-                Text(text = event.name, style = typography.h4)
+                Text(text = event.name, style = MaterialTheme.typography.h4)
             }
 
             ProvideEmphasis(EmphasisAmbient.current.medium) {
-                Text(text = event.venue, style = typography.subtitle1)
+                Text(text = event.venue, style = MaterialTheme.typography.subtitle1)
             }
         }
     }

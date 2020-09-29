@@ -17,6 +17,7 @@ import androidx.ui.tooling.preview.Preview
 import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.theme.EventSearchTypography
 import info.tommarsh.eventsearch.ui.common.TopToolbar
 import info.tommarsh.eventsearch.ui.search.navigation.Navigator
 import kotlinx.coroutines.delay
@@ -80,7 +81,7 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
                 tint = MaterialTheme.colors.onPrimary
             )
         },
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
         shape = RoundedCornerShape(4.dp),
     )
 }

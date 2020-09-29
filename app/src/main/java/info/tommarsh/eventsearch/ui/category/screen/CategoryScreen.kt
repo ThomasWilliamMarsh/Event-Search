@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import info.tommarsh.eventsearch.theme.EventSearchTypography
 import info.tommarsh.eventsearch.ui.common.TopToolbar
 
 @Composable
