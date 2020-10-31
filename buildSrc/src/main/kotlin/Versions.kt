@@ -1,5 +1,3 @@
-package info.tommarsh.evventsearch.buildsrc
-
 object Versions {
     //region Build
     const val hilt = "2.28-alpha"
@@ -24,7 +22,7 @@ object Versions {
     const val coreKtx = "1.5.0-alpha02"
     const val coroutines = "1.3.9"
     const val appCompat = "1.3.0-alpha02"
-    const val compose = "1.0.0-alpha03"
+    const val compose = "1.0.0-alpha06"
     const val lifecycle = "2.2.0"
     const val hiltJetpack = "1.0.0-alpha02"
     const val jodaTime = "2.10.6"
