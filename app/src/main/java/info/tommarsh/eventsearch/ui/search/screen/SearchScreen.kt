@@ -1,16 +1,15 @@
 package info.tommarsh.eventsearch.ui.search.screen
 
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.ui.tooling.preview.Preview
 import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
+import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -29,8 +28,8 @@ fun SearchScreen(searchViewModel: SearchViewModel) {
 
 @Composable
 fun SearchScreen(
-    eventState: FetchState<EventViewModel>,
-    categoryState: FetchState<CategoryViewModel>,
+    eventState: FetchState<List<EventViewModel>>,
+    categoryState: FetchState<List<CategoryViewModel>>,
     onSearch: (query: String) -> Unit,
 ) {
     val scaffoldState = rememberScaffoldState()
@@ -40,7 +39,10 @@ fun SearchScreen(
             when (eventState) {
                 is FetchState.Loading -> CenteredCircularProgress()
                 is FetchState.Success -> SearchList(events = eventState.items)
-                is FetchState.Failure -> ErrorSnackbar(scaffoldState.snackbarHostState)
+                is FetchState.Failure -> ErrorSnackbar(
+                    snackbarHostState = scaffoldState.snackbarHostState,
+                    message = stringResource(id = R.string.error_loading_events)
+                )
             }
         }
     )
@@ -50,26 +52,6 @@ fun SearchScreen(
 fun SearchList(events: List<EventViewModel>) {
     LazyColumnFor(events) { event ->
         SearchCard(event = event)
-    }
-}
-
-@Composable
-fun CenteredCircularProgress() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) { CircularProgressIndicator() }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun ErrorSnackbar(snackbarHostState: SnackbarHostState) {
-    val message = stringResource(id = R.string.error_loading_events)
-    launchInComposition {
-        snackbarHostState.showSnackbar(message = message)
     }
 }
 

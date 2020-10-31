@@ -24,12 +24,13 @@ class SearchViewModel @ViewModelInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _eventState = MutableStateFlow<FetchState<EventViewModel>>(FetchState.Loading(true))
-    val eventState: StateFlow<FetchState<EventViewModel>> = _eventState
+    private val _eventState =
+        MutableStateFlow<FetchState<List<EventViewModel>>>(FetchState.Loading(true))
+    val eventState: StateFlow<FetchState<List<EventViewModel>>> = _eventState
 
     private val _categoriesState =
-        MutableStateFlow<FetchState<CategoryViewModel>>(FetchState.Loading(true))
-    val categoriesState: StateFlow<FetchState<CategoryViewModel>> = _categoriesState
+        MutableStateFlow<FetchState<List<CategoryViewModel>>>(FetchState.Loading(true))
+    val categoriesState: StateFlow<FetchState<List<CategoryViewModel>>> = _categoriesState
 
     init {
         getEvents()

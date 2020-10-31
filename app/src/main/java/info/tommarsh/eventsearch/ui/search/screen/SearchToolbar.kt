@@ -26,7 +26,7 @@ private const val DEBOUNCE_MS = 1000L
 
 @Composable
 fun SearchToolbar(
-    categoryState: FetchState<CategoryViewModel>,
+    categoryState: FetchState<List<CategoryViewModel>>,
     onSearch: (keyword: String) -> Unit
 ) {
     Column {
@@ -37,7 +37,7 @@ fun SearchToolbar(
 
 @Composable
 private fun SearchField(
-    categoryState: FetchState<CategoryViewModel>,
+    categoryState: FetchState<List<CategoryViewModel>>,
     onSearch: (keyword: String) -> Unit
 ) {
     Surface(color = MaterialTheme.colors.primaryVariant) {
@@ -72,16 +72,7 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
             .padding(16.dp)
             .border(1.dp, MaterialTheme.colors.onPrimary, RoundedCornerShape(4.dp)),
         textStyle = MaterialTheme.typography.subtitle1,
-        activeColor = MaterialTheme.colors.onPrimary,
-        imeAction = ImeAction.NoAction,
-        inactiveColor = MaterialTheme.colors.onPrimary,
-        trailingIcon = {
-            Icon(
-                asset = Icons.Default.Search,
-                tint = MaterialTheme.colors.onPrimary
-            )
-        },
-        backgroundColor = MaterialTheme.colors.primaryVariant,
+        trailingIcon = { Icon(asset = Icons.Default.Search,) },
         shape = RoundedCornerShape(4.dp),
     )
 }
@@ -96,7 +87,7 @@ private fun CategoriesList(categories: List<CategoryViewModel>) {
         BorderButton(
             modifier = Modifier.padding(8.dp),
             onClick = { navigator.navigateToCategory(category.name, category.id) }) {
-            Text(text = category.name, color = MaterialTheme.colors.onPrimary)
+            Text(text = category.name)
         }
     }
 }

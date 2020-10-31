@@ -6,25 +6,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import info.tommarsh.eventsearch.EventSearchApp
-import info.tommarsh.eventsearch.ui.event.screen.EventScreen
+import info.tommarsh.eventsearch.ui.event.screen.EventDetailScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
-class EventFragment : Fragment() {
+class EventDetailFragment : Fragment() {
+
+    private val viewModel by viewModels<EventDetailViewModel>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val args = EventDetailFragmentArgs.fromBundle(requireArguments())
+
+        viewModel.getEventDetails(args.eventId)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val args = EventFragmentArgs.fromBundle(requireArguments())
+
         return ComposeView(context = requireContext()).apply {
             setContent {
                 EventSearchApp {
-                    EventScreen(name = args.eventName, id = args.eventId)
+                    EventDetailScreen(viewModel)
                 }
             }
         }

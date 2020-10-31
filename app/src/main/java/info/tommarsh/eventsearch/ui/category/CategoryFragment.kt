@@ -22,7 +22,7 @@ class CategoryFragment : Fragment() {
         return ComposeView(context = requireContext()).apply {
             setContent {
                 EventSearchApp {
-                    CategoryScreen(name = args.categoryName, id = args.categoryId)
+                    CategoryScreen(id = args.categoryId, name = args.categoryName)
                 }
             }
         }

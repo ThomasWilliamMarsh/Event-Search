@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.DensityAmbient
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import dev.chrisbanes.accompanist.coil.CoilImage
@@ -22,7 +23,7 @@ fun SearchCard(event: EventViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable(onClick = { navigator.navigateToEvent(event.name, event.id) })
+            .clickable(onClick = { navigator.navigateToEvent(event.id) })
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 

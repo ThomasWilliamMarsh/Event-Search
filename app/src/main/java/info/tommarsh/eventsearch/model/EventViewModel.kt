@@ -26,16 +26,18 @@ enum class SaleStatus {
 fun List<EventModel>.toViewModel(): List<EventViewModel> {
     val todaysDate = DateTime(Date().time)
 
-    return map { domain ->
-        EventViewModel(
-            id = domain.id,
-            name = domain.name,
-            venue = domain.venue,
-            dates = domain.initialStartDateTime.toDateString(),
-            imageUrl = domain.imageUrl,
-            saleStatus = domain.salesStatus(todaysDate)
-        )
-    }
+    return map { domain -> domain.toViewModel(todaysDate)}
+}
+
+fun EventModel.toViewModel(todaysDate: DateTime) : EventViewModel {
+    return EventViewModel(
+        id = id,
+        name = name,
+        venue = venue,
+        dates = initialStartDateTime.toDateString(),
+        imageUrl = imageUrl,
+        saleStatus = salesStatus(todaysDate)
+    )
 }
 
 private fun String?.toDateString(): String {

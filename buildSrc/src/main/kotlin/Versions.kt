@@ -1,7 +1,9 @@
+package info.tommarsh.evventsearch.buildsrc
+
 object Versions {
     //region Build
     const val hilt = "2.28-alpha"
-    const val gradleBuildTools = "4.2.0-alpha10"
+    const val gradleBuildTools = "4.2.0-alpha15"
     //endregion
 
     //region Android

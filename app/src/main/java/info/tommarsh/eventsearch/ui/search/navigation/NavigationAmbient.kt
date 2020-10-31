@@ -12,7 +12,7 @@ class SearchNavigator(private val controller: NavController) {
         controller.navigate(SearchFragmentDirections.actionSearchFragmentToCategoryFragment(id, name))
     }
 
-    fun navigateToEvent(name: String, id: String) {
-        controller.navigate(SearchFragmentDirections.actionSearchFragmentToEventFragment(id, name))
+    fun navigateToEvent(id: String) {
+        controller.navigate(SearchFragmentDirections.actionSearchFragmentToEventFragment(id))
     }
 }
