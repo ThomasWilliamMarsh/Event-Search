@@ -3,7 +3,6 @@ import Compose.ComposeDependencies
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
-    id("androidx.navigation.safeargs")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
@@ -64,12 +63,8 @@ dependencies {
     //Android
     implementation("androidx.core:core-ktx:${Versions.coreKtx}")
     implementation("androidx.appcompat:appcompat:${Versions.appCompat}")
-    implementation("androidx.compose.foundation:foundation-layout:${Versions.compose}")
-    implementation("androidx.compose.material:material:${Versions.compose}")
     implementation("androidx.ui:ui-tooling:${Versions.compose}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
-    implementation("androidx.navigation:navigation-fragment-ktx:${Versions.navigation}")
-    implementation("androidx.navigation:navigation-ui-ktx:${Versions.navigation}")
 
     //Data
     implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")

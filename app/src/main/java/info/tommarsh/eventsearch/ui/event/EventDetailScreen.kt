@@ -1,9 +1,8 @@
-package info.tommarsh.eventsearch.ui.event.screen
+package info.tommarsh.eventsearch.ui.event
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import dev.chrisbanes.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.EventSearchApp
@@ -22,11 +22,11 @@ import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.TopToolbar
-import info.tommarsh.eventsearch.ui.event.EventDetailViewModel
 
 @Composable
-fun EventDetailScreen(eventDetailViewModel: EventDetailViewModel) {
-    val event by eventDetailViewModel.detailState.collectAsState()
+fun EventDetailScreen(viewModel: EventDetailViewModel) {
+    val event by viewModel.detailState.collectAsState()
+
     EventDetailScreen(eventState = event)
 }
 
@@ -64,7 +64,7 @@ private fun EventDetailsList(eventDetail: EventViewModel) {
 @Composable
 private fun PosterImage(url: String) {
     val (loaded, setLoaded) = remember { mutableStateOf(false) }
-    Stack(modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
+    Box(modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
         CoilImage(data = url, onRequestCompleted = { setLoaded(true) })
         Column(
             Modifier.padding(start = 16.dp, bottom = 16.dp)

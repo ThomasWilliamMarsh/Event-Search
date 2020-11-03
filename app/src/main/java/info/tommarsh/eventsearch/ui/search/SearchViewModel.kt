@@ -1,12 +1,11 @@
 package info.tommarsh.eventsearch.ui.search
 
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import info.tommarsh.eventsearch.core.data.category.CategoryRepository
 import info.tommarsh.eventsearch.core.data.events.EventRepository
+import info.tommarsh.eventsearch.fetch
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.EventViewModel
 import info.tommarsh.eventsearch.model.FetchState
@@ -20,8 +19,7 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 class SearchViewModel @ViewModelInject constructor(
     private val eventRepository: EventRepository,
-    private val categoryRepository: CategoryRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val categoryRepository: CategoryRepository
 ) : ViewModel() {
 
     private val _eventState =
@@ -39,19 +37,10 @@ class SearchViewModel @ViewModelInject constructor(
 
     fun getEvents(query: String = "") = viewModelScope.launch(Dispatchers.IO) {
         _eventState.value = FetchState.Loading(false)
-        try {
-            _eventState.value =
-                FetchState.Success(eventRepository.searchForEvents(query).toViewModel())
-        } catch (throwable: Throwable) {
-            _eventState.value = FetchState.Failure(throwable)
-        }
+        _eventState.value = fetch { eventRepository.searchForEvents(query).toViewModel() }
     }
 
     private fun getCategories() = viewModelScope.launch(Dispatchers.IO) {
-        _categoriesState.value = try {
-            FetchState.Success(categoryRepository.getCategories().toViewModel())
-        } catch (throwable: Throwable) {
-            FetchState.Failure(throwable)
-        }
+        _categoriesState.value = fetch { categoryRepository.getCategories().toViewModel() }
     }
 }

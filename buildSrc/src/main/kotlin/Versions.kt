@@ -23,14 +23,14 @@ object Versions {
     const val coroutines = "1.3.9"
     const val appCompat = "1.3.0-alpha02"
     const val compose = "1.0.0-alpha06"
+    const val composeNavigation = "1.0.0-alpha01"
     const val lifecycle = "2.2.0"
     const val hiltJetpack = "1.0.0-alpha02"
     const val jodaTime = "2.10.6"
     const val moshi = "1.9.3"
     const val retrofit = "2.9.0"
-    const val accompanist = "0.2.1"
+    const val accompanist = "0.3.2"
     const val fragment = "1.2.5"
     const val activity = "1.2.0-alpha08"
-    const val navigation = "2.3.0"
     //endregion
 }

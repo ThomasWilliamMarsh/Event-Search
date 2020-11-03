@@ -1,17 +1,15 @@
 package info.tommarsh.eventsearch.ui.common
 
+import androidx.compose.foundation.AmbientContentColor
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.contentColor
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.launchInComposition
+import androidx.compose.runtime.LaunchedTask
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.theme.EventSearchTypography
 
 @Composable
 fun TopToolbar(
@@ -22,7 +20,7 @@ fun TopToolbar(
         title = {
             Text(
                 text = title,
-                color = contentColor(),
+                color = AmbientContentColor.current,
                 style = MaterialTheme.typography.h6
             )
         },
@@ -49,7 +47,7 @@ fun ErrorSnackbar(
     snackbarHostState: SnackbarHostState,
     message: String
 ) {
-    launchInComposition {
+    LaunchedTask {
         snackbarHostState.showSnackbar(message = message)
     }
 }

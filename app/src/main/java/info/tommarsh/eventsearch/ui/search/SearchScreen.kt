@@ -1,28 +1,36 @@
-package info.tommarsh.eventsearch.ui.search.screen
+package info.tommarsh.eventsearch.ui.search
 
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
 import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.*
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
-import info.tommarsh.eventsearch.ui.search.SearchViewModel
+import info.tommarsh.eventsearch.ui.search.screen.SearchCard
+import info.tommarsh.eventsearch.ui.search.screen.SearchToolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun SearchScreen(searchViewModel: SearchViewModel) {
-    val events by searchViewModel.eventState.collectAsState()
-    val categories by searchViewModel.categoriesState.collectAsState()
+fun SearchScreen(
+    viewModel : SearchViewModel,
+    navigateToEvent: (id: String) -> Unit,
+    navigateToCategory: (id: String, name: String) -> Unit
+) {
+    val events by viewModel.eventState.collectAsState()
+    val categories by viewModel.categoriesState.collectAsState()
 
     SearchScreen(
         eventState = events,
         categoryState = categories,
-        onSearch = searchViewModel::getEvents
+        onSearch = viewModel::getEvents,
+        navigateToEvent = navigateToEvent,
+        navigateToCategory = navigateToCategory
     )
 }
 
@@ -31,14 +39,19 @@ fun SearchScreen(
     eventState: FetchState<List<EventViewModel>>,
     categoryState: FetchState<List<CategoryViewModel>>,
     onSearch: (query: String) -> Unit,
+    navigateToCategory: (id: String, name: String) -> Unit,
+    navigateToEvent: (id: String) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    Scaffold(topBar = { SearchToolbar(categoryState, onSearch) },
+    Scaffold(topBar = { SearchToolbar(categoryState, onSearch, navigateToCategory) },
         scaffoldState = scaffoldState,
         bodyContent = {
             when (eventState) {
                 is FetchState.Loading -> CenteredCircularProgress()
-                is FetchState.Success -> SearchList(events = eventState.items)
+                is FetchState.Success -> SearchList(
+                    events = eventState.items,
+                    navigateToEvent = navigateToEvent
+                )
                 is FetchState.Failure -> ErrorSnackbar(
                     snackbarHostState = scaffoldState.snackbarHostState,
                     message = stringResource(id = R.string.error_loading_events)
@@ -49,9 +62,12 @@ fun SearchScreen(
 }
 
 @Composable
-fun SearchList(events: List<EventViewModel>) {
+fun SearchList(
+    events: List<EventViewModel>,
+    navigateToEvent: (id: String) -> Unit
+) {
     LazyColumnFor(events) { event ->
-        SearchCard(event = event)
+        SearchCard(event = event, navigateToEvent = navigateToEvent)
     }
 }
 
@@ -75,7 +91,9 @@ fun EventScreenPreview() {
                     familyCategory
                 )
             ),
-            onSearch = {}
+            onSearch = {},
+            navigateToCategory = { _, _ -> },
+            navigateToEvent = {}
         )
     }
 }

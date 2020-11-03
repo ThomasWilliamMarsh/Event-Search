@@ -5,21 +5,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRowFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.*
-import info.tommarsh.eventsearch.theme.EventSearchTypography
 import info.tommarsh.eventsearch.ui.common.TopToolbar
-import info.tommarsh.eventsearch.ui.search.navigation.Navigator
 import kotlinx.coroutines.delay
 
 private const val DEBOUNCE_MS = 1000L
@@ -27,18 +25,24 @@ private const val DEBOUNCE_MS = 1000L
 @Composable
 fun SearchToolbar(
     categoryState: FetchState<List<CategoryViewModel>>,
-    onSearch: (keyword: String) -> Unit
+    onSearch: (keyword: String) -> Unit,
+    navigateToCategory: (id: String, name: String) -> Unit
 ) {
     Column {
         TopToolbar(title = stringResource(id = R.string.app_name))
-        SearchField(categoryState = categoryState, onSearch = onSearch)
+        SearchField(
+            categoryState = categoryState,
+            onSearch = onSearch,
+            navigateToCategory = navigateToCategory
+        )
     }
 }
 
 @Composable
 private fun SearchField(
     categoryState: FetchState<List<CategoryViewModel>>,
-    onSearch: (keyword: String) -> Unit
+    onSearch: (keyword: String) -> Unit,
+    navigateToCategory: (id: String, name: String) -> Unit
 ) {
     Surface(color = MaterialTheme.colors.primaryVariant) {
         Column {
@@ -47,7 +51,10 @@ private fun SearchField(
                 is FetchState.Loading -> {
                     /**No need to do anything here.**/
                 }
-                is FetchState.Success -> CategoriesList(categoryState.items)
+                is FetchState.Success -> CategoriesList(
+                    categories = categoryState.items,
+                    navigateToCategory = navigateToCategory
+                )
                 is FetchState.Failure -> ErrorText()
             }
         }
@@ -58,7 +65,7 @@ private fun SearchField(
 private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
     val (text, setText) = remember { mutableStateOf("") }
 
-    launchInComposition(text) {
+    LaunchedTask(text) {
         delay(DEBOUNCE_MS)
         if (text.isNotEmpty()) onSearch(text)
     }
@@ -72,21 +79,23 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
             .padding(16.dp)
             .border(1.dp, MaterialTheme.colors.onPrimary, RoundedCornerShape(4.dp)),
         textStyle = MaterialTheme.typography.subtitle1,
-        trailingIcon = { Icon(asset = Icons.Default.Search,) },
+        trailingIcon = { Icon(asset = Icons.Default.Search) },
         shape = RoundedCornerShape(4.dp),
     )
 }
 
 @Composable
-private fun CategoriesList(categories: List<CategoryViewModel>) {
-    val navigator = Navigator.current
+private fun CategoriesList(
+    categories: List<CategoryViewModel>,
+    navigateToCategory: (id: String, name: String) -> Unit
+) {
     LazyRowFor(
         items = categories,
         modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
     ) { category ->
         BorderButton(
             modifier = Modifier.padding(8.dp),
-            onClick = { navigator.navigateToCategory(category.name, category.id) }) {
+            onClick = { navigateToCategory(category.name, category.id) }) {
             Text(text = category.name)
         }
     }
@@ -101,8 +110,6 @@ private fun BorderButton(
 ) {
     TextButton(
         onClick = { onClick() },
-        elevation = 0.dp,
-        backgroundColor = Color.Transparent,
         border = BorderStroke(1.dp, borderColor),
         modifier = Modifier
             .wrapContentWidth()
@@ -124,7 +131,9 @@ private fun ErrorText() {
 @Composable
 private fun ToolbarFailingToLoadCategories() {
     EventSearchApp {
-        SearchToolbar(categoryState = FetchState.Failure(Throwable())) {}
+        SearchToolbar(categoryState = FetchState.Failure(Throwable()),
+            navigateToCategory = { _, _ -> },
+            onSearch = {})
     }
 }
 
@@ -141,7 +150,8 @@ private fun ToolbarWithCategories() {
                     familyCategory
                 )
             ),
-            onSearch = {}
+            onSearch = {},
+            navigateToCategory = { _, _ -> Unit }
         )
     }
 }

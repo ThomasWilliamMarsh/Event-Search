@@ -26,10 +26,10 @@ enum class SaleStatus {
 fun List<EventModel>.toViewModel(): List<EventViewModel> {
     val todaysDate = DateTime(Date().time)
 
-    return map { domain -> domain.toViewModel(todaysDate)}
+    return map { domain -> domain.toViewModel(todaysDate) }
 }
 
-fun EventModel.toViewModel(todaysDate: DateTime) : EventViewModel {
+fun EventModel.toViewModel(todaysDate: DateTime): EventViewModel {
     return EventViewModel(
         id = id,
         name = name,
