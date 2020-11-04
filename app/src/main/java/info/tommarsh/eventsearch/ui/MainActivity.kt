@@ -10,21 +10,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.stringArg
-import info.tommarsh.eventsearch.theme.EventSearchAppTheme
 import info.tommarsh.eventsearch.ui.category.screen.CategoryScreen
 import info.tommarsh.eventsearch.ui.event.EventDetailScreen
 import info.tommarsh.eventsearch.ui.event.EventDetailViewModel
 import info.tommarsh.eventsearch.ui.search.SearchScreen
 import info.tommarsh.eventsearch.ui.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private val searchVm : SearchViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -33,16 +31,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun MainComposable() = EventSearchApp {
+    fun MainComposable() {
         val controller = rememberNavController()
         NavHost(
             navController = controller,
             startDestination = "Search"
         ) {
             composable("Search") {
-                val viewModel: SearchViewModel by viewModels()
                 SearchScreen(
-                    viewModel = viewModel,
+                    viewModel = searchVm,
                     navigateToEvent = { id -> controller.navigate("Event/$id") },
                     navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") }
                 )

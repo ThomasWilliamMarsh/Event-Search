@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import dev.chrisbanes.accompanist.coil.CoilImage
-import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.model.EventViewModel
 import info.tommarsh.eventsearch.model.SaleStatus
+import info.tommarsh.eventsearch.theme.EventHomeTheme
 
 @Composable
 fun SearchCard(
@@ -53,7 +53,7 @@ private fun PosterImage(url: String) {
 @Composable
 private fun sampleEventItem() {
 
-    EventSearchApp {
+    EventHomeTheme {
         SearchCard(
             event = EventViewModel(
                 id = "123",
@@ -61,6 +61,7 @@ private fun sampleEventItem() {
                 venue = "The Forum",
                 dates = "13 July 2020",
                 saleStatus = SaleStatus.SALE,
+                promoterName = "Live Nation Music",
                 imageUrl = "https://bookofmormonbroadway.com/images/responsive/mobile/title-treatment-alt-nosp.png"
             ),
             navigateToEvent = { _ -> Unit }

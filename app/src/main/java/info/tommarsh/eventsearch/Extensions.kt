@@ -2,7 +2,6 @@ package info.tommarsh.eventsearch
 
 import androidx.navigation.NavBackStackEntry
 import info.tommarsh.eventsearch.model.FetchState
-import kotlinx.coroutines.flow.flow
 
 //region NavBackStackEntry
 fun NavBackStackEntry.stringArg(id: String, default: String = ""): String {

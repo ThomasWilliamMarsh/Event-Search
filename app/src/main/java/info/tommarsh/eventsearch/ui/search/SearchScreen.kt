@@ -1,14 +1,16 @@
 package info.tommarsh.eventsearch.ui.search
 
 import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.ui.tooling.preview.Preview
-import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.theme.EventHomeTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.search.screen.SearchCard
@@ -18,10 +20,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun SearchScreen(
-    viewModel : SearchViewModel,
+    viewModel: SearchViewModel,
     navigateToEvent: (id: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit
-) {
+) = EventHomeTheme {
     val events by viewModel.eventState.collectAsState()
     val categories by viewModel.categoriesState.collectAsState()
 
@@ -74,7 +76,7 @@ fun SearchList(
 @Preview(showBackground = true)
 @Composable
 fun EventScreenPreview() {
-    EventSearchApp {
+    EventHomeTheme {
         SearchScreen(
             eventState = FetchState.Success(
                 items = listOf(

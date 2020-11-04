@@ -11,6 +11,7 @@ data class EventViewModel(
     val name: String,
     val venue: String,
     val dates: String,
+    val promoterName: String,
     val saleStatus: SaleStatus,
     val imageUrl: String
 )
@@ -33,6 +34,7 @@ fun EventModel.toViewModel(todaysDate: DateTime): EventViewModel {
     return EventViewModel(
         id = id,
         name = name,
+        promoterName = promoter.name,
         venue = venue,
         dates = initialStartDateTime.toDateString(),
         imageUrl = imageUrl,

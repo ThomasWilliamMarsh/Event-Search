@@ -2,7 +2,6 @@ package info.tommarsh.eventsearch.ui.common
 
 import androidx.compose.foundation.AmbientContentColor
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.contentColor
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable

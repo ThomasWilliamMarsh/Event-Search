@@ -9,6 +9,8 @@ val grey200 = Color(0xFFEEEEEE)
 val blueGray300 = Color(0xFF90A4AE)
 val blueGray900 = Color(0xFF263238)
 val blueGray700 = Color(0xFF455A64)
+val gray500 = Color(0xFF616161)
+val gray200 = Color(0xEEEEEE)
 
 val DarkColorPalette = darkColors(
     primary = blueGray300,

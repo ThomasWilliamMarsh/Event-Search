@@ -1,14 +1,27 @@
 package info.tommarsh.eventsearch.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+
 
 @Composable
-fun EventSearchAppTheme(
+fun EventDetailTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colors = if (darkTheme) {
+        DarkColorPalette.copy(surface = gray500)
+    } else {
+        LightColorPalette.copy(background = gray200)
+    }
+
+    EventSearchAppTheme(colors = colors, content = content)
+}
+
+@Composable
+fun EventHomeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -17,6 +30,16 @@ fun EventSearchAppTheme(
     } else {
         LightColorPalette
     }
+
+    EventSearchAppTheme(colors = colors, content = content)
+}
+
+
+@Composable
+private fun EventSearchAppTheme(
+    colors: Colors,
+    content: @Composable () -> Unit
+) {
 
     MaterialTheme(
         colors = colors,

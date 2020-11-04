@@ -9,7 +9,7 @@
     <string name="error_loading_events">"Error loading events"</string>
 
     <!-- Event details -->
-    <string name="event_details_title">Event</string>
+    <string name="event_details_title">Events</string>
     <string name="error_loading_event_details">"Error loading event details"</string>
 
 </resources>

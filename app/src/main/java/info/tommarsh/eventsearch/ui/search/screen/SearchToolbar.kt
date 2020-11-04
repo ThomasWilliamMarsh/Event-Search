@@ -1,22 +1,26 @@
 package info.tommarsh.eventsearch.ui.search.screen
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRowFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedTask
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import info.tommarsh.eventsearch.EventSearchApp
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.theme.EventHomeTheme
 import info.tommarsh.eventsearch.ui.common.TopToolbar
 import kotlinx.coroutines.delay
 
@@ -73,13 +77,13 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
     TextField(
         value = text,
         onValueChange = { setText(it) },
-        label = { Text(text = stringResource(id = R.string.toolbar_hint_text)) },
+        label = { Text(text = stringResource(id = R.string.toolbar_hint_text), color = Color.White.copy(0.5f)) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
             .border(1.dp, MaterialTheme.colors.onPrimary, RoundedCornerShape(4.dp)),
         textStyle = MaterialTheme.typography.subtitle1,
-        trailingIcon = { Icon(asset = Icons.Default.Search) },
+        trailingIcon = { Icon(asset = Icons.Default.Search, tint = Color.White.copy(0.5f)) },
         shape = RoundedCornerShape(4.dp),
     )
 }
@@ -96,7 +100,7 @@ private fun CategoriesList(
         BorderButton(
             modifier = Modifier.padding(8.dp),
             onClick = { navigateToCategory(category.name, category.id) }) {
-            Text(text = category.name)
+            Text(text = category.name, color = Color.White.copy(alpha = 0.5f))
         }
     }
 }
@@ -130,7 +134,7 @@ private fun ErrorText() {
 @Preview
 @Composable
 private fun ToolbarFailingToLoadCategories() {
-    EventSearchApp {
+    EventHomeTheme {
         SearchToolbar(categoryState = FetchState.Failure(Throwable()),
             navigateToCategory = { _, _ -> },
             onSearch = {})
@@ -140,7 +144,7 @@ private fun ToolbarFailingToLoadCategories() {
 @Preview
 @Composable
 private fun ToolbarWithCategories() {
-    EventSearchApp {
+    EventHomeTheme {
         SearchToolbar(
             categoryState = FetchState.Success(
                 items = listOf(

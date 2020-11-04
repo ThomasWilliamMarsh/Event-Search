@@ -21,6 +21,7 @@ data class Event(
         val id: String,
         val info: String?,
         val url: String,
+        val promoter: Promoter,
         val images: List<Images>,
         val sales: Sales,
         val dates: Dates,
@@ -62,6 +63,11 @@ data class Public(
 data class Presales(
     val startDateTime: String?,
     val endDateTime: String?,
+    val name: String
+)
+
+data class Promoter(
+    val id: String,
     val name: String
 )
 

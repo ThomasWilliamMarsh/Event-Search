@@ -18,7 +18,8 @@ import java.util.*
 
 @ExperimentalCoroutinesApi
 class EventDetailViewModel @ViewModelInject constructor(
-    private val eventRepository: EventRepository) : ViewModel() {
+    private val eventRepository: EventRepository
+) : ViewModel() {
 
     private val _detailState =
         MutableStateFlow<FetchState<EventViewModel>>(FetchState.Loading(true))

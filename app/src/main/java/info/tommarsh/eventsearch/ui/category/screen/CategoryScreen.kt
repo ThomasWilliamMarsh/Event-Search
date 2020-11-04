@@ -29,7 +29,8 @@ fun CategoryScreen(
 private fun CategoryHeader(text: String) {
     Column(Modifier.padding(8.dp)) {
         Text(text = text, style = MaterialTheme.typography.h3)
-        Box(modifier = Modifier.height(5.dp)
+        Box(
+            modifier = Modifier.height(5.dp)
                 .width(60.dp)
                 .background(color = Color.Red)
         )
