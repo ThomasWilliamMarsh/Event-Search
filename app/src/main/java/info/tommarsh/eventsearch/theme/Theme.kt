@@ -12,9 +12,9 @@ fun EventDetailTheme(
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
-        DarkColorPalette.copy(surface = gray500)
+        DarkColorPalette
     } else {
-        LightColorPalette.copy(background = gray200)
+        LightColorPalette
     }
 
     EventSearchAppTheme(colors = colors, content = content)

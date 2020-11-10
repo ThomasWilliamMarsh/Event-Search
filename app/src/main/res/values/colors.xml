@@ -3,4 +3,7 @@
     <color name="bluegray_900">#FF263238</color>
     <color name="bluegray_700">#FF455A64</color>
     <color name="bluegray_300">#FF90A4AE</color>
+
+    <color name="immersive_sys_ui">#33000000</color>
+    <color name="nav_bar">@color/immersive_sys_ui</color>
 </resources>

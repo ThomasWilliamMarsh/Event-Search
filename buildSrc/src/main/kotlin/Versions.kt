@@ -7,7 +7,7 @@ object Versions {
     //region Android
     const val buildTools = "30.0.2"
     const val compileSdk = 30
-    const val minkSdk = 21
+    const val minkSdk = 23
     const val targetSdk = 30
     const val versionCode = 1
     const val versionName = "1.0"
@@ -19,7 +19,7 @@ object Versions {
     //endregion
 
     //region libs
-    const val coreKtx = "1.5.0-alpha02"
+    const val coreKtx = "1.5.0-alpha04"
     const val coroutines = "1.3.9"
     const val appCompat = "1.3.0-alpha02"
     const val compose = "1.0.0-alpha06"
@@ -32,5 +32,6 @@ object Versions {
     const val accompanist = "0.3.2"
     const val fragment = "1.2.5"
     const val activity = "1.2.0-alpha08"
+    const val material = "1.3.0-alpha03"
     //endregion
 }

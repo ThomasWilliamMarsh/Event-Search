@@ -1,6 +1,5 @@
 package info.tommarsh.eventsearch.core.data.events
 
-import info.tommarsh.eventsearch.core.data.events.model.Event
 import info.tommarsh.eventsearch.domain.EventModel
 
 interface EventRepository {

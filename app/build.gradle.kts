@@ -65,6 +65,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:${Versions.appCompat}")
     implementation("androidx.ui:ui-tooling:${Versions.compose}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
+    implementation("com.google.android.material:material:${Versions.material}")
 
     //Data
     implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")

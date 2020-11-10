@@ -38,8 +38,7 @@ fun EventDetailScreen(viewModel: EventDetailViewModel) = EventDetailTheme {
 @Composable
 fun EventDetailScreen(eventState: FetchState<EventViewModel>) {
     val scaffoldState = rememberScaffoldState()
-    Scaffold(topBar = { TopToolbar(title = stringResource(id = R.string.event_details_title)) },
-        scaffoldState = scaffoldState,
+    Scaffold(scaffoldState = scaffoldState,
         bodyContent = {
             when (eventState) {
                 is FetchState.Loading -> CenteredCircularProgress()

@@ -2,6 +2,7 @@ package info.tommarsh.eventsearch.ui.search.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRowFor
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import info.tommarsh.eventsearch.AmbientStatusBarHeight
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.*
 import info.tommarsh.eventsearch.theme.EventHomeTheme
@@ -32,8 +34,11 @@ fun SearchToolbar(
     onSearch: (keyword: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit
 ) {
-    Column {
-        TopToolbar(title = stringResource(id = R.string.app_name))
+    Column(modifier = Modifier.background(color = MaterialTheme.colors.primaryVariant)){
+        TopToolbar(
+            title = stringResource(id = R.string.app_name),
+            modifier = Modifier.padding(top = AmbientStatusBarHeight.current)
+        )
         SearchField(
             categoryState = categoryState,
             onSearch = onSearch,
@@ -77,7 +82,12 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
     TextField(
         value = text,
         onValueChange = { setText(it) },
-        label = { Text(text = stringResource(id = R.string.toolbar_hint_text), color = Color.White.copy(0.5f)) },
+        label = {
+            Text(
+                text = stringResource(id = R.string.toolbar_hint_text),
+                color = Color.White.copy(0.5f)
+            )
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)

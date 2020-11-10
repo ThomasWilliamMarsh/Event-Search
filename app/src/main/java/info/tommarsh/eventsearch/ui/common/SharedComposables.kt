@@ -13,7 +13,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TopToolbar(
     title: String,
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable RowScope.() -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     TopAppBar(
         title = {
@@ -25,7 +26,8 @@ fun TopToolbar(
         },
         actions = actions,
         backgroundColor = MaterialTheme.colors.primaryVariant,
-        elevation = 0.dp
+        elevation = 0.dp,
+        modifier = modifier
     )
 }
 

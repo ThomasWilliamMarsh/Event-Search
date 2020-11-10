@@ -5,11 +5,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import info.tommarsh.eventsearch.ProvidesStatusBarHeight
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.ui.category.screen.CategoryScreen
 import info.tommarsh.eventsearch.ui.event.EventDetailScreen
@@ -22,11 +24,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val searchVm : SearchViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            MainComposable()
+            ProvidesStatusBarHeight {
+                MainComposable()
+            }
         }
     }
 
@@ -38,8 +43,9 @@ class MainActivity : AppCompatActivity() {
             startDestination = "Search"
         ) {
             composable("Search") {
+                val viewModel: SearchViewModel by viewModels()
                 SearchScreen(
-                    viewModel = searchVm,
+                    viewModel = viewModel,
                     navigateToEvent = { id -> controller.navigate("Event/$id") },
                     navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") }
                 )
