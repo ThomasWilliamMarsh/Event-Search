@@ -17,24 +17,30 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import artCategory
+import familyCategory
 import info.tommarsh.eventsearch.AmbientStatusBarHeight
 import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.model.CategoryViewModel
+import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.theme.EventHomeTheme
 import info.tommarsh.eventsearch.ui.common.TopToolbar
 import kotlinx.coroutines.delay
+import musicCategory
+import sportCategory
 
 private const val DEBOUNCE_MS = 1000L
 
 @Composable
-fun SearchToolbar(
+internal fun SearchToolbar(
     categoryState: FetchState<List<CategoryViewModel>>,
     onSearch: (keyword: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit
 ) {
-    Column(modifier = Modifier.background(color = MaterialTheme.colors.primaryVariant)){
+    Column(modifier = Modifier.background(color = MaterialTheme.colors.primaryVariant)) {
         TopToolbar(
             title = stringResource(id = R.string.app_name),
             modifier = Modifier.padding(top = AmbientStatusBarHeight.current)
@@ -81,7 +87,7 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
 
     TextField(
         value = text,
-        onValueChange = { setText(it) },
+        onValueChange = { setText(it.replace("\n", "")) },
         label = {
             Text(
                 text = stringResource(id = R.string.toolbar_hint_text),

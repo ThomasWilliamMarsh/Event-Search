@@ -1,10 +1,9 @@
-package info.tommarsh.eventsearch.ui.event
+package info.tommarsh.eventsearch.ui.attractions
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -12,37 +11,35 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import dev.chrisbanes.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.model.EventViewModel
+import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.theme.EventDetailTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
-import info.tommarsh.eventsearch.ui.common.TopToolbar
 
 @Composable
-fun EventDetailScreen(viewModel: EventDetailViewModel) = EventDetailTheme {
-    val event by viewModel.detailState.collectAsState()
+internal fun AttractionDetailScreen(viewModel: AttractionDetailViewModel) = EventDetailTheme {
+    val attraction by viewModel.detailState.collectAsState()
 
-    EventDetailScreen(eventState = event)
+    AttractionDetailScreen(attractionState = attraction)
 }
 
 @Composable
-fun EventDetailScreen(eventState: FetchState<EventViewModel>) {
+internal fun AttractionDetailScreen(attractionState: FetchState<AttractionViewModel>) {
     val scaffoldState = rememberScaffoldState()
     Scaffold(scaffoldState = scaffoldState,
         bodyContent = {
-            when (eventState) {
+            when (attractionState) {
                 is FetchState.Loading -> CenteredCircularProgress()
-                is FetchState.Success -> EventDetailContent(event = eventState.items)
+                is FetchState.Success -> AttractionDetailContent(attraction = attractionState.items)
                 is FetchState.Failure -> ErrorSnackbar(
                     snackbarHostState = scaffoldState.snackbarHostState,
                     message = stringResource(id = R.string.error_loading_event_details)
@@ -53,13 +50,13 @@ fun EventDetailScreen(eventState: FetchState<EventViewModel>) {
 }
 
 @Composable
-private fun EventDetailContent(event: EventViewModel) {
+private fun AttractionDetailContent(attraction: AttractionViewModel) {
     LazyColumn {
         item {
             PosterImage(
-                url = event.imageUrl,
-                name = event.name,
-                promoter = event.promoterName,
+                url = attraction.detailImage.orEmpty(),
+                name = attraction.name,
+                genre = attraction.genre.orEmpty(),
                 modifier = Modifier.padding(bottom = 24.dp)
             )
         }
@@ -78,7 +75,7 @@ private fun EventDetailContent(event: EventViewModel) {
 private fun PosterImage(
     url: String,
     name: String,
-    promoter: String,
+    genre: String,
     modifier: Modifier = Modifier
 ) {
     val (loaded, setLoaded) = remember { mutableStateOf(false) }
@@ -87,7 +84,12 @@ private fun PosterImage(
             .wrapContentHeight()
             .fillMaxWidth()
     ) {
-        CoilImage(data = url, onRequestCompleted = { setLoaded(true) })
+        CoilImage(
+            data = url,
+            onRequestCompleted = { setLoaded(true) },
+            contentScale = ContentScale.FillWidth,
+            fadeIn = true
+        )
         Box(
             modifier = Modifier
                 .matchParentSize()
@@ -100,7 +102,7 @@ private fun PosterImage(
         ) {
             if (loaded) {
                 Text(
-                    text = promoter,
+                    text = genre,
                     style = MaterialTheme.typography.subtitle2.copy(color = Color.White)
                 )
                 Text(
@@ -136,7 +138,8 @@ private fun CalendarList() {
             .fillMaxWidth()
             .padding(16.dp)
             .height(600.dp)
-            .drawShadow(12.dp)) {
+            .drawShadow(12.dp)
+    ) {
 
     }
 }
@@ -148,7 +151,7 @@ fun TestImage() {
         PosterImage(
             url = "https://s1.ticketm.net/dam/c/f50/96fa13be-e395-429b-8558-a51bb9054f50_105951_TABLET_LANDSCAPE_LARGE_16_9.jpg",
             name = "Example band",
-            promoter = "Live Nation Music"
+            genre = "Rock / Pop"
         )
     }
 }

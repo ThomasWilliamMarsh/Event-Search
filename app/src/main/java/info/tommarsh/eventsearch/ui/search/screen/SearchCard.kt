@@ -6,34 +6,42 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import attraction
 import dev.chrisbanes.accompanist.coil.CoilImage
-import info.tommarsh.eventsearch.model.EventViewModel
-import info.tommarsh.eventsearch.model.SaleStatus
+import info.tommarsh.eventsearch.R
+import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.theme.EventHomeTheme
 
 @Composable
-fun SearchCard(
-    event: EventViewModel,
-    navigateToEvent: (id: String) -> Unit
+internal fun SearchCard(
+    attraction: AttractionViewModel,
+    navigateToAttraction: (id: String) -> Unit
 ) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable(onClick = { navigateToEvent(event.id) })
+            .clickable(onClick = { navigateToAttraction(attraction.id) })
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
-            PosterImage(url = event.imageUrl)
+            PosterImage(url = attraction.searchImage.orEmpty())
 
             ProvideEmphasis(AmbientEmphasisLevels.current.high) {
-                Text(text = event.name, style = MaterialTheme.typography.h4)
+                Text(text = attraction.name, style = MaterialTheme.typography.h4)
             }
 
             ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
-                Text(text = event.venue, style = MaterialTheme.typography.subtitle1)
+                Text(
+                    text = stringResource(
+                        id = R.string.number_events,
+                        formatArgs = arrayOf(attraction.numberOfEvents)
+                    ),
+                    style = MaterialTheme.typography.subtitle1
+                )
             }
         }
     }
@@ -45,26 +53,18 @@ private fun PosterImage(url: String) {
         elevation = 8.dp,
         modifier = Modifier.aspectRatio(16 / 9F)
     ) {
-        CoilImage(url)
+        CoilImage(url, fadeIn = true)
     }
 }
 
 @Preview
 @Composable
-private fun sampleEventItem() {
+private fun sampleAttractionItem() {
 
     EventHomeTheme {
         SearchCard(
-            event = EventViewModel(
-                id = "123",
-                name = "The Book of Mormon",
-                venue = "The Forum",
-                dates = "13 July 2020",
-                saleStatus = SaleStatus.SALE,
-                promoterName = "Live Nation Music",
-                imageUrl = "https://bookofmormonbroadway.com/images/responsive/mobile/title-treatment-alt-nosp.png"
-            ),
-            navigateToEvent = { _ -> Unit }
+            attraction = attraction,
+            navigateToAttraction = {}
         )
     }
 }

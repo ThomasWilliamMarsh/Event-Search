@@ -1,9 +1,9 @@
-package info.tommarsh.eventsearch.core.data.events.remote
+package info.tommarsh.eventsearch.core.data.attractions.remote
 
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class EventsAPIInterceptor : Interceptor {
+class AttractionsAPIInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val url = chain.request().url()

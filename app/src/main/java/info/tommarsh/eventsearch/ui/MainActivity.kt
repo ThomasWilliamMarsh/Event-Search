@@ -13,9 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import info.tommarsh.eventsearch.ProvidesStatusBarHeight
 import info.tommarsh.eventsearch.stringArg
+import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
+import info.tommarsh.eventsearch.ui.attractions.AttractionDetailViewModel
 import info.tommarsh.eventsearch.ui.category.screen.CategoryScreen
-import info.tommarsh.eventsearch.ui.event.EventDetailScreen
-import info.tommarsh.eventsearch.ui.event.EventDetailViewModel
 import info.tommarsh.eventsearch.ui.search.SearchScreen
 import info.tommarsh.eventsearch.ui.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -51,9 +51,9 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             composable("Event/{id}") { backStackEntry ->
-                val viewModel: EventDetailViewModel by viewModels()
+                val viewModel: AttractionDetailViewModel by viewModels()
                 viewModel.getEventDetails(backStackEntry.stringArg("id"))
-                EventDetailScreen(
+                AttractionDetailScreen(
                     viewModel = viewModel
                 )
             }
