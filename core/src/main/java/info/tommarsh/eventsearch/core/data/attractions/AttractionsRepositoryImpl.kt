@@ -12,15 +12,11 @@ class AttractionsRepositoryImpl
     private val screenWidthResolver: ScreenWidthResolver
 ) : AttractionsRepository {
 
-    override suspend fun getAttractions(): List<AttractionModel> {
-        return api.getAttractions().toDomainModel(screenWidthResolver)
-    }
-
     override suspend fun searchForAttractions(query: String): List<AttractionModel> {
         return api.searchForAttractions(query).toDomainModel(screenWidthResolver)
     }
 
-    override suspend fun attractionDetails(event: String): AttractionModel {
-        return api.attractionDetails(event).toDomainModel(screenWidthResolver)
+    override suspend fun getAttraction(id: String): AttractionModel {
+        return api.attractionDetails(id).toDomainModel(screenWidthResolver)
     }
 }

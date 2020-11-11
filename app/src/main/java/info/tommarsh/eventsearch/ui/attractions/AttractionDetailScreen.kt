@@ -1,5 +1,6 @@
 package info.tommarsh.eventsearch.ui.attractions
 
+import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import dev.chrisbanes.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.R
+import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
 import info.tommarsh.eventsearch.model.AttractionViewModel
+import info.tommarsh.eventsearch.model.EventViewModel
 import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.theme.EventDetailTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
@@ -33,13 +36,13 @@ internal fun AttractionDetailScreen(viewModel: AttractionDetailViewModel) = Even
 }
 
 @Composable
-internal fun AttractionDetailScreen(attractionState: FetchState<AttractionViewModel>) {
+internal fun AttractionDetailScreen(attractionState: FetchState<AttractionDetailsViewModel>) {
     val scaffoldState = rememberScaffoldState()
     Scaffold(scaffoldState = scaffoldState,
         bodyContent = {
             when (attractionState) {
                 is FetchState.Loading -> CenteredCircularProgress()
-                is FetchState.Success -> AttractionDetailContent(attraction = attractionState.items)
+                is FetchState.Success -> AttractionDetailContent(attraction = attractionState.data)
                 is FetchState.Failure -> ErrorSnackbar(
                     snackbarHostState = scaffoldState.snackbarHostState,
                     message = stringResource(id = R.string.error_loading_event_details)
@@ -50,7 +53,7 @@ internal fun AttractionDetailScreen(attractionState: FetchState<AttractionViewMo
 }
 
 @Composable
-private fun AttractionDetailContent(attraction: AttractionViewModel) {
+private fun AttractionDetailContent(attraction: AttractionDetailsViewModel) {
     LazyColumn {
         item {
             PosterImage(
@@ -67,7 +70,7 @@ private fun AttractionDetailContent(attraction: AttractionViewModel) {
             )
         }
 
-        item { CalendarList() }
+        item { CalendarList(attraction.events) }
     }
 }
 
@@ -131,8 +134,7 @@ private fun UnderlineTitle(
 }
 
 @Composable
-private fun CalendarList() {
-
+private fun CalendarList(events: List<EventViewModel>) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,7 +142,9 @@ private fun CalendarList() {
             .height(600.dp)
             .drawShadow(12.dp)
     ) {
+        ScrollableColumn {
 
+        }
     }
 }
 

@@ -3,9 +3,9 @@ package info.tommarsh.eventsearch.ui.attractions
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
+import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCase
 import info.tommarsh.eventsearch.fetch
-import info.tommarsh.eventsearch.model.AttractionViewModel
+import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
 import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.model.toViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,16 +16,16 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class AttractionDetailViewModel @ViewModelInject constructor(
-    private val attractionsRepository: AttractionsRepository
+    private val attractionDetailsUseCase: AttractionDetailsUseCase
 ) : ViewModel() {
 
     private val _detailState =
-        MutableStateFlow<FetchState<AttractionViewModel>>(FetchState.Loading(true))
-    internal val detailState: StateFlow<FetchState<AttractionViewModel>> = _detailState
+        MutableStateFlow<FetchState<AttractionDetailsViewModel>>(FetchState.Loading(true))
+    internal val detailState: StateFlow<FetchState<AttractionDetailsViewModel>> = _detailState
 
-    fun getEventDetails(id: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getAttractionDetails(id: String) = viewModelScope.launch(Dispatchers.IO) {
         _detailState.value = FetchState.Loading(true)
         _detailState.value =
-            fetch { attractionsRepository.attractionDetails(id = id).toViewModel() }
+            fetch { attractionDetailsUseCase.get(id).toViewModel() }
     }
 }

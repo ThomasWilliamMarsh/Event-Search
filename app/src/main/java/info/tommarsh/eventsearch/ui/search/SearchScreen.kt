@@ -58,7 +58,7 @@ internal fun SearchScreen(
             when (attractionState) {
                 is FetchState.Loading -> CenteredCircularProgress()
                 is FetchState.Success -> SearchList(
-                    attractions = attractionState.items,
+                    attractions = attractionState.data,
                     navigateToAttraction = navigateToAttraction
                 )
                 is FetchState.Failure -> ErrorSnackbar(
@@ -86,12 +86,12 @@ fun EventScreenPreview() {
     EventHomeTheme {
         SearchScreen(
             attractionState = FetchState.Success(
-                items = listOf(
+                data = listOf(
                     attraction
                 )
             ),
             categoryState = FetchState.Success(
-                items = listOf(
+                data = listOf(
                     musicCategory,
                     sportCategory,
                     artCategory,

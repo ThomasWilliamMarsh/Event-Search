@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import artCategory
@@ -67,7 +66,7 @@ private fun SearchField(
                     /**No need to do anything here.**/
                 }
                 is FetchState.Success -> CategoriesList(
-                    categories = categoryState.items,
+                    categories = categoryState.data,
                     navigateToCategory = navigateToCategory
                 )
                 is FetchState.Failure -> ErrorText()
@@ -163,7 +162,7 @@ private fun ToolbarWithCategories() {
     EventHomeTheme {
         SearchToolbar(
             categoryState = FetchState.Success(
-                items = listOf(
+                data = listOf(
                     musicCategory,
                     sportCategory,
                     artCategory,
