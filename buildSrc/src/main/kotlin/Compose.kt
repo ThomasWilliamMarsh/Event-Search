@@ -18,7 +18,6 @@ object Compose {
         "androidx.compose.material:material-icons-extended:${Versions.compose}",
         "androidx.compose.runtime:runtime-rxjava2:${Versions.compose}",
         "androidx.compose.runtime:runtime-saved-instance-state:${Versions.compose}",
-        "androidx.compose.foundation:foundation-text:${Versions.compose}",
         "androidx.compose.ui:ui-text:${Versions.compose}",
         "androidx.compose.ui:ui-unit:${Versions.compose}",
         "androidx.compose.ui:ui-util:${Versions.compose}",

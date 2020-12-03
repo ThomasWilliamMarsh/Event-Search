@@ -13,8 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import artCategory
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import familyCategory
@@ -94,7 +94,7 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
             .padding(16.dp)
             .border(1.dp, MaterialTheme.colors.onPrimary, RoundedCornerShape(4.dp)),
         textStyle = MaterialTheme.typography.subtitle1,
-        trailingIcon = { Icon(asset = Icons.Default.Search, tint = Color.White.copy(0.5f)) },
+        trailingIcon = { Icon(imageVector = Icons.Default.Search, tint = Color.White.copy(0.5f)) },
         shape = RoundedCornerShape(4.dp),
     )
 }
@@ -118,8 +118,8 @@ private fun CategoriesList(
 
 @Composable
 private fun BorderButton(
-    borderColor: Color = MaterialTheme.colors.onPrimary,
     modifier: Modifier = Modifier,
+    borderColor: Color = MaterialTheme.colors.onPrimary,
     onClick: () -> Unit,
     content: @Composable () -> Unit
 ) {

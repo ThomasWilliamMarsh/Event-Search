@@ -21,7 +21,7 @@ internal fun Event.toDomainModel(): EventModel {
         initialStartDateTime = dates.initialStartDate?.dateTime,
         presales = sales.presales.toDomainModel(),
         publicSales = sales.public.toDomainModel(),
-        imageUrl = images.getUrl(),
+        imageUrl = images.getUrl()
     )
 }
 

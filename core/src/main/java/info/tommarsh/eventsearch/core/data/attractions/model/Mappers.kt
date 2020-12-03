@@ -31,6 +31,6 @@ private fun List<ImageResponse>.getLargestImage(
     ratio: String
 ): String {
     val image = firstOrNull { it.ratio == ratio && it.width >= screenWidthResolver.get() }
-        ?: filter { it.ratio == ratio }.maxByOrNull { it.width }
+        ?: filter { it.ratio == ratio }.maxBy { it.width }
     return image?.url.orEmpty()
 }

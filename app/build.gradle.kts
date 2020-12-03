@@ -63,7 +63,7 @@ dependencies {
     //Android
     implementation("androidx.core:core-ktx:${Versions.coreKtx}")
     implementation("androidx.appcompat:appcompat:${Versions.appCompat}")
-    implementation("androidx.ui:ui-tooling:${Versions.compose}")
+    implementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
     implementation("com.google.android.material:material:${Versions.material}")
 

@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import dev.chrisbanes.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
