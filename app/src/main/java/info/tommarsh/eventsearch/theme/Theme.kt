@@ -7,12 +7,12 @@ import androidx.compose.runtime.Composable
 
 
 @Composable
-fun EventDetailTheme(
+fun AttractionDetailTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) {
-        DarkColorPalette
+        DarkColorPalette.copy(surface = ebon)
     } else {
         LightColorPalette
     }

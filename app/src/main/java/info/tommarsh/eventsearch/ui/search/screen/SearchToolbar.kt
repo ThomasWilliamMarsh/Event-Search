@@ -1,7 +1,6 @@
 package info.tommarsh.eventsearch.ui.search.screen
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -10,18 +9,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedTask
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import artCategory
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import familyCategory
-import info.tommarsh.eventsearch.AmbientStatusBarHeight
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.FetchState
@@ -42,7 +38,7 @@ internal fun SearchToolbar(
     Column(modifier = Modifier.background(color = MaterialTheme.colors.primaryVariant)) {
         TopToolbar(
             title = stringResource(id = R.string.app_name),
-            modifier = Modifier.padding(top = AmbientStatusBarHeight.current)
+            modifier = Modifier.statusBarsPadding()
         )
         SearchField(
             categoryState = categoryState,
@@ -79,7 +75,7 @@ private fun SearchField(
 private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
     val (text, setText) = remember { mutableStateOf("") }
 
-    LaunchedTask(text) {
+    LaunchedEffect(text) {
         delay(DEBOUNCE_MS)
         if (text.isNotEmpty()) onSearch(text)
     }

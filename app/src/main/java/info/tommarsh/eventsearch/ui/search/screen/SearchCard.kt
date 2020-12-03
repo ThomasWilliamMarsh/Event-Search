@@ -1,10 +1,10 @@
 package info.tommarsh.eventsearch.ui.search.screen
 
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,11 +30,11 @@ internal fun SearchCard(
 
             PosterImage(url = attraction.searchImage.orEmpty())
 
-            ProvideEmphasis(AmbientEmphasisLevels.current.high) {
+            Providers(AmbientContentAlpha provides ContentAlpha.high) {
                 Text(text = attraction.name, style = MaterialTheme.typography.h4)
             }
 
-            ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
+            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                 Text(
                     text = stringResource(
                         id = R.string.number_events,

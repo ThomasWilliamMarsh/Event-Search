@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import info.tommarsh.eventsearch.ProvidesStatusBarHeight
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailViewModel
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            ProvidesStatusBarHeight {
+            ProvideWindowInsets {
                 MainComposable()
             }
         }

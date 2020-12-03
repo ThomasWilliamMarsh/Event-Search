@@ -46,7 +46,7 @@ internal fun AttractionDetailsModel.toViewModel(): AttractionDetailsViewModel {
         name = attraction.name,
         genre = attraction.genre.orEmpty(),
         numberOfEvents = attraction.numberOfEvents,
-        detailImage = attraction.detailImage,
+        detailImage = attraction.searchImage,
         events = events.map { event -> event.toViewModel() }
     )
 }

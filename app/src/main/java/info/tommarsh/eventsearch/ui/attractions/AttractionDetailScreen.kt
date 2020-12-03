@@ -1,14 +1,9 @@
 package info.tommarsh.eventsearch.ui.attractions
 
-import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,20 +11,20 @@ import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import dev.chrisbanes.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
-import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.EventViewModel
 import info.tommarsh.eventsearch.model.FetchState
-import info.tommarsh.eventsearch.theme.EventDetailTheme
-import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
+import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
+import info.tommarsh.eventsearch.ui.common.WithFetchState
 
 @Composable
-internal fun AttractionDetailScreen(viewModel: AttractionDetailViewModel) = EventDetailTheme {
+internal fun AttractionDetailScreen(viewModel: AttractionDetailViewModel) = AttractionDetailTheme {
     val attraction by viewModel.detailState.collectAsState()
 
     AttractionDetailScreen(attractionState = attraction)
@@ -40,14 +35,18 @@ internal fun AttractionDetailScreen(attractionState: FetchState<AttractionDetail
     val scaffoldState = rememberScaffoldState()
     Scaffold(scaffoldState = scaffoldState,
         bodyContent = {
-            when (attractionState) {
-                is FetchState.Loading -> CenteredCircularProgress()
-                is FetchState.Success -> AttractionDetailContent(attraction = attractionState.data)
-                is FetchState.Failure -> ErrorSnackbar(
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    message = stringResource(id = R.string.error_loading_event_details)
-                )
-            }
+            WithFetchState(
+                state = attractionState,
+                onFailure = {
+                    ErrorSnackbar(
+                        snackbarHostState = scaffoldState.snackbarHostState,
+                        message = stringResource(id = R.string.error_loading_event_details)
+                    )
+                },
+                onSuccess = { data ->
+                    AttractionDetailContent(data)
+                }
+            )
         }
     )
 }
@@ -139,11 +138,38 @@ private fun CalendarList(events: List<EventViewModel>) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .height(600.dp)
+            .wrapContentHeight()
             .drawShadow(12.dp)
     ) {
-        ScrollableColumn {
+        Column {
+            events.forEach { event ->
+                CalendarItem(event = event)
+            }
+        }
+    }
+}
 
+@Composable
+private fun CalendarItem(event: EventViewModel) {
+
+    Providers(AmbientTextStyle provides MaterialTheme.typography.body1) {
+        Row {
+            Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
+                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                    Text(text = event.month, textAlign = TextAlign.Center)
+                }
+                Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                    Text(text = event.day, textAlign = TextAlign.Center)
+                }
+            }
+            Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
+                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                    Text(text = event.dowAndTime)
+                }
+                Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                    Text(text = event.venue)
+                }
+            }
         }
     }
 }
@@ -151,7 +177,7 @@ private fun CalendarList(events: List<EventViewModel>) {
 @Preview
 @Composable
 fun TestImage() {
-    EventDetailTheme {
+    AttractionDetailTheme {
         PosterImage(
             url = "https://s1.ticketm.net/dam/c/f50/96fa13be-e395-429b-8558-a51bb9054f50_105951_TABLET_LANDSCAPE_LARGE_16_9.jpg",
             name = "Example band",

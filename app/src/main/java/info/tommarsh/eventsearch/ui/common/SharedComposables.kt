@@ -1,14 +1,13 @@
 package info.tommarsh.eventsearch.ui.common
 
-import androidx.compose.foundation.AmbientContentColor
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedTask
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import info.tommarsh.eventsearch.model.FetchState
 
 @Composable
 fun TopToolbar(
@@ -48,7 +47,21 @@ fun ErrorSnackbar(
     snackbarHostState: SnackbarHostState,
     message: String
 ) {
-    LaunchedTask {
+    LaunchedEffect(message) {
         snackbarHostState.showSnackbar(message = message)
+    }
+}
+
+@Composable
+fun <T> WithFetchState(
+    state: FetchState<T>,
+    onLoading: @Composable () -> Unit = { CenteredCircularProgress() },
+    onFailure: @Composable (throwable: Throwable) -> Unit,
+    onSuccess: @Composable (data: T) -> Unit
+) {
+    when (state) {
+        is FetchState.Loading -> onLoading()
+        is FetchState.Success -> onSuccess(state.data)
+        is FetchState.Failure -> onFailure(state.throwable)
     }
 }

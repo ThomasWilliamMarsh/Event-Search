@@ -16,8 +16,8 @@ import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.theme.EventHomeTheme
-import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
+import info.tommarsh.eventsearch.ui.common.WithFetchState
 import info.tommarsh.eventsearch.ui.search.screen.SearchCard
 import info.tommarsh.eventsearch.ui.search.screen.SearchToolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,20 +52,24 @@ internal fun SearchScreen(
     navigateToAttraction: (id: String) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    Scaffold(topBar = { SearchToolbar(categoryState, onSearch, navigateToCategory) },
+    Scaffold(
+        topBar = { SearchToolbar(categoryState, onSearch, navigateToCategory) },
         scaffoldState = scaffoldState,
         bodyContent = {
-            when (attractionState) {
-                is FetchState.Loading -> CenteredCircularProgress()
-                is FetchState.Success -> SearchList(
-                    attractions = attractionState.data,
-                    navigateToAttraction = navigateToAttraction
-                )
-                is FetchState.Failure -> ErrorSnackbar(
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    message = stringResource(id = R.string.error_loading_events)
-                )
-            }
+            WithFetchState(
+                state = attractionState,
+                onFailure = {
+                    ErrorSnackbar(
+                        snackbarHostState = scaffoldState.snackbarHostState,
+                        message = stringResource(id = R.string.error_loading_events)
+                    )
+                },
+                onSuccess = { data ->
+                    SearchList(
+                        attractions = data,
+                        navigateToAttraction = navigateToAttraction
+                    )
+                })
         }
     )
 }

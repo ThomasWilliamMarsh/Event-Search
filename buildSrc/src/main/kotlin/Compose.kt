@@ -1,6 +1,7 @@
 object Compose {
 
     val ComposeDependencies = listOf(
+        "dev.chrisbanes.accompanist:accompanist-insets:${Versions.accompanist}",
         "dev.chrisbanes.accompanist:accompanist-coil:${Versions.accompanist}",
         "androidx.compose.runtime:runtime-dispatch:${Versions.compose}",
         "androidx.compose.runtime:runtime:${Versions.compose}",
@@ -18,7 +19,6 @@ object Compose {
         "androidx.compose.runtime:runtime-rxjava2:${Versions.compose}",
         "androidx.compose.runtime:runtime-saved-instance-state:${Versions.compose}",
         "androidx.compose.foundation:foundation-text:${Versions.compose}",
-        "androidx.compose.ui:ui-text-android:${Versions.compose}",
         "androidx.compose.ui:ui-text:${Versions.compose}",
         "androidx.compose.ui:ui-unit:${Versions.compose}",
         "androidx.compose.ui:ui-util:${Versions.compose}",
