@@ -1,15 +1,19 @@
 package info.tommarsh.eventsearch.ui.search.screen
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRowFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -22,6 +26,7 @@ import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.theme.EventHomeTheme
+import info.tommarsh.eventsearch.ui.common.BorderButton
 import info.tommarsh.eventsearch.ui.common.TopToolbar
 import kotlinx.coroutines.delay
 import musicCategory
@@ -113,24 +118,6 @@ private fun CategoriesList(
             onClick = { navigateToCategory(category.name, category.id) }) {
             Text(text = category.name, color = Color.White.copy(alpha = 0.5f))
         }
-    }
-}
-
-@Composable
-private fun BorderButton(
-    modifier: Modifier = Modifier,
-    borderColor: Color = MaterialTheme.colors.onPrimary,
-    onClick: () -> Unit,
-    content: @Composable () -> Unit
-) {
-    TextButton(
-        onClick = { onClick() },
-        border = BorderStroke(1.dp, borderColor),
-        modifier = Modifier
-            .wrapContentWidth()
-            .height(52.dp) then modifier
-    ) {
-        content()
     }
 }
 

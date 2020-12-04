@@ -32,6 +32,7 @@ dependencies {
     //Android
     api("androidx.fragment:fragment-ktx:${Versions.fragment}")
     api("androidx.activity:activity-ktx:${Versions.activity}")
+    api("androidx.paging:paging-runtime:${Versions.paging}")
 
     //Kotlin
     api("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")

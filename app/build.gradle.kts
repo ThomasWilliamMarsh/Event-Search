@@ -66,6 +66,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
     implementation("com.google.android.material:material:${Versions.material}")
+    implementation("androidx.paging:paging-compose:${Versions.pagingCompose}")
+
 
     //Data
     implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")

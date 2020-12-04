@@ -1,5 +1,6 @@
 package info.tommarsh.eventsearch.core.di
 
+import androidx.paging.PagingConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -73,12 +74,20 @@ internal object DataModule {
     fun provideEventAPI(
         moshi: Moshi,
         client: OkHttpClient
-    ) : EventsAPI {
+    ): EventsAPI {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(EventsAPI::class.java)
+    }
+
+    @Provides
+    fun providePagingConfig(): PagingConfig {
+        return PagingConfig(
+            initialLoadSize = 20,
+            pageSize = 20
+        )
     }
 }

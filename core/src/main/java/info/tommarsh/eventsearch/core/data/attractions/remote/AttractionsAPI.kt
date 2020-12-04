@@ -11,7 +11,10 @@ interface AttractionsAPI {
     suspend fun getAttractions(): AttractionsResponse
 
     @GET("discovery/v2/attractions.json")
-    suspend fun searchForAttractions(@Query("keyword") query: String): AttractionsResponse
+    suspend fun searchForAttractions(
+        @Query("keyword") query: String,
+        @Query("page") page: Int
+    ): AttractionsResponse
 
     @GET("discovery/v2/attractions/{attraction}.json")
     suspend fun attractionDetails(@Path("attraction") event: String): AttractionResponse

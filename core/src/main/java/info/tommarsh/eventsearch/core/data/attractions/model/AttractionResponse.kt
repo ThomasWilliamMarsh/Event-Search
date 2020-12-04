@@ -1,13 +1,14 @@
 package info.tommarsh.eventsearch.core.data.attractions.model
 
 data class AttractionsResponse(
-    val _embedded: EmbeddedResponse,
+    val _embedded: EmbeddedResponse?,
     val page: PageResponse
 )
 
 data class PageResponse(
     val size: Int,
     val totalPages: Int,
+    val totalElements: Int,
     val number: Int
 )
 
@@ -20,7 +21,7 @@ data class AttractionResponse(
     val type: String,
     val id: String,
     val test: Boolean,
-    val url: String,
+    val url: String?,
     val locale: String,
     val images: List<ImageResponse>,
     val classifications: List<ClassificationResponse>,

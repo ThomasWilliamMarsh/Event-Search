@@ -7,9 +7,9 @@ private const val RATIO_16_9 = "16_9"
 private const val RATIO_3_2 = "3_2"
 
 internal fun AttractionsResponse.toDomainModel(screenWidthResolver: ScreenWidthResolver): List<AttractionModel> {
-    return _embedded.attractions.map { response ->
+    return _embedded?.attractions?.map { response ->
         response.toDomainModel(screenWidthResolver)
-    }
+    }.orEmpty()
 }
 
 internal fun AttractionResponse.toDomainModel(screenWidthResolver: ScreenWidthResolver): AttractionModel {
@@ -17,7 +17,7 @@ internal fun AttractionResponse.toDomainModel(screenWidthResolver: ScreenWidthRe
         name = name,
         type = type,
         id = id,
-        url = url,
+        url = url.orEmpty(),
         locale = locale,
         genre = classifications.firstOrNull()?.genre?.name,
         searchImage = images.getLargestImage(screenWidthResolver, RATIO_16_9),

@@ -1,16 +1,19 @@
 <resources>
     <string name="app_name">Event Search</string>
+    <string name="retry">Retry</string>
 
     <!-- Toolbar -->
     <string name="toolbar_hint_text">Search by Artist, Event or Venue</string>
     <string name="failed_to_load_categories">Failed to load categories.</string>
+    <string name="no_results">No results found :(</string>
 
     <!-- Search List -->
-    <string name="error_loading_events">"Error loading events"</string>
+    <string name="error_loading_events">Error loading events</string>
+    <string name="error_loading_page">Error loading page</string>
 
     <!-- Event details -->
     <string name="number_events">%1$d events</string>
     <string name="event_details_title">Events</string>
-    <string name="error_loading_event_details">"Error loading event details"</string>
+    <string name="error_loading_event_details">Error loading event details</string>
 
 </resources>

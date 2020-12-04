@@ -1,19 +1,21 @@
 package info.tommarsh.eventsearch.ui.common
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import info.tommarsh.eventsearch.model.FetchState
 
 @Composable
 fun TopToolbar(
+    modifier: Modifier = Modifier,
     title: String,
-    actions: @Composable RowScope.() -> Unit = {},
-    modifier: Modifier = Modifier
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         title = {
@@ -28,6 +30,24 @@ fun TopToolbar(
         elevation = 0.dp,
         modifier = modifier
     )
+}
+
+@Composable
+fun BorderButton(
+    modifier: Modifier = Modifier,
+    borderColor: Color = MaterialTheme.colors.onPrimary,
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    TextButton(
+        onClick = { onClick() },
+        border = BorderStroke(1.dp, borderColor),
+        modifier = Modifier
+            .wrapContentWidth()
+            .wrapContentHeight() then modifier
+    ) {
+        content()
+    }
 }
 
 @Composable
