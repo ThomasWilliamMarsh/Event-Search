@@ -21,7 +21,7 @@ data class Event(
         val id: String,
         val info: String?,
         val url: String,
-        val promoter: Promoter,
+        val promoter: Promoter?,
         val images: List<Images>,
         val sales: Sales,
         val dates: Dates,

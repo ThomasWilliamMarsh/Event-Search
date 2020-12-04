@@ -58,7 +58,7 @@ private fun AttractionDetailContent(attraction: AttractionDetailsViewModel) {
             PosterImage(
                 url = attraction.detailImage.orEmpty(),
                 name = attraction.name,
-                genre = attraction.genre.orEmpty(),
+                genre = attraction.genre,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
         }

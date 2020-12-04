@@ -5,7 +5,7 @@ data class EventModel(
     val name: String,
     val venue: String,
     val initialStartDateTime: String?,
-    val promoter: PromoterModel,
+    val promoter: PromoterModel?,
     val presales: List<PresalesModel>?,
     val publicSales: PublicModel?,
     val imageUrl: String

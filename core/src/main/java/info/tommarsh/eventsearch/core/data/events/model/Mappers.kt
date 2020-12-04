@@ -16,7 +16,7 @@ internal fun Event.toDomainModel(): EventModel {
     return EventModel(
         id = id,
         name = name,
-        promoter = promoter.toDomainModel(),
+        promoter = promoter?.toDomainModel(),
         venue = _embedded.venues.firstOrNull()?.name.orEmpty(),
         initialStartDateTime = dates.initialStartDate?.dateTime,
         presales = sales.presales.toDomainModel(),
