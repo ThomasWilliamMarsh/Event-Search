@@ -16,6 +16,7 @@ internal data class AttractionViewModel(
 )
 
 internal data class AttractionDetailsViewModel(
+    val id: String,
     val name: String,
     val genre: String,
     val numberOfEvents: Int,
@@ -43,6 +44,7 @@ internal fun AttractionModel.toViewModel(): AttractionViewModel {
 
 internal fun AttractionDetailsModel.toViewModel(): AttractionDetailsViewModel {
     return AttractionDetailsViewModel(
+        id = attraction.id,
         name = attraction.name,
         genre = attraction.genre.orEmpty(),
         numberOfEvents = attraction.numberOfEvents,

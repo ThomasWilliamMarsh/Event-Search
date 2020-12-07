@@ -52,9 +52,13 @@ class MainActivity : AppCompatActivity() {
             }
             composable("Event/{id}") { backStackEntry ->
                 val viewModel: AttractionDetailViewModel by viewModels()
-                viewModel.getAttractionDetails(backStackEntry.stringArg("id"))
+
+                val arg = backStackEntry.stringArg("id")
+                viewModel.getAttractionDetails(arg)
+                viewModel.getLikedAttractionState(arg)
                 AttractionDetailScreen(
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    id = backStackEntry.stringArg("id")
                 )
             }
             composable("Category/{name}/{id}") { backStackEntry ->

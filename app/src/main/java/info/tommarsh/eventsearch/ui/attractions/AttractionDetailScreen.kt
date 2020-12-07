@@ -1,9 +1,14 @@
 package info.tommarsh.eventsearch.ui.attractions
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.coil.CoilImage
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
 import info.tommarsh.eventsearch.model.EventViewModel
@@ -24,14 +30,33 @@ import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.WithFetchState
 
 @Composable
-internal fun AttractionDetailScreen(viewModel: AttractionDetailViewModel) = AttractionDetailTheme {
+internal fun AttractionDetailScreen(
+    viewModel: AttractionDetailViewModel,
+    id: String
+) = AttractionDetailTheme {
     val attraction by viewModel.detailState.collectAsState()
+    val liked by viewModel.likedState.collectAsState()
 
-    AttractionDetailScreen(attractionState = attraction)
+    Log.v("Likes", "compose detail screen with: $liked")
+    AttractionDetailScreen(
+        attractionState = attraction,
+        isLiked = liked,
+        toggleLike = { id ->
+            if (liked) {
+                viewModel.removeLikedAttraction(id)
+            } else {
+                viewModel.addLikedAttraction(id)
+            }
+        }
+    )
 }
 
 @Composable
-internal fun AttractionDetailScreen(attractionState: FetchState<AttractionDetailsViewModel>) {
+internal fun AttractionDetailScreen(
+    attractionState: FetchState<AttractionDetailsViewModel>,
+    isLiked: Boolean,
+    toggleLike: (id: String) -> Unit
+) {
     val scaffoldState = rememberScaffoldState()
     Scaffold(scaffoldState = scaffoldState,
         bodyContent = {
@@ -44,7 +69,7 @@ internal fun AttractionDetailScreen(attractionState: FetchState<AttractionDetail
                     )
                 },
                 onSuccess = { data ->
-                    AttractionDetailContent(data)
+                    AttractionDetailContent(data, isLiked, toggleLike)
                 }
             )
         }
@@ -52,14 +77,21 @@ internal fun AttractionDetailScreen(attractionState: FetchState<AttractionDetail
 }
 
 @Composable
-private fun AttractionDetailContent(attraction: AttractionDetailsViewModel) {
+private fun AttractionDetailContent(
+    attraction: AttractionDetailsViewModel,
+    isLiked: Boolean,
+    toggleLike: (id: String) -> Unit
+) {
     LazyColumn {
         item {
             PosterImage(
+                modifier = Modifier.padding(bottom = 24.dp),
+                id = attraction.id,
                 url = attraction.detailImage.orEmpty(),
                 name = attraction.name,
                 genre = attraction.genre,
-                modifier = Modifier.padding(bottom = 24.dp)
+                isLiked = isLiked,
+                toggleLike = toggleLike
             )
         }
         item {
@@ -75,10 +107,13 @@ private fun AttractionDetailContent(attraction: AttractionDetailsViewModel) {
 
 @Composable
 private fun PosterImage(
+    modifier: Modifier = Modifier,
+    id: String,
     url: String,
     name: String,
     genre: String,
-    modifier: Modifier = Modifier
+    isLiked: Boolean,
+    toggleLike: (id: String) -> Unit
 ) {
     val (loaded, setLoaded) = remember { mutableStateOf(false) }
     Box(
@@ -114,6 +149,13 @@ private fun PosterImage(
 
             }
         }
+        Icon(
+            imageVector = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
+            modifier = Modifier.align(Alignment.TopEnd)
+                .padding(16.dp)
+                .statusBarsPadding()
+                .clickable(onClick = { toggleLike(id) })
+        )
     }
 }
 
@@ -179,9 +221,12 @@ private fun CalendarItem(event: EventViewModel) {
 fun TestImage() {
     AttractionDetailTheme {
         PosterImage(
+            id = "id",
             url = "https://s1.ticketm.net/dam/c/f50/96fa13be-e395-429b-8558-a51bb9054f50_105951_TABLET_LANDSCAPE_LARGE_16_9.jpg",
             name = "Example band",
-            genre = "Rock / Pop"
+            genre = "Rock / Pop",
+            isLiked = false,
+            toggleLike = {}
         )
     }
 }

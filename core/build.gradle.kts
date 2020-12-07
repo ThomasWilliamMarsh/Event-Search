@@ -33,6 +33,8 @@ dependencies {
     api("androidx.fragment:fragment-ktx:${Versions.fragment}")
     api("androidx.activity:activity-ktx:${Versions.activity}")
     api("androidx.paging:paging-runtime:${Versions.paging}")
+    api("androidx.room:room-runtime:${Versions.room}")
+    api("androidx.room:room-ktx:${Versions.room}")
 
     //Kotlin
     api("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
@@ -49,6 +51,7 @@ dependencies {
     api("com.google.dagger:hilt-android:${Versions.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
     kapt("androidx.hilt:hilt-compiler:${Versions.hiltJetpack}")
+    kapt("androidx.room:room-compiler:${Versions.room}")
 
     //Time
     api("joda-time:joda-time:${Versions.jodaTime}")

@@ -1,12 +1,15 @@
 package info.tommarsh.eventsearch.core.di
 
+import android.content.Context
 import androidx.paging.PagingConfig
+import androidx.room.Room.databaseBuilder
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCase
 import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCaseImpl
 import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
@@ -18,9 +21,14 @@ import info.tommarsh.eventsearch.core.data.category.CategoryRepositoryImpl
 import info.tommarsh.eventsearch.core.data.events.EventRepository
 import info.tommarsh.eventsearch.core.data.events.EventRepositoryImpl
 import info.tommarsh.eventsearch.core.data.events.remote.EventsAPI
+import info.tommarsh.eventsearch.core.data.likes.LikesRepository
+import info.tommarsh.eventsearch.core.data.likes.LikesRepositoryImpl
+import info.tommarsh.eventsearch.core.data.likes.local.LikedAttractionsDao
+import info.tommarsh.eventsearch.core.data.likes.local.LikesDatabase
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
@@ -90,4 +98,21 @@ internal object DataModule {
             pageSize = 20
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideLikesDatabase(@ApplicationContext context: Context): LikesDatabase {
+        return databaseBuilder(context, LikesDatabase::class.java, "likesDatabase")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLikedAttractionsDao(db: LikesDatabase): LikedAttractionsDao {
+        return db.likedAttractionsDao()
+    }
+
+    @Provides
+    fun provideLikedRepository(impl: LikesRepositoryImpl): LikesRepository = impl
 }

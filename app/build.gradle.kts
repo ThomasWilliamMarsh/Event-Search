@@ -67,7 +67,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
     implementation("com.google.android.material:material:${Versions.material}")
     implementation("androidx.paging:paging-compose:${Versions.pagingCompose}")
-
+    kapt("androidx.room:room-compiler:${Versions.room}")
 
     //Data
     implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")

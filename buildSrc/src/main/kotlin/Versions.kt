@@ -35,5 +35,6 @@ object Versions {
     const val fragment = "1.2.5"
     const val activity = "1.2.0-alpha08"
     const val material = "1.3.0-alpha03"
+    const val room = "2.2.5"
     //endregion
 }
