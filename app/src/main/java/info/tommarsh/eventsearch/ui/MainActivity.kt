@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
             composable("Event/{id}") { backStackEntry ->
                 val viewModel: AttractionDetailViewModel by viewModels()
                 val id = backStackEntry.stringArg("id")
-                viewModel.getAttractionDetails(id)
                 viewModel.setId(id)
 
                 AttractionDetailScreen(viewModel = viewModel)
