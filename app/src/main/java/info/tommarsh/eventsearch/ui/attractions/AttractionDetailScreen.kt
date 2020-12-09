@@ -1,6 +1,5 @@
 package info.tommarsh.eventsearch.ui.attractions
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -35,9 +34,8 @@ internal fun AttractionDetailScreen(
     id: String
 ) = AttractionDetailTheme {
     val attraction by viewModel.detailState.collectAsState()
-    val liked by viewModel.likedState.collectAsState()
+    val liked by viewModel.getLikedAttractionState(id).collectAsState(false)
 
-    Log.v("Likes", "compose detail screen with: $liked")
     AttractionDetailScreen(
         attractionState = attraction,
         isLiked = liked,
