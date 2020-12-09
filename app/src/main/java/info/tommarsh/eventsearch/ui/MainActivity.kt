@@ -54,8 +54,9 @@ class MainActivity : AppCompatActivity() {
                 val viewModel: AttractionDetailViewModel by viewModels()
                 val id = backStackEntry.stringArg("id")
                 viewModel.getAttractionDetails(id)
+                viewModel.setId(id)
 
-                AttractionDetailScreen(viewModel = viewModel, id = id)
+                AttractionDetailScreen(viewModel = viewModel)
             }
             composable("Category/{name}/{id}") { backStackEntry ->
                 CategoryScreen(

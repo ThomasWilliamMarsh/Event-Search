@@ -30,11 +30,10 @@ import info.tommarsh.eventsearch.ui.common.WithFetchState
 
 @Composable
 internal fun AttractionDetailScreen(
-    viewModel: AttractionDetailViewModel,
-    id: String
+    viewModel: AttractionDetailViewModel
 ) = AttractionDetailTheme {
     val attraction by viewModel.detailState.collectAsState()
-    val liked by viewModel.getLikedAttractionState(id).collectAsState(false)
+    val liked by viewModel.likedState.collectAsState(false)
 
     AttractionDetailScreen(
         attractionState = attraction,
