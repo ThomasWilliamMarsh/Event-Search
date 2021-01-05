@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.setContent
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
@@ -44,10 +46,14 @@ class MainActivity : AppCompatActivity() {
         ) {
             composable("Search") {
                 val viewModel: SearchViewModel by viewModels()
+                val (currentQuery, setCurrentQuery) = remember { mutableStateOf("") }
+
                 SearchScreen(
-                    viewModel = viewModel,
                     navigateToEvent = { id -> controller.navigate("Event/$id") },
-                    navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") }
+                    navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") },
+                    eventFlow = viewModel.getEvents(currentQuery),
+                    categoriesFlow = viewModel.categoriesState,
+                    setCurrentQuery = setCurrentQuery
                 )
             }
             composable("Event/{id}") { backStackEntry ->

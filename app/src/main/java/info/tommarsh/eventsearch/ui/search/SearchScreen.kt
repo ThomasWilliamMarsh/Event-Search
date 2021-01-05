@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
@@ -26,17 +27,19 @@ import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.search.screen.SearchCard
 import info.tommarsh.eventsearch.ui.search.screen.SearchToolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 internal fun SearchScreen(
-    viewModel: SearchViewModel,
+    eventFlow: Flow<PagingData<AttractionViewModel>>,
+    categoriesFlow: Flow<FetchState<List<CategoryViewModel>>>,
     navigateToEvent: (id: String) -> Unit,
-    navigateToCategory: (id: String, name: String) -> Unit
+    navigateToCategory: (id: String, name: String) -> Unit,
+    setCurrentQuery: (query: String) -> Unit
 ) = EventHomeTheme {
-    val (currentQuery, setCurrentQuery) = remember { mutableStateOf("") }
-    val events = viewModel.getEvents(currentQuery).collectAsLazyPagingItems()
-    val categories by viewModel.categoriesState.collectAsState()
+    val events = eventFlow.collectAsLazyPagingItems()
+    val categories by categoriesFlow.collectAsState(initial = FetchState.Loading(true))
 
     SearchScreen(
         attractions = events,
