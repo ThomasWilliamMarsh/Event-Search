@@ -53,9 +53,13 @@ class MainActivity : AppCompatActivity() {
             composable("Event/{id}") { backStackEntry ->
                 val viewModel: AttractionDetailViewModel by viewModels()
                 val id = backStackEntry.stringArg("id")
-                viewModel.setId(id)
 
-                AttractionDetailScreen(viewModel = viewModel)
+                AttractionDetailScreen(
+                    fetchFlow = viewModel.fetchStateFlowFor(id),
+                    likedFlow = viewModel.likedStateFlowFor(id),
+                    onLiked = viewModel::addLikedAttraction,
+                    onUnliked = viewModel::removeLikedAttraction
+                )
             }
             composable("Category/{name}/{id}") { backStackEntry ->
                 CategoryScreen(

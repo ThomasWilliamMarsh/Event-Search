@@ -39,6 +39,7 @@ android {
 
     kotlinOptions {
         jvmTarget = Versions.java
+        useIR = true
     }
 
     buildFeatures {
@@ -102,5 +103,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         )
         // Set JVM target to 1.8
         jvmTarget = Versions.java
+        useIR = true
     }
 }

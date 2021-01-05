@@ -27,22 +27,26 @@ import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.WithFetchState
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 internal fun AttractionDetailScreen(
-    viewModel: AttractionDetailViewModel
+    fetchFlow: Flow<FetchState<AttractionDetailsViewModel>>,
+    likedFlow: Flow<Boolean>,
+    onLiked: (id: String) -> Unit,
+    onUnliked: (id: String) -> Unit
 ) = AttractionDetailTheme {
-    val attraction by viewModel.detailState.collectAsState()
-    val liked by viewModel.likedState.collectAsState(false)
+    val attractionState by fetchFlow.collectAsState(initial = FetchState.Loading(true))
+    val isLiked by likedFlow.collectAsState(initial = false)
 
     AttractionDetailScreen(
-        attractionState = attraction,
-        isLiked = liked,
+        attractionState = attractionState,
+        isLiked = isLiked,
         toggleLike = { id ->
-            if (liked) {
-                viewModel.removeLikedAttraction(id)
+            if (isLiked) {
+                onUnliked(id)
             } else {
-                viewModel.addLikedAttraction(id)
+                onLiked(id)
             }
         }
     )
