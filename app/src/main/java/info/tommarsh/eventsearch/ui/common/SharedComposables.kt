@@ -15,6 +15,7 @@ import info.tommarsh.eventsearch.model.FetchState
 fun TopToolbar(
     modifier: Modifier = Modifier,
     title: String,
+    navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
@@ -28,6 +29,7 @@ fun TopToolbar(
         actions = actions,
         backgroundColor = MaterialTheme.colors.primaryVariant,
         elevation = 0.dp,
+        navigationIcon = navigationIcon,
         modifier = modifier
     )
 }

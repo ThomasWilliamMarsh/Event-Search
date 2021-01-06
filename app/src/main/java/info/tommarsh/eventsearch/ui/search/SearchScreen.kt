@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,6 +18,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
@@ -58,10 +61,34 @@ internal fun SearchScreen(
     navigateToCategory: (id: String, name: String) -> Unit,
     navigateToAttraction: (id: String) -> Unit
 ) {
-
     val scaffoldState = rememberScaffoldState()
+    val drawerState = scaffoldState.drawerState
+    val toggleDrawer = {
+        when(drawerState.value) {
+            DrawerValue.Closed -> drawerState.open()
+            DrawerValue.Open  -> drawerState.close()
+        }
+    }
+
     Scaffold(
-        topBar = { SearchToolbar(categoryState, onSearch, navigateToCategory) },
+        topBar = {
+            SearchToolbar(
+                categoryState,
+                toggleDrawer,
+                onSearch,
+                navigateToCategory
+            )
+        },
+        drawerContent = {
+            Column(modifier = Modifier.statusBarsPadding()) {
+                Text(text = "Test 1")
+                Text(text = "Test 1")
+                Text(text = "Test 1")
+                Text(text = "Test 1")
+                Text(text = "Test 1")
+            }
+        },
+        drawerGesturesEnabled = true,
         scaffoldState = scaffoldState,
         bodyContent = {
             when (attractions.loadState.refresh) {
