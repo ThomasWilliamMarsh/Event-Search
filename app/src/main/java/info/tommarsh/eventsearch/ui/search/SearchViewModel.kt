@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
 import info.tommarsh.eventsearch.core.data.category.CategoryRepository
+import info.tommarsh.eventsearch.core.data.likes.LikesRepository
 import info.tommarsh.eventsearch.fetch
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
@@ -26,12 +27,15 @@ import kotlinx.coroutines.launch
 class SearchViewModel @ViewModelInject constructor(
     private val attractionsRepository: AttractionsRepository,
     private val categoryRepository: CategoryRepository,
+    private val likesRepository: LikesRepository,
     private val pagingConfig: PagingConfig
 ) : ViewModel() {
 
     private val _categoriesState =
         MutableStateFlow<FetchState<List<CategoryViewModel>>>(FetchState.Loading(true))
     internal val categoriesState: StateFlow<FetchState<List<CategoryViewModel>>> = _categoriesState
+
+    val likedAttractions = likesRepository.getLikedAttractions()
 
     init {
         getCategories()

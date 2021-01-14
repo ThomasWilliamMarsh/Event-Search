@@ -1,11 +1,11 @@
-package info.tommarsh.eventsearch.ui.search.screen
+package info.tommarsh.eventsearch.ui.search.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRowFor
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -116,14 +116,14 @@ private fun CategoriesList(
     categories: List<CategoryViewModel>,
     navigateToCategory: (id: String, name: String) -> Unit
 ) {
-    LazyRowFor(
-        items = categories,
-        modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-    ) { category ->
-        BorderButton(
-            modifier = Modifier.padding(8.dp),
-            onClick = { navigateToCategory(category.name, category.id) }) {
-            Text(text = category.name, color = Color.White.copy(alpha = 0.5f))
+
+    LazyRow(modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp)) {
+        items(categories) { category ->
+            BorderButton(
+                modifier = Modifier.padding(8.dp),
+                onClick = { navigateToCategory(category.id, category.name) }) {
+                Text(text = category.name, color = Color.White.copy(alpha = 0.5f))
+            }
         }
     }
 }

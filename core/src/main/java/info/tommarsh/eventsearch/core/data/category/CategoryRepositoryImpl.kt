@@ -8,11 +8,11 @@ import javax.inject.Inject
 class CategoryRepositoryImpl @Inject constructor() : CategoryRepository {
     override fun getCategories(): List<CategoryModel> {
         return listOf(
-                CategoryResponse(id = "", name = "Music"),
-                CategoryResponse(id = "", name = "Sport"),
-                CategoryResponse(id = "", name = "Arts"),
-                CategoryResponse(id = "", name = "Arts, Theatre & Comedy"),
-                CategoryResponse(id = "", name = "Family & Attractions")
+                CategoryResponse(id = "music", name = "Music"),
+                CategoryResponse(id = "sport", name = "Sport"),
+                CategoryResponse(id = "arts", name = "Arts"),
+                CategoryResponse(id = "atc", name = "Arts, Theatre & Comedy"),
+                CategoryResponse(id = "faa", name = "Family & Attractions")
         ).toDomainModel()
     }
 }

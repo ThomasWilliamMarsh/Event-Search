@@ -7,6 +7,9 @@
     <string name="failed_to_load_categories">Failed to load categories.</string>
     <string name="no_results">No results found :(</string>
 
+    <!-- Drawer -->
+    <string name="saved_events">Saved Events</string>
+
     <!-- Search List -->
     <string name="error_loading_events">Error loading events</string>
     <string name="error_loading_page">Error loading page</string>

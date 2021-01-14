@@ -17,7 +17,7 @@ import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailViewModel
-import info.tommarsh.eventsearch.ui.category.screen.CategoryScreen
+import info.tommarsh.eventsearch.ui.category.CategoryScreen
 import info.tommarsh.eventsearch.ui.search.SearchScreen
 import info.tommarsh.eventsearch.ui.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,10 +49,11 @@ class MainActivity : AppCompatActivity() {
                 val (currentQuery, setCurrentQuery) = remember { mutableStateOf("") }
 
                 SearchScreen(
-                    navigateToEvent = { id -> controller.navigate("Event/$id") },
-                    navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") },
-                    eventFlow = viewModel.getEvents(currentQuery),
+                    attractionsFlow = viewModel.getEvents(currentQuery),
                     categoriesFlow = viewModel.categoriesState,
+                    likedItemsFlow = viewModel.likedAttractions,
+                    navigateToEvent = { id -> controller.navigate("Event/$id") },
+                    navigateToCategory = {id, name -> controller.navigate("Category/$id/$name")},
                     setCurrentQuery = setCurrentQuery
                 )
             }
@@ -67,7 +68,8 @@ class MainActivity : AppCompatActivity() {
                     onUnliked = viewModel::removeLikedAttraction
                 )
             }
-            composable("Category/{name}/{id}") { backStackEntry ->
+            composable("Category/{id}/{name}") { backStackEntry ->
+
                 CategoryScreen(
                     name = backStackEntry.stringArg("name"),
                     id = backStackEntry.stringArg("id")

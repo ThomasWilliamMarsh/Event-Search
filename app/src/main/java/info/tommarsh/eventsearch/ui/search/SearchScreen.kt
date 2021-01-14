@@ -20,6 +20,7 @@ import androidx.paging.compose.itemsIndexed
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
+import info.tommarsh.eventsearch.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.FetchState
@@ -27,26 +28,29 @@ import info.tommarsh.eventsearch.theme.EventHomeTheme
 import info.tommarsh.eventsearch.ui.common.BorderButton
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
-import info.tommarsh.eventsearch.ui.search.screen.SearchCard
-import info.tommarsh.eventsearch.ui.search.screen.SearchToolbar
+import info.tommarsh.eventsearch.ui.search.component.SearchCard
+import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 internal fun SearchScreen(
-    eventFlow: Flow<PagingData<AttractionViewModel>>,
+    attractionsFlow: Flow<PagingData<AttractionViewModel>>,
     categoriesFlow: Flow<FetchState<List<CategoryViewModel>>>,
+    likedItemsFlow: Flow<List<LikedAttractionModel>>,
     navigateToEvent: (id: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit,
     setCurrentQuery: (query: String) -> Unit
 ) = EventHomeTheme {
-    val events = eventFlow.collectAsLazyPagingItems()
+    val attractions = attractionsFlow.collectAsLazyPagingItems()
+    val likedItems by likedItemsFlow.collectAsState(initial = emptyList())
     val categories by categoriesFlow.collectAsState(initial = FetchState.Loading(true))
 
     SearchScreen(
-        attractions = events,
+        attractions = attractions,
         categoryState = categories,
+        likedAttractions = likedItems,
         onSearch = setCurrentQuery,
         navigateToAttraction = navigateToEvent,
         navigateToCategory = navigateToCategory
@@ -57,9 +61,10 @@ internal fun SearchScreen(
 internal fun SearchScreen(
     attractions: LazyPagingItems<AttractionViewModel>,
     categoryState: FetchState<List<CategoryViewModel>>,
+    likedAttractions: List<LikedAttractionModel>,
     onSearch: (query: String) -> Unit,
+    navigateToAttraction: (id: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit,
-    navigateToAttraction: (id: String) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     val drawerState = scaffoldState.drawerState
@@ -80,15 +85,13 @@ internal fun SearchScreen(
             )
         },
         drawerContent = {
-            Column(modifier = Modifier.statusBarsPadding()) {
-                Text(text = "Test 1")
-                Text(text = "Test 1")
-                Text(text = "Test 1")
-                Text(text = "Test 1")
-                Text(text = "Test 1")
+            LazyColumn(modifier = Modifier.statusBarsPadding().padding(start = 8.dp, end = 8.dp)) {
+                item { Text(stringResource(id = R.string.saved_events), style = MaterialTheme.typography.h6) }
+                items(likedAttractions) { attraction ->
+                    Text(text = attraction.id)
+                }
             }
         },
-        drawerGesturesEnabled = true,
         scaffoldState = scaffoldState,
         bodyContent = {
             when (attractions.loadState.refresh) {

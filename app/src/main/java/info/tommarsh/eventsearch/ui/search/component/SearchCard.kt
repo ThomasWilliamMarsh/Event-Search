@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.ui.search.screen
+package info.tommarsh.eventsearch.ui.search.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
