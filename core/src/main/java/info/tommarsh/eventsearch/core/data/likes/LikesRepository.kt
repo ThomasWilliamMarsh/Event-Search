@@ -7,7 +7,7 @@ interface LikesRepository {
 
     fun getLikedAttractions() : Flow<List<LikedAttractionModel>>
 
-    suspend fun addLikedAttraction(id: String)
+    suspend fun addLikedAttraction(attraction: LikedAttractionModel)
 
-    suspend fun removeLikedAttraction(id: String)
+    suspend fun removeLikedAttraction(attraction: LikedAttractionModel)
 }

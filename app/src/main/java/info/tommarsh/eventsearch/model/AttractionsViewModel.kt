@@ -2,6 +2,7 @@ package info.tommarsh.eventsearch.model
 
 import info.tommarsh.eventsearch.domain.AttractionDetailsModel
 import info.tommarsh.eventsearch.domain.AttractionModel
+import info.tommarsh.eventsearch.domain.LikedAttractionModel
 
 internal data class AttractionViewModel(
     val name: String,
@@ -39,6 +40,14 @@ internal fun AttractionModel.toViewModel(): AttractionViewModel {
         locale = locale,
         genre = genre,
         numberOfEvents = numberOfEvents
+    )
+}
+
+internal fun AttractionDetailsViewModel.toLikedAttraction(): LikedAttractionModel {
+    return LikedAttractionModel(
+        id = id,
+        name = name,
+        imageUrl = detailImage.orEmpty()
     )
 }
 

@@ -24,18 +24,18 @@ internal class AttractionDetailViewModel @ViewModelInject constructor(
 
     fun likedStateFlowFor(id: String) = likedRepository.getLikedAttractions()
         .map { attractions ->
-            attractions.contains(LikedAttractionModel(id))
+            attractions.find { liked -> liked.id == id } != null
         }
 
     fun fetchStateFlowFor(id: String) = flow {
         emit(fetch { attractionDetailsUseCase.get(id).toViewModel() })
     }.stateIn(viewModelScope, SharingStarted.Eagerly, FetchState.Loading(true))
 
-    fun addLikedAttraction(id: String) = viewModelScope.launch {
-        likedRepository.addLikedAttraction(id)
+    fun addLikedAttraction(attraction: LikedAttractionModel) = viewModelScope.launch {
+        likedRepository.addLikedAttraction(attraction)
     }
 
-    fun removeLikedAttraction(id: String) = viewModelScope.launch {
-        likedRepository.removeLikedAttraction(id)
+    fun removeLikedAttraction(attraction: LikedAttractionModel) = viewModelScope.launch {
+        likedRepository.removeLikedAttraction(attraction)
     }
 }

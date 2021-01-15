@@ -1,7 +1,6 @@
 package info.tommarsh.eventsearch.ui.search.component
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -14,35 +13,29 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.theme.EventHomeTheme
+import info.tommarsh.eventsearch.ui.common.EventSearchVerticalCard
 
 @Composable
 internal fun SearchCard(
     attraction: AttractionViewModel,
     navigateToAttraction: (id: String) -> Unit
 ) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .clickable(onClick = { navigateToAttraction(attraction.id) })
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+    EventSearchVerticalCard(onClick = { navigateToAttraction(attraction.id) }) {
 
-            PosterImage(url = attraction.searchImage.orEmpty())
+        PosterImage(url = attraction.searchImage.orEmpty())
 
-            Providers(AmbientContentAlpha provides ContentAlpha.high) {
-                Text(text = attraction.name, style = MaterialTheme.typography.h4)
-            }
+        Providers(AmbientContentAlpha provides ContentAlpha.high) {
+            Text(text = attraction.name, style = MaterialTheme.typography.h4)
+        }
 
-            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-                Text(
-                    text = stringResource(
-                        id = R.string.number_events,
-                        formatArgs = arrayOf(attraction.numberOfEvents)
-                    ),
-                    style = MaterialTheme.typography.subtitle1
-                )
-            }
+        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+            Text(
+                text = stringResource(
+                    id = R.string.number_events,
+                    formatArgs = arrayOf(attraction.numberOfEvents)
+                ),
+                style = MaterialTheme.typography.subtitle1
+            )
         }
     }
 }
@@ -59,7 +52,7 @@ private fun PosterImage(url: String) {
 
 @Preview
 @Composable
-private fun sampleAttractionItem() {
+private fun SampleAttractionItem() {
 
     EventHomeTheme {
         SearchCard(

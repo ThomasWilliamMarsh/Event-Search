@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                     categoriesFlow = viewModel.categoriesState,
                     likedItemsFlow = viewModel.likedAttractions,
                     navigateToEvent = { id -> controller.navigate("Event/$id") },
-                    navigateToCategory = {id, name -> controller.navigate("Category/$id/$name")},
+                    navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") },
                     setCurrentQuery = setCurrentQuery
                 )
             }
@@ -71,9 +71,7 @@ class MainActivity : AppCompatActivity() {
             composable("Category/{id}/{name}") { backStackEntry ->
 
                 CategoryScreen(
-                    name = backStackEntry.stringArg("name"),
-                    id = backStackEntry.stringArg("id")
-                )
+                    name = backStackEntry.stringArg("name"))
             }
         }
     }

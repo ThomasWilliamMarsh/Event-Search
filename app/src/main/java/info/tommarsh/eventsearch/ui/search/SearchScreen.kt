@@ -28,6 +28,7 @@ import info.tommarsh.eventsearch.theme.EventHomeTheme
 import info.tommarsh.eventsearch.ui.common.BorderButton
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
+import info.tommarsh.eventsearch.ui.search.component.LikedAttractionCard
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -69,9 +70,9 @@ internal fun SearchScreen(
     val scaffoldState = rememberScaffoldState()
     val drawerState = scaffoldState.drawerState
     val toggleDrawer = {
-        when(drawerState.value) {
+        when (drawerState.value) {
             DrawerValue.Closed -> drawerState.open()
-            DrawerValue.Open  -> drawerState.close()
+            DrawerValue.Open -> drawerState.close()
         }
     }
 
@@ -85,10 +86,21 @@ internal fun SearchScreen(
             )
         },
         drawerContent = {
-            LazyColumn(modifier = Modifier.statusBarsPadding().padding(start = 8.dp, end = 8.dp)) {
-                item { Text(stringResource(id = R.string.saved_events), style = MaterialTheme.typography.h6) }
+            LazyColumn(modifier = Modifier.statusBarsPadding()) {
+                item {
+                    Text(
+                        stringResource(id = R.string.saved_events),
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(start = 16.dp, bottom = 8.dp),
+                        style = MaterialTheme.typography.h5
+                    )
+                }
                 items(likedAttractions) { attraction ->
-                    Text(text = attraction.id)
+                    LikedAttractionCard(
+                        likedModel = attraction,
+                        navigateToAttraction = navigateToAttraction
+                    )
                 }
             }
         },
@@ -101,14 +113,10 @@ internal fun SearchScreen(
                     message = stringResource(id = R.string.error_loading_events)
                 )
                 is LoadState.NotLoading -> {
-                    if (attractions.itemCount == 0) {
-                        NoResultsView()
-                    } else {
-                        SearchList(
-                            attractions = attractions,
-                            navigateToAttraction = navigateToAttraction
-                        )
-                    }
+                    SearchList(
+                        attractions = attractions,
+                        navigateToAttraction = navigateToAttraction
+                    )
                 }
             }
         }
@@ -170,17 +178,6 @@ internal fun RetryView(onRetry: () -> Unit) {
         ) {
             Text(text = stringResource(id = R.string.retry), color = MaterialTheme.colors.onError)
         }
-    }
-}
-
-@Composable
-internal fun NoResultsView() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = stringResource(id = R.string.no_results),
-            modifier = Modifier.align(Alignment.Center),
-            style = MaterialTheme.typography.h6
-        )
     }
 }
 

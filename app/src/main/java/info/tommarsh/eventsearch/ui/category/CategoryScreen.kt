@@ -12,12 +12,11 @@ import info.tommarsh.eventsearch.theme.CategoryTheme
 
 @Composable
 fun CategoryScreen(
-    name: String,
-    id: String
-) = CategoryTheme {
+    name: String) = CategoryTheme {
     val scaffoldState = rememberScaffoldState()
     Scaffold(
-        scaffoldState = scaffoldState) {
+        scaffoldState = scaffoldState
+    ) {
         Text(
             text = name,
             modifier = Modifier.statusBarsPadding(),

@@ -12,29 +12,34 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawShadow
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import attractionDetail
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
+import info.tommarsh.eventsearch.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
 import info.tommarsh.eventsearch.model.EventViewModel
 import info.tommarsh.eventsearch.model.FetchState
+import info.tommarsh.eventsearch.model.toLikedAttraction
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.WithFetchState
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Composable
 internal fun AttractionDetailScreen(
     fetchFlow: Flow<FetchState<AttractionDetailsViewModel>>,
     likedFlow: Flow<Boolean>,
-    onLiked: (id: String) -> Unit,
-    onUnliked: (id: String) -> Unit
+    onLiked: (attraction: LikedAttractionModel) -> Unit,
+    onUnliked: (attraction: LikedAttractionModel) -> Unit
 ) = AttractionDetailTheme {
     val attractionState by fetchFlow.collectAsState(initial = FetchState.Loading(true))
     val isLiked by likedFlow.collectAsState(initial = false)
@@ -42,11 +47,11 @@ internal fun AttractionDetailScreen(
     AttractionDetailScreen(
         attractionState = attractionState,
         isLiked = isLiked,
-        toggleLike = { id ->
+        toggleLike = { attraction ->
             if (isLiked) {
-                onUnliked(id)
+                onUnliked(attraction)
             } else {
-                onLiked(id)
+                onLiked(attraction)
             }
         }
     )
@@ -56,7 +61,7 @@ internal fun AttractionDetailScreen(
 internal fun AttractionDetailScreen(
     attractionState: FetchState<AttractionDetailsViewModel>,
     isLiked: Boolean,
-    toggleLike: (id: String) -> Unit
+    toggleLike: (attraction: LikedAttractionModel) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     Scaffold(scaffoldState = scaffoldState,
@@ -81,16 +86,13 @@ internal fun AttractionDetailScreen(
 private fun AttractionDetailContent(
     attraction: AttractionDetailsViewModel,
     isLiked: Boolean,
-    toggleLike: (id: String) -> Unit
+    toggleLike: (id: LikedAttractionModel) -> Unit
 ) {
     LazyColumn {
         item {
             PosterImage(
                 modifier = Modifier.padding(bottom = 24.dp),
-                id = attraction.id,
-                url = attraction.detailImage.orEmpty(),
-                name = attraction.name,
-                genre = attraction.genre,
+                attraction = attraction,
                 isLiked = isLiked,
                 toggleLike = toggleLike
             )
@@ -109,12 +111,9 @@ private fun AttractionDetailContent(
 @Composable
 private fun PosterImage(
     modifier: Modifier = Modifier,
-    id: String,
-    url: String,
-    name: String,
-    genre: String,
+    attraction: AttractionDetailsViewModel,
     isLiked: Boolean,
-    toggleLike: (id: String) -> Unit
+    toggleLike: (attraction: LikedAttractionModel) -> Unit
 ) {
     val (loaded, setLoaded) = remember { mutableStateOf(false) }
     Box(
@@ -123,7 +122,7 @@ private fun PosterImage(
             .fillMaxWidth()
     ) {
         CoilImage(
-            data = url,
+            data = attraction.detailImage.orEmpty(),
             onRequestCompleted = { setLoaded(true) },
             contentScale = ContentScale.FillWidth,
             fadeIn = true
@@ -140,11 +139,11 @@ private fun PosterImage(
         ) {
             if (loaded) {
                 Text(
-                    text = genre,
+                    text = attraction.genre,
                     style = MaterialTheme.typography.subtitle2.copy(color = Color.White)
                 )
                 Text(
-                    text = name,
+                    text = attraction.name,
                     style = MaterialTheme.typography.h4.copy(color = Color.White)
                 )
 
@@ -155,7 +154,7 @@ private fun PosterImage(
             modifier = Modifier.align(Alignment.TopEnd)
                 .padding(16.dp)
                 .statusBarsPadding()
-                .clickable(onClick = { toggleLike(id) })
+                .clickable(onClick = { toggleLike(attraction.toLikedAttraction()) })
         )
     }
 }
@@ -166,7 +165,7 @@ private fun UnderlineTitle(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Text(text = text.capitalize(), style = MaterialTheme.typography.h5)
+        Text(text = text.capitalize(Locale.ENGLISH), style = MaterialTheme.typography.h5)
         Box(
             Modifier.background(color = MaterialTheme.colors.onBackground)
                 .height(2.dp)
@@ -182,7 +181,7 @@ private fun CalendarList(events: List<EventViewModel>) {
             .fillMaxWidth()
             .padding(16.dp)
             .wrapContentHeight()
-            .drawShadow(12.dp)
+            .shadow(12.dp)
     ) {
         Column {
             events.forEach { event ->
@@ -222,10 +221,7 @@ private fun CalendarItem(event: EventViewModel) {
 fun TestImage() {
     AttractionDetailTheme {
         PosterImage(
-            id = "id",
-            url = "https://s1.ticketm.net/dam/c/f50/96fa13be-e395-429b-8558-a51bb9054f50_105951_TABLET_LANDSCAPE_LARGE_16_9.jpg",
-            name = "Example band",
-            genre = "Rock / Pop",
+            attraction = attractionDetail,
             isLiked = false,
             toggleLike = {}
         )

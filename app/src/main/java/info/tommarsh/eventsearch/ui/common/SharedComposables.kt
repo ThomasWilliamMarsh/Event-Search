@@ -1,6 +1,7 @@
 package info.tommarsh.eventsearch.ui.common
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -51,6 +52,43 @@ fun BorderButton(
         content()
     }
 }
+
+@Composable
+internal fun EventSearchVerticalCard(
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clickable(onClick = onClick)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            content()
+        }
+    }
+}
+
+@Composable
+internal fun EventSearchHorizontalCard(
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clickable(onClick = onClick)
+    ) {
+        Row(modifier = Modifier.padding(16.dp)) {
+            content()
+        }
+    }
+}
+
 
 @Composable
 fun CenteredCircularProgress() {
