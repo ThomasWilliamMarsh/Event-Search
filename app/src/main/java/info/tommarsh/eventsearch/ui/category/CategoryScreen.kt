@@ -1,6 +1,5 @@
 package info.tommarsh.eventsearch.ui.category
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -74,9 +73,11 @@ private fun CategoryList(
     attractions: LazyPagingItems<AttractionViewModel>,
     navigateToAttraction: (id: String) -> Unit,
 ) {
-    LazyColumn(modifier = Modifier.statusBarsPadding()
-        .fillMaxWidth()
-        .fillMaxHeight()) {
+    LazyColumn(
+        modifier = Modifier.statusBarsPadding()
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
         item {
             Text(
                 text = categoryName,

@@ -10,7 +10,7 @@ import info.tommarsh.eventsearch.core.util.ScreenWidthResolver
 import info.tommarsh.eventsearch.domain.AttractionModel
 import javax.inject.Inject
 
-class AttractionsRepositoryImpl
+internal class AttractionsRepositoryImpl
 @Inject constructor(
     private val api: AttractionsAPI,
     private val screenWidthResolver: ScreenWidthResolver

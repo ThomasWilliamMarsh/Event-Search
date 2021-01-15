@@ -11,7 +11,6 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawShadow
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -58,7 +57,7 @@ internal fun AttractionDetailScreen(
 }
 
 @Composable
-internal fun AttractionDetailScreen(
+private fun AttractionDetailScreen(
     attractionState: FetchState<AttractionDetailsViewModel>,
     isLiked: Boolean,
     toggleLike: (attraction: LikedAttractionModel) -> Unit
@@ -218,7 +217,7 @@ private fun CalendarItem(event: EventViewModel) {
 
 @Preview
 @Composable
-fun TestImage() {
+private fun TestImage() {
     AttractionDetailTheme {
         PosterImage(
             attraction = attractionDetail,

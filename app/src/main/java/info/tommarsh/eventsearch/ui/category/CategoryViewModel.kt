@@ -17,7 +17,7 @@ internal class CategoryViewModel @ViewModelInject constructor(
     private val pagingConfig: PagingConfig
 ) : ViewModel() {
 
-    fun getAttractions(category: String) : Flow<PagingData<AttractionViewModel>>{
+    fun getAttractions(category: String): Flow<PagingData<AttractionViewModel>> {
         return Pager(
             config = pagingConfig,
             initialKey = 0

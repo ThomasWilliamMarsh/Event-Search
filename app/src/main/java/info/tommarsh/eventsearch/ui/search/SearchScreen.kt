@@ -1,17 +1,13 @@
 package info.tommarsh.eventsearch.ui.search
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -24,7 +20,10 @@ import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.theme.EventHomeTheme
-import info.tommarsh.eventsearch.ui.common.*
+import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
+import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
+import info.tommarsh.eventsearch.ui.common.WithPagingAppendState
+import info.tommarsh.eventsearch.ui.common.WithPagingRefreshState
 import info.tommarsh.eventsearch.ui.search.component.LikedAttractionCard
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
@@ -146,11 +145,4 @@ private fun LikedAttractionsHeader() {
         modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
         style = MaterialTheme.typography.h5
     )
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun RetryViewPreview() {
-    RetryView(onRetry = { })
 }

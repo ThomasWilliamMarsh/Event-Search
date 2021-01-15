@@ -1,6 +1,5 @@
 package info.tommarsh.eventsearch.ui.search.component
 
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
