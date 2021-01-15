@@ -1,6 +1,7 @@
 package info.tommarsh.eventsearch.ui.common
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -9,7 +10,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import dev.chrisbanes.accompanist.insets.navigationBarsPadding
+import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.FetchState
 
 @Composable
@@ -125,3 +131,62 @@ fun <T> WithFetchState(
         is FetchState.Failure -> onFailure(state.throwable)
     }
 }
+
+//Region Paging 3 composables
+@Composable
+fun RetryView(onRetry: () -> Unit) {
+    Column(
+        modifier = Modifier.background(MaterialTheme.colors.error)
+            .padding(top = 16.dp)
+            .navigationBarsPadding()
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+                .padding(bottom = 8.dp),
+            text = stringResource(id = R.string.error_loading_page),
+            style = MaterialTheme.typography.button.copy(color = MaterialTheme.colors.onError),
+        )
+
+        BorderButton(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            borderColor = MaterialTheme.colors.onError,
+            onClick = onRetry
+        ) {
+            Text(text = stringResource(id = R.string.retry), color = MaterialTheme.colors.onError)
+        }
+    }
+}
+
+@Composable
+fun <T : Any> WithPagingRefreshState(
+    items: LazyPagingItems<T>,
+    onLoading: @Composable () -> Unit = { CenteredCircularProgress() },
+    onError: @Composable () -> Unit = { },
+    onLoaded: @Composable () -> Unit = {}
+) {
+
+    Surface(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+        when (items.loadState.refresh) {
+            is LoadState.Loading -> onLoading()
+            is LoadState.Error -> onError()
+            is LoadState.NotLoading -> onLoaded()
+        }
+    }
+}
+
+@Composable
+fun <T : Any> WithPagingAppendState(
+    items: LazyPagingItems<T>,
+    onLoading: @Composable () -> Unit = { CenteredCircularProgress() },
+    onError: @Composable () -> Unit = { RetryView(onRetry = { items.retry() }) },
+    onLoaded: @Composable () -> Unit = {}
+) {
+    when (items.loadState.append) {
+        is LoadState.Loading -> onLoading()
+        is LoadState.Error -> onError()
+        is LoadState.NotLoading -> onLoaded()
+    }
+}
+//EndRegion

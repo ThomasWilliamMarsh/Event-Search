@@ -24,16 +24,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
-class SearchViewModel @ViewModelInject constructor(
+internal class SearchViewModel @ViewModelInject constructor(
     private val attractionsRepository: AttractionsRepository,
     private val categoryRepository: CategoryRepository,
-    private val likesRepository: LikesRepository,
-    private val pagingConfig: PagingConfig
+    private val pagingConfig: PagingConfig,
+    likesRepository: LikesRepository
 ) : ViewModel() {
 
     private val _categoriesState =
         MutableStateFlow<FetchState<List<CategoryViewModel>>>(FetchState.Loading(true))
-    internal val categoriesState: StateFlow<FetchState<List<CategoryViewModel>>> = _categoriesState
+    val categoriesState: StateFlow<FetchState<List<CategoryViewModel>>> = _categoriesState
 
     val likedAttractions = likesRepository.getLikedAttractions()
 
@@ -41,12 +41,12 @@ class SearchViewModel @ViewModelInject constructor(
         getCategories()
     }
 
-    internal fun getEvents(query: String = ""): Flow<PagingData<AttractionViewModel>> {
+    fun getAttractions(query: String = ""): Flow<PagingData<AttractionViewModel>> {
         return Pager(
             config = pagingConfig,
             initialKey = 0
         ) {
-            attractionsRepository.getAttractionsPagingSource(query)
+            attractionsRepository.getAttractionsForQuery(query)
         }.flow.map { page -> page.map { attraction -> attraction.toViewModel() } }
     }
 

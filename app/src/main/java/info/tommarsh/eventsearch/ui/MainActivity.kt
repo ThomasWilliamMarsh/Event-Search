@@ -18,6 +18,7 @@ import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailViewModel
 import info.tommarsh.eventsearch.ui.category.CategoryScreen
+import info.tommarsh.eventsearch.ui.category.CategoryViewModel
 import info.tommarsh.eventsearch.ui.search.SearchScreen
 import info.tommarsh.eventsearch.ui.search.SearchViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 val (currentQuery, setCurrentQuery) = remember { mutableStateOf("") }
 
                 SearchScreen(
-                    attractionsFlow = viewModel.getEvents(currentQuery),
+                    attractionsFlow = viewModel.getAttractions(currentQuery),
                     categoriesFlow = viewModel.categoriesState,
                     likedItemsFlow = viewModel.likedAttractions,
                     navigateToEvent = { id -> controller.navigate("Event/$id") },
@@ -59,19 +60,25 @@ class MainActivity : AppCompatActivity() {
             }
             composable("Event/{id}") { backStackEntry ->
                 val viewModel: AttractionDetailViewModel by viewModels()
-                val id = backStackEntry.stringArg("id")
+                val eventId = backStackEntry.stringArg("id")
 
                 AttractionDetailScreen(
-                    fetchFlow = viewModel.fetchStateFlowFor(id),
-                    likedFlow = viewModel.likedStateFlowFor(id),
+                    fetchFlow = viewModel.fetchStateFlowFor(eventId),
+                    likedFlow = viewModel.likedStateFlowFor(eventId),
                     onLiked = viewModel::addLikedAttraction,
                     onUnliked = viewModel::removeLikedAttraction
                 )
             }
             composable("Category/{id}/{name}") { backStackEntry ->
+                val viewModel: CategoryViewModel by viewModels()
+                val categoryId = backStackEntry.stringArg("id")
+                val categoryName = backStackEntry.stringArg("name")
 
                 CategoryScreen(
-                    name = backStackEntry.stringArg("name"))
+                    categoryName = categoryName,
+                    attractionsFlow = viewModel.getAttractions(categoryId),
+                    navigateToEvent = { id -> controller.navigate("Event/$id") }
+                )
             }
         }
     }
