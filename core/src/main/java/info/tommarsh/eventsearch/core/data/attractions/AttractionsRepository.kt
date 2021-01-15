@@ -5,7 +5,9 @@ import info.tommarsh.eventsearch.domain.AttractionModel
 
 interface AttractionsRepository {
 
-    fun getAttractionsPagingSource(query: String) : PagingSource<Int, AttractionModel>
+    fun getAttractionsForQuery(query: String) : PagingSource<Int, AttractionModel>
+
+    fun getAttractionsForCategory(segment: String): PagingSource<Int, AttractionModel>
 
     suspend fun getAttraction(id: String) : AttractionModel
 }

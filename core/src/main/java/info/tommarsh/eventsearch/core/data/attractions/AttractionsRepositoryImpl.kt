@@ -4,6 +4,8 @@ import androidx.paging.PagingSource
 import info.tommarsh.eventsearch.core.data.attractions.model.toDomainModel
 import info.tommarsh.eventsearch.core.data.attractions.remote.AttractionsAPI
 import info.tommarsh.eventsearch.core.data.attractions.remote.AttractionsPagingSource
+import info.tommarsh.eventsearch.core.data.attractions.remote.CategoryRequest
+import info.tommarsh.eventsearch.core.data.attractions.remote.SearchRequest
 import info.tommarsh.eventsearch.core.util.ScreenWidthResolver
 import info.tommarsh.eventsearch.domain.AttractionModel
 import javax.inject.Inject
@@ -14,10 +16,18 @@ class AttractionsRepositoryImpl
     private val screenWidthResolver: ScreenWidthResolver
 ) : AttractionsRepository {
 
-    override fun getAttractionsPagingSource(query: String): PagingSource<Int, AttractionModel> {
+    override fun getAttractionsForQuery(query: String): PagingSource<Int, AttractionModel> {
         return AttractionsPagingSource(
             api = api,
-            query = query,
+            request = SearchRequest(query),
+            screenWidthResolver = screenWidthResolver
+        )
+    }
+
+    override fun getAttractionsForCategory(category: String): PagingSource<Int, AttractionModel> {
+        return AttractionsPagingSource(
+            api = api,
+            request = CategoryRequest(category),
             screenWidthResolver = screenWidthResolver
         )
     }

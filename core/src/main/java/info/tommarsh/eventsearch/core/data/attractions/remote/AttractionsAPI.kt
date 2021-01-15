@@ -16,6 +16,12 @@ interface AttractionsAPI {
         @Query("page") page: Int
     ): AttractionsResponse
 
+    @GET("discovery/v2/attractions.json")
+    suspend fun getAttractionsForCategory(
+        @Query("classificationName") query: String,
+        @Query("page") page: Int
+    ): AttractionsResponse
+
     @GET("discovery/v2/attractions/{attraction}.json")
     suspend fun attractionDetails(@Path("attraction") event: String): AttractionResponse
 }
