@@ -150,6 +150,7 @@ private fun PosterImage(
         }
         Icon(
             imageVector = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
+            tint = Color.White,
             modifier = Modifier.align(Alignment.TopEnd)
                 .padding(16.dp)
                 .statusBarsPadding()
