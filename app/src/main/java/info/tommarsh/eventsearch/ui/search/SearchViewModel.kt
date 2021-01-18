@@ -1,12 +1,12 @@
 package info.tommarsh.eventsearch.ui.search
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import dagger.hilt.android.lifecycle.HiltViewModel
 import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
 import info.tommarsh.eventsearch.core.data.category.CategoryRepository
 import info.tommarsh.eventsearch.core.data.likes.LikesRepository
@@ -22,9 +22,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-internal class SearchViewModel @ViewModelInject constructor(
+@HiltViewModel
+internal class SearchViewModel @Inject constructor(
     private val attractionsRepository: AttractionsRepository,
     private val categoryRepository: CategoryRepository,
     private val pagingConfig: PagingConfig,

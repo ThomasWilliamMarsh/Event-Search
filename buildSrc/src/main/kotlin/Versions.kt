@@ -1,6 +1,6 @@
 object Versions {
     //region Build
-    const val hilt = "2.28-alpha"
+    const val hilt = "2.31-alpha"
     const val gradleBuildTools = "4.2.0-alpha15"
     //endregion
 
