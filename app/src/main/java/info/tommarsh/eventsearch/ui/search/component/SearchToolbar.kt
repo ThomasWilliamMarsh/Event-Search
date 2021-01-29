@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -48,7 +49,10 @@ internal fun SearchToolbar(
             modifier = Modifier.statusBarsPadding(),
             navigationIcon = {
                 IconButton(onClick = toggleDrawer) {
-                    Icon(imageVector = vectorResource(id = R.drawable.ic_baseline_menu_24))
+                    Icon(
+                        imageVector = vectorResource(id = R.drawable.ic_baseline_menu_24),
+                        contentDescription = stringResource(R.string.open_liked_attractions_menu)
+                    )
                 }
             }
         )
@@ -106,7 +110,13 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
             .padding(16.dp)
             .border(1.dp, MaterialTheme.colors.onPrimary, RoundedCornerShape(4.dp)),
         textStyle = MaterialTheme.typography.subtitle1,
-        trailingIcon = { Icon(imageVector = Icons.Default.Search, tint = Color.White.copy(0.5f)) },
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = stringResource(id = R.string.search),
+                tint = Color.White.copy(0.5f)
+            )
+        },
         shape = RoundedCornerShape(4.dp),
     )
 }
@@ -161,7 +171,7 @@ private fun ToolbarWithCategories() {
                 )
             ),
             onSearch = {},
-            navigateToCategory = { _, _ -> Unit },
+            navigateToCategory = { _, _ ->  },
             toggleDrawer = {}
         )
     }

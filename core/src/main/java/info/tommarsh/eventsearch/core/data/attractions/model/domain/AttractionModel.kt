@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.domain
+package info.tommarsh.eventsearch.core.data.attractions.model.domain
 
 data class AttractionModel(
     val name: String,

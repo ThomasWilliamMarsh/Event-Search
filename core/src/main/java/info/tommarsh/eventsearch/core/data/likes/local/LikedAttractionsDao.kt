@@ -1,7 +1,7 @@
 package info.tommarsh.eventsearch.core.data.likes.local
 
 import androidx.room.*
-import info.tommarsh.eventsearch.core.data.likes.model.LikedAttraction
+import info.tommarsh.eventsearch.core.data.likes.model.data.LikedAttraction
 import kotlinx.coroutines.flow.Flow
 
 @Dao

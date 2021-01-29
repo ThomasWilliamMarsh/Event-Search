@@ -22,7 +22,10 @@ internal fun SearchCard(
 ) {
     EventSearchVerticalCard(onClick = { navigateToAttraction(attraction.id) }) {
 
-        PosterImage(url = attraction.searchImage.orEmpty())
+        PosterImage(
+            url = attraction.searchImage.orEmpty(),
+            contentDescription = attraction.name
+        )
 
         Providers(AmbientContentAlpha provides ContentAlpha.high) {
             Text(text = attraction.name, style = MaterialTheme.typography.h4)
@@ -41,12 +44,16 @@ internal fun SearchCard(
 }
 
 @Composable
-private fun PosterImage(url: String) {
+private fun PosterImage(url: String, contentDescription: String) {
     Card(
         elevation = 8.dp,
         modifier = Modifier.aspectRatio(16 / 9F)
     ) {
-        CoilImage(url, fadeIn = true)
+        CoilImage(
+            url,
+            fadeIn = true,
+            contentDescription = contentDescription
+        )
     }
 }
 

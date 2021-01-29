@@ -1,9 +1,10 @@
 package info.tommarsh.eventsearch.core.data.events.model
 
-import info.tommarsh.eventsearch.domain.EventModel
-import info.tommarsh.eventsearch.domain.PresalesModel
-import info.tommarsh.eventsearch.domain.PromoterModel
-import info.tommarsh.eventsearch.domain.PublicModel
+import info.tommarsh.eventsearch.core.data.events.model.data.*
+import info.tommarsh.eventsearch.core.data.events.model.domain.EventModel
+import info.tommarsh.eventsearch.core.data.events.model.domain.PresalesModel
+import info.tommarsh.eventsearch.core.data.events.model.domain.PromoterModel
+import info.tommarsh.eventsearch.core.data.events.model.domain.PublicModel
 
 private const val IMAGE_ASPECT_RATIO = "16_9"
 

@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.coil.CoilImage
-import info.tommarsh.eventsearch.domain.LikedAttractionModel
+import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.ui.common.EventSearchHorizontalCard
 
 @Composable
@@ -25,6 +25,7 @@ internal fun LikedAttractionCard(
         ) {
             CoilImage(
                 likedModel.imageUrl,
+                contentDescription = likedModel.name,
                 fadeIn = true
             )
         }

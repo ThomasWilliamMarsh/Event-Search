@@ -7,7 +7,7 @@ import info.tommarsh.eventsearch.core.data.attractions.remote.AttractionsPagingS
 import info.tommarsh.eventsearch.core.data.attractions.remote.CategoryRequest
 import info.tommarsh.eventsearch.core.data.attractions.remote.SearchRequest
 import info.tommarsh.eventsearch.core.util.ScreenWidthResolver
-import info.tommarsh.eventsearch.domain.AttractionModel
+import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionModel
 import javax.inject.Inject
 
 internal class AttractionsRepositoryImpl

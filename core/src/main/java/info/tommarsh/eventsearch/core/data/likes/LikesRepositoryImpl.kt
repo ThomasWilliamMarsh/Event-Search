@@ -1,10 +1,9 @@
 package info.tommarsh.eventsearch.core.data.likes
 
 import info.tommarsh.eventsearch.core.data.likes.local.LikedAttractionsDao
-import info.tommarsh.eventsearch.core.data.likes.model.LikedAttraction
 import info.tommarsh.eventsearch.core.data.likes.model.toDaoModel
 import info.tommarsh.eventsearch.core.data.likes.model.toDomainModel
-import info.tommarsh.eventsearch.domain.LikedAttractionModel
+import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

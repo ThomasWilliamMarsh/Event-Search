@@ -1,6 +1,6 @@
 package info.tommarsh.eventsearch.model
 
-import info.tommarsh.eventsearch.domain.EventModel
+import info.tommarsh.eventsearch.core.data.events.model.domain.EventModel
 import org.joda.time.DateTime
 
 internal data class EventViewModel(

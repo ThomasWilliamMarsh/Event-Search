@@ -1,6 +1,6 @@
 package info.tommarsh.eventsearch.model
 
-import info.tommarsh.eventsearch.domain.CategoryModel
+import info.tommarsh.eventsearch.core.data.category.model.domain.CategoryModel
 
 internal data class CategoryViewModel(
     val id: String,

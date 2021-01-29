@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    id("dagger.hilt.android.plugin")
     id("kotlin-android")
     id("org.jetbrains.kotlin.kapt")
 }
@@ -26,8 +25,6 @@ android {
 }
 
 dependencies {
-
-    api(project(":domain"))
 
     //Android
     api("androidx.fragment:fragment-ktx:${Versions.fragment}")

@@ -1,7 +1,7 @@
 package info.tommarsh.eventsearch.core.data.attractions.remote
 
-import info.tommarsh.eventsearch.core.data.attractions.model.AttractionResponse
-import info.tommarsh.eventsearch.core.data.attractions.model.AttractionsResponse
+import info.tommarsh.eventsearch.core.data.attractions.model.data.AttractionResponse
+import info.tommarsh.eventsearch.core.data.attractions.model.data.AttractionsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

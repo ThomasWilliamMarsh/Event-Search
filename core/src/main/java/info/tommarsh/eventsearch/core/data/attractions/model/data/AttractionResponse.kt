@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.core.data.attractions.model
+package info.tommarsh.eventsearch.core.data.attractions.model.data
 
 data class AttractionsResponse(
     val _embedded: EmbeddedResponse?,

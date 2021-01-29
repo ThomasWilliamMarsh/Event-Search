@@ -1,7 +1,7 @@
 package info.tommarsh.eventsearch.core.data.attractions
 
 import androidx.paging.PagingSource
-import info.tommarsh.eventsearch.domain.AttractionModel
+import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionModel
 
 interface AttractionsRepository {
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCase
 import info.tommarsh.eventsearch.core.data.likes.LikesRepository
-import info.tommarsh.eventsearch.domain.LikedAttractionModel
+import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.fetch
 import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.model.toViewModel

@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.domain
+package info.tommarsh.eventsearch.core.data.events.model.domain
 
 data class EventModel(
     val id: String,

@@ -1,8 +1,8 @@
-package info.tommarsh.eventsearch.core.data.events.model
+package info.tommarsh.eventsearch.core.data.events.model.data
 
 data class EventResponse(
-        val _embedded: Embedded,
-        val page: Page
+    val _embedded: Embedded,
+    val page: Page
 )
 
 data class Embedded(
@@ -17,15 +17,15 @@ data class Page(
 )
 
 data class Event(
-        val name: String,
-        val id: String,
-        val info: String?,
-        val url: String,
-        val promoter: Promoter?,
-        val images: List<Images>,
-        val sales: Sales,
-        val dates: Dates,
-        val _embedded: EmbeddedEvent
+    val name: String,
+    val id: String,
+    val info: String?,
+    val url: String,
+    val promoter: Promoter?,
+    val images: List<Images>,
+    val sales: Sales,
+    val dates: Dates,
+    val _embedded: EmbeddedEvent
 )
 
 data class EmbeddedEvent(
@@ -43,14 +43,14 @@ data class Images(
 )
 
 data class Sales(
-        val public: Public?,
-        val presales: List<Presales>?
+    val public: Public?,
+    val presales: List<Presales>?
 )
 
 data class Dates(
-        val initialStartDate: InitialStartDate?,
-        val timezone: String?,
-        val spanMultipleDays: Boolean
+    val initialStartDate: InitialStartDate?,
+    val timezone: String?,
+    val spanMultipleDays: Boolean
 )
 
 data class Public(

@@ -1,7 +1,10 @@
 package info.tommarsh.eventsearch.core.data.attractions.model
 
+import info.tommarsh.eventsearch.core.data.attractions.model.data.AttractionResponse
+import info.tommarsh.eventsearch.core.data.attractions.model.data.AttractionsResponse
+import info.tommarsh.eventsearch.core.data.attractions.model.data.ImageResponse
 import info.tommarsh.eventsearch.core.util.ScreenWidthResolver
-import info.tommarsh.eventsearch.domain.AttractionModel
+import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionModel
 
 private const val RATIO_16_9 = "16_9"
 private const val RATIO_3_2 = "3_2"
@@ -31,6 +34,6 @@ private fun List<ImageResponse>.getLargestImage(
     ratio: String
 ): String {
     val image = firstOrNull { it.ratio == ratio && it.width >= screenWidthResolver.get() }
-        ?: filter { it.ratio == ratio }.maxBy { it.width }
+        ?: filter { it.ratio == ratio }.maxByOrNull { it.width }
     return image?.url.orEmpty()
 }

@@ -22,7 +22,7 @@ import attractionDetail
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.domain.LikedAttractionModel
+import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
 import info.tommarsh.eventsearch.model.EventViewModel
 import info.tommarsh.eventsearch.model.FetchState
@@ -122,10 +122,12 @@ private fun PosterImage(
     ) {
         CoilImage(
             data = attraction.detailImage.orEmpty(),
+            contentDescription = attraction.name,
             onRequestCompleted = { setLoaded(true) },
             contentScale = ContentScale.FillWidth,
             fadeIn = true
         )
+
         Box(
             modifier = Modifier
                 .matchParentSize()
@@ -150,6 +152,7 @@ private fun PosterImage(
         }
         Icon(
             imageVector = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
+            contentDescription = stringResource(R.string.favourite),
             tint = Color.White,
             modifier = Modifier.align(Alignment.TopEnd)
                 .padding(16.dp)

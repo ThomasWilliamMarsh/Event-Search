@@ -1,8 +1,8 @@
 package info.tommarsh.eventsearch.model
 
-import info.tommarsh.eventsearch.domain.AttractionDetailsModel
-import info.tommarsh.eventsearch.domain.AttractionModel
-import info.tommarsh.eventsearch.domain.LikedAttractionModel
+import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionDetailsModel
+import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionModel
+import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 
 internal data class AttractionViewModel(
     val name: String,
