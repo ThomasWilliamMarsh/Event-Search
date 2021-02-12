@@ -27,11 +27,11 @@ internal fun SearchCard(
             contentDescription = attraction.name
         )
 
-        Providers(AmbientContentAlpha provides ContentAlpha.high) {
+        Providers(LocalContentAlpha provides ContentAlpha.high) {
             Text(text = attraction.name, style = MaterialTheme.typography.h4)
         }
 
-        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+        Providers(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
                 text = stringResource(
                     id = R.string.number_events,

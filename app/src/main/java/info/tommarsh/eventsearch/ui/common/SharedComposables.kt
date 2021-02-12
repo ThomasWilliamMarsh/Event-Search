@@ -30,7 +30,7 @@ internal fun TopToolbar(
         title = {
             Text(
                 text = title,
-                color = AmbientContentColor.current,
+                color = LocalContentColor.current,
                 style = MaterialTheme.typography.h6
             )
         },
@@ -80,6 +80,7 @@ internal fun EventSearchVerticalCard(
 
 @Composable
 internal fun EventSearchHorizontalCard(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     content: @Composable () -> Unit
 
@@ -89,6 +90,7 @@ internal fun EventSearchHorizontalCard(
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable(onClick = onClick)
+            .then(modifier)
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             content()

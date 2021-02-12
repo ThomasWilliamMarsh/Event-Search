@@ -37,6 +37,7 @@ internal fun SearchScreen(
     attractionsFlow: Flow<PagingData<AttractionViewModel>>,
     categoriesFlow: Flow<FetchState<List<CategoryViewModel>>>,
     likedItemsFlow: Flow<List<LikedAttractionModel>>,
+    deleteLikedAttraction: (LikedAttractionModel) -> Unit,
     navigateToEvent: (id: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit,
     setCurrentQuery: (query: String) -> Unit
@@ -49,6 +50,7 @@ internal fun SearchScreen(
         attractions = attractions,
         categoryState = categories,
         likedAttractions = likedItems,
+        deleteLikedAttraction = deleteLikedAttraction,
         onSearch = setCurrentQuery,
         navigateToAttraction = navigateToEvent,
         navigateToCategory = navigateToCategory
@@ -60,6 +62,7 @@ private fun SearchScreen(
     attractions: LazyPagingItems<AttractionViewModel>,
     categoryState: FetchState<List<CategoryViewModel>>,
     likedAttractions: List<LikedAttractionModel>,
+    deleteLikedAttraction: (LikedAttractionModel) -> Unit,
     onSearch: (query: String) -> Unit,
     navigateToAttraction: (id: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit,
@@ -88,7 +91,8 @@ private fun SearchScreen(
                 items(likedAttractions) { attraction ->
                     LikedAttractionCard(
                         likedModel = attraction,
-                        navigateToAttraction = navigateToAttraction
+                        navigateToAttraction = navigateToAttraction,
+                        deleteLikedAttraction = deleteLikedAttraction
                     )
                 }
             }

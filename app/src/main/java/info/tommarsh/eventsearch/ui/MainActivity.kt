@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                     likedItemsFlow = viewModel.likedAttractions,
                     navigateToEvent = { id -> controller.navigate("Event/$id") },
                     navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") },
+                    deleteLikedAttraction = viewModel::deleteLikedAttraction,
                     setCurrentQuery = setCurrentQuery
                 )
             }
