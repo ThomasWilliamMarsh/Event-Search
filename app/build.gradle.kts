@@ -46,6 +46,7 @@ android {
     }
 
     composeOptions {
+        kotlinCompilerVersion =  "1.4.30"
         kotlinCompilerExtensionVersion = Versions.compose
     }
 }
@@ -60,12 +61,16 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}")
 
     //Android
+    implementation("androidx.activity:activity-compose:${Versions.activity}")
+    implementation("androidx.activity:activity-ktx:${Versions.activity}")
     implementation("androidx.core:core-ktx:${Versions.coreKtx}")
     implementation("androidx.appcompat:appcompat:${Versions.appCompat}")
     implementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
     implementation("com.google.android.material:material:${Versions.material}")
     implementation("androidx.paging:paging-compose:${Versions.pagingCompose}")
+    implementation("androidx.hilt:hilt-navigation:${Versions.hiltJetpack}")
+    implementation("androidx.hilt:hilt-navigation-fragment:${Versions.hiltJetpack}")
     kapt("androidx.room:room-compiler:${Versions.room}")
 
     //Data
@@ -88,16 +93,16 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:${Versions.hiltJetpack}")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
         // Treat all Kotlin warnings as errors
         freeCompilerArgs = listOf(
             "-Xopt-in=kotlin.RequiresOptIn",
             "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-Xopt-in=androidx.compose.foundation.lazy.ExperimentalLazyDsl",
-            "-Xopt-in=kotlin.Experimental",
             "-Xallow-jvm-ir-dependencies",
-            "-Xskip-prerelease-check"
+            "-Xskip-prerelease-check",
+            "-Xopt-in=kotlin.Experimental"
         )
         // Set JVM target to 1.8
         jvmTarget = Versions.java

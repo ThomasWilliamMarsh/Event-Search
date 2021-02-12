@@ -17,11 +17,11 @@ object Compose {
         "androidx.compose.material:material-icons-core:${Versions.compose}",
         "androidx.compose.material:material-icons-extended:${Versions.compose}",
         "androidx.compose.runtime:runtime-rxjava2:${Versions.compose}",
-        "androidx.compose.runtime:runtime-saved-instance-state:${Versions.compose}",
         "androidx.compose.ui:ui-text:${Versions.compose}",
         "androidx.compose.ui:ui-unit:${Versions.compose}",
         "androidx.compose.ui:ui-util:${Versions.compose}",
-        "androidx.navigation:navigation-compose:${Versions.composeNavigation}"
+        "androidx.navigation:navigation-compose:${Versions.composeNavigation}",
+        "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}"
 
     )
 }
