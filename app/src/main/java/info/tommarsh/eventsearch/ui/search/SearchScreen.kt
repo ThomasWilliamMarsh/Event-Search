@@ -4,9 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,6 +28,7 @@ import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
@@ -69,18 +68,12 @@ private fun SearchScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val drawerState = scaffoldState.drawerState
-    val toggleDrawer = {
-        when (drawerState.value) {
-            DrawerValue.Closed -> drawerState.open()
-            DrawerValue.Open -> drawerState.close()
-        }
-    }
 
     Scaffold(
         topBar = {
             SearchToolbar(
                 categoryState,
-                toggleDrawer,
+                drawerState,
                 onSearch,
                 navigateToCategory
             )
@@ -97,28 +90,27 @@ private fun SearchScreen(
                 }
             }
         },
-        scaffoldState = scaffoldState,
-        bodyContent = {
-            WithPagingRefreshState(
-                items = attractions,
-                onLoading = {
-                    CenteredCircularProgress()
-                },
-                onError = {
-                    ErrorSnackbar(
-                        snackbarHostState = scaffoldState.snackbarHostState,
-                        message = stringResource(id = R.string.error_loading_events)
-                    )
-                },
-                onLoaded = {
-                    SearchList(
-                        attractions = attractions,
-                        navigateToAttraction = navigateToAttraction
-                    )
-                }
-            )
-        }
-    )
+        scaffoldState = scaffoldState
+    ) {
+        WithPagingRefreshState(
+            items = attractions,
+            onLoading = {
+                CenteredCircularProgress()
+            },
+            onError = {
+                ErrorSnackbar(
+                    snackbarHostState = scaffoldState.snackbarHostState,
+                    message = stringResource(id = R.string.error_loading_events)
+                )
+            },
+            onLoaded = {
+                SearchList(
+                    attractions = attractions,
+                    navigateToAttraction = navigateToAttraction
+                )
+            }
+        )
+    }
 }
 
 @Composable

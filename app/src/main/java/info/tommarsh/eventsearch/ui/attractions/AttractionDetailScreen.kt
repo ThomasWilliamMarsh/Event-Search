@@ -63,22 +63,20 @@ private fun AttractionDetailScreen(
     toggleLike: (attraction: LikedAttractionModel) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    Scaffold(scaffoldState = scaffoldState,
-        bodyContent = {
-            WithFetchState(
-                state = attractionState,
-                onFailure = {
-                    ErrorSnackbar(
-                        snackbarHostState = scaffoldState.snackbarHostState,
-                        message = stringResource(id = R.string.error_loading_event_details)
-                    )
-                },
-                onSuccess = { data ->
-                    AttractionDetailContent(data, isLiked, toggleLike)
-                }
-            )
-        }
-    )
+    Scaffold(scaffoldState = scaffoldState) {
+        WithFetchState(
+            state = attractionState,
+            onFailure = {
+                ErrorSnackbar(
+                    snackbarHostState = scaffoldState.snackbarHostState,
+                    message = stringResource(id = R.string.error_loading_event_details)
+                )
+            },
+            onSuccess = { data ->
+                AttractionDetailContent(data, isLiked, toggleLike)
+            }
+        )
+    }
 }
 
 @Composable
@@ -154,7 +152,8 @@ private fun PosterImage(
             imageVector = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
             contentDescription = stringResource(R.string.favourite),
             tint = Color.White,
-            modifier = Modifier.align(Alignment.TopEnd)
+            modifier = Modifier
+                .align(Alignment.TopEnd)
                 .padding(16.dp)
                 .statusBarsPadding()
                 .clickable(onClick = { toggleLike(attraction.toLikedAttraction()) })
@@ -170,7 +169,8 @@ private fun UnderlineTitle(
     Column(modifier = modifier) {
         Text(text = text.capitalize(Locale.ENGLISH), style = MaterialTheme.typography.h5)
         Box(
-            Modifier.background(color = MaterialTheme.colors.onBackground)
+            Modifier
+                .background(color = MaterialTheme.colors.onBackground)
                 .height(2.dp)
                 .width(24.dp)
         )
@@ -196,22 +196,21 @@ private fun CalendarList(events: List<EventViewModel>) {
 
 @Composable
 private fun CalendarItem(event: EventViewModel) {
-
-    Providers(AmbientTextStyle provides MaterialTheme.typography.body1) {
+    CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
         Row {
             Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
-                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                     Text(text = event.month, textAlign = TextAlign.Center)
                 }
-                Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                     Text(text = event.day, textAlign = TextAlign.Center)
                 }
             }
             Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
-                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                     Text(text = event.dowAndTime)
                 }
-                Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                     Text(text = event.venue)
                 }
             }

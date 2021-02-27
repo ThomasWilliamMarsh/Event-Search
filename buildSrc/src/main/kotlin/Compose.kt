@@ -3,7 +3,6 @@ object Compose {
     val ComposeDependencies = listOf(
         "dev.chrisbanes.accompanist:accompanist-insets:${Versions.accompanist}",
         "dev.chrisbanes.accompanist:accompanist-coil:${Versions.accompanist}",
-        "androidx.compose.runtime:runtime-dispatch:${Versions.compose}",
         "androidx.compose.runtime:runtime:${Versions.compose}",
         "androidx.compose.animation:animation:${Versions.compose}",
         "androidx.compose.animation:animation-core:${Versions.compose}",

@@ -3,7 +3,7 @@ package info.tommarsh.eventsearch.ui.search.component
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,11 +27,11 @@ internal fun SearchCard(
             contentDescription = attraction.name
         )
 
-        Providers(LocalContentAlpha provides ContentAlpha.high) {
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
             Text(text = attraction.name, style = MaterialTheme.typography.h4)
         }
 
-        Providers(LocalContentAlpha provides ContentAlpha.medium) {
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
                 text = stringResource(
                     id = R.string.number_events,
