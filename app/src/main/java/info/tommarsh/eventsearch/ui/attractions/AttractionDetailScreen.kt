@@ -1,9 +1,12 @@
 package info.tommarsh.eventsearch.ui.attractions
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
@@ -31,6 +34,7 @@ import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.WithFetchState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
@@ -79,29 +83,35 @@ private fun AttractionDetailScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AttractionDetailContent(
     attraction: AttractionDetailsViewModel,
     isLiked: Boolean,
     toggleLike: (id: LikedAttractionModel) -> Unit
 ) {
-    LazyColumn {
+    val listState = rememberLazyListState()
+
+    LazyColumn(state = listState) {
         item {
             PosterImage(
-                modifier = Modifier.padding(bottom = 24.dp),
                 attraction = attraction,
                 isLiked = isLiked,
                 toggleLike = toggleLike
             )
         }
-        item {
-            UnderlineTitle(
-                text = stringResource(id = R.string.event_details_title),
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 18.dp)
-            )
-        }
+
+        stickyHeader { MenuStrip(listState) }
+
+        item { UnderlineTitle(text = stringResource(id = R.string.event_details_title)) }
 
         item { CalendarList(attraction.events) }
+
+        item { UnderlineTitle(text = stringResource(id = R.string.about_attraction_title)) }
+
+        item { AboutExcerpt(attraction.description ?: "No description") }
+
+        item { UnderlineTitle(text = stringResource(id = R.string.photos_title)) }
     }
 }
 
@@ -162,11 +172,49 @@ private fun PosterImage(
 }
 
 @Composable
+private fun MenuStrip(listState: LazyListState) {
+    val (selectedIndex, setSelectedIndex) = remember { mutableStateOf(0) }
+    val scope = rememberCoroutineScope()
+
+    TabRow(
+        selectedTabIndex = selectedIndex,
+        backgroundColor = MaterialTheme.colors.onBackground,
+        contentColor = MaterialTheme.colors.background
+    ) {
+        Tab(selected = selectedIndex == 0,
+            onClick = {
+            setSelectedIndex(0)
+            scope.launch { listState.animateScrollToItem(1) }
+        }) {
+            Text(text = stringResource(id = R.string.event_details_title), modifier = Modifier
+                .padding(8.dp)
+                .statusBarsPadding())
+        }
+        Tab(selected = selectedIndex == 1, onClick = {
+            setSelectedIndex(1)
+            scope.launch { listState.animateScrollToItem(4) }
+        }) {
+            Text(text = stringResource(id = R.string.about_attraction_title), modifier = Modifier
+                .padding(8.dp)
+                .statusBarsPadding())
+        }
+        Tab(selected = selectedIndex == 2, onClick = {
+            setSelectedIndex(2)
+            scope.launch { listState.animateScrollToItem(6) }
+        }) {
+            Text(text = stringResource(id = R.string.photos_title), modifier = Modifier
+                .padding(8.dp)
+                .statusBarsPadding())
+        }
+    }
+}
+
+@Composable
 private fun UnderlineTitle(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.then(Modifier.padding(16.dp))) {
         Text(text = text.capitalize(Locale.ENGLISH), style = MaterialTheme.typography.h5)
         Box(
             Modifier
@@ -216,6 +264,14 @@ private fun CalendarItem(event: EventViewModel) {
             }
         }
     }
+}
+
+@Composable
+private fun AboutExcerpt(description: String) {
+    Text(
+        text = description,
+        modifier = Modifier.padding(16.dp)
+    )
 }
 
 @Preview

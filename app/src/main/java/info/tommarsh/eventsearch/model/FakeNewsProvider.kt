@@ -11,6 +11,7 @@ internal val familyCategory = CategoryViewModel(id = "", name = "Family & Attrac
 internal val attraction = AttractionViewModel(
     name = "The Book of Mormon",
     id = "123",
+    description = "Great fun for all the family... maybe",
     type = "event",
     url = "https://www.ticketmaster.co.uk/event/09005745E5F54CFA",
     searchImage = "https://bookofmormonbroadway.com/images/responsive/mobile/title-treatment-alt-nosp.png",
@@ -24,6 +25,7 @@ internal val attractionDetail = AttractionDetailsViewModel(
     id = "123",
     name = "The Book of Mormon",
     genre = "Theatre",
+    description= "Great fun for all the family... maybe",
     numberOfEvents = 1,
     detailImage = "https://bookofmormonbroadway.com/images/responsive/mobile/title-treatment-alt-nosp.png",
     events = listOf(

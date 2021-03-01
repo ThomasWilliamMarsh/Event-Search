@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
@@ -29,8 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setDecorFitsSystemWindows(window, false)
         setContent {
             ProvideWindowInsets {
                 MainComposable()
@@ -50,9 +50,9 @@ class MainActivity : AppCompatActivity() {
                 val (currentQuery, setCurrentQuery) = remember { mutableStateOf("") }
 
                 SearchScreen(
-                    attractionsFlow = viewModel.getAttractions(currentQuery),
-                    categoriesFlow = viewModel.categoriesState,
-                    likedItemsFlow = viewModel.likedAttractions,
+                    attractionsFlow = viewModel.attractionsFlow(currentQuery),
+                    categoriesFlow = viewModel.categoriesFlow,
+                    likedItemsFlow = viewModel.likedAttractionsFlow,
                     navigateToEvent = { id -> controller.navigate("Event/$id") },
                     navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") },
                     deleteLikedAttraction = viewModel::deleteLikedAttraction,
@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity() {
                 val eventId = backStackEntry.stringArg("id")
 
                 AttractionDetailScreen(
-                    fetchFlow = viewModel.fetchStateFlowFor(eventId),
-                    likedFlow = viewModel.likedStateFlowFor(eventId),
+                    fetchFlow = viewModel.attractionFlow(eventId),
+                    likedFlow = viewModel.likedFlow(eventId),
                     onLiked = viewModel::addLikedAttraction,
                     onUnliked = viewModel::removeLikedAttraction
                 )
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
                 CategoryScreen(
                     categoryName = categoryName,
-                    attractionsFlow = viewModel.getAttractions(categoryId),
+                    attractionsFlow = viewModel.attractionsFlow(categoryId),
                     navigateToEvent = { id -> controller.navigate("Event/$id") }
                 )
             }

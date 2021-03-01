@@ -20,6 +20,8 @@ internal fun AttractionResponse.toDomainModel(screenWidthResolver: ScreenWidthRe
         name = name,
         type = type,
         id = id,
+        description = description,
+        additionalInfo = additionalInfo,
         url = url.orEmpty(),
         locale = locale,
         genre = classifications.firstOrNull()?.genre?.name,

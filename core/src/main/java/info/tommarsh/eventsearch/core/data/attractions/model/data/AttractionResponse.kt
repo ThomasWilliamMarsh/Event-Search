@@ -23,6 +23,8 @@ data class AttractionResponse(
     val test: Boolean,
     val url: String?,
     val locale: String,
+    val description: String?,
+    val additionalInfo: String?,
     val images: List<ImageResponse>,
     val classifications: List<ClassificationResponse>,
     val upcomingEvents: UpcomingEventsResponse,

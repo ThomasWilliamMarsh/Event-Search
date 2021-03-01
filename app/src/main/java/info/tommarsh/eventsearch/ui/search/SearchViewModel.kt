@@ -34,17 +34,17 @@ internal class SearchViewModel @Inject constructor(
     private val pagingConfig: PagingConfig,
 ) : ViewModel() {
 
-    private val _categoriesState =
+    private val _categoriesFlow =
         MutableStateFlow<FetchState<List<CategoryViewModel>>>(FetchState.Loading(true))
-    val categoriesState: StateFlow<FetchState<List<CategoryViewModel>>> = _categoriesState
+    val categoriesFlow: StateFlow<FetchState<List<CategoryViewModel>>> = _categoriesFlow
 
-    val likedAttractions = likesRepository.getLikedAttractions()
+    val likedAttractionsFlow = likesRepository.getLikedAttractions()
 
     init {
         getCategories()
     }
 
-    fun getAttractions(query: String = ""): Flow<PagingData<AttractionViewModel>> {
+    fun attractionsFlow(query: String = ""): Flow<PagingData<AttractionViewModel>> {
         return Pager(
             config = pagingConfig,
             initialKey = 0
@@ -61,6 +61,6 @@ internal class SearchViewModel @Inject constructor(
     }
 
     private fun getCategories() = viewModelScope.launch(Dispatchers.IO) {
-        _categoriesState.value = fetch { categoryRepository.getCategories().toViewModel() }
+        _categoriesFlow.value = fetch { categoryRepository.getCategories().toViewModel() }
     }
 }

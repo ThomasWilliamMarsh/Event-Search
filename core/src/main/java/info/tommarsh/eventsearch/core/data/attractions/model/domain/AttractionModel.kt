@@ -5,6 +5,8 @@ data class AttractionModel(
     val id: String,
     val type: String,
     val url: String,
+    val additionalInfo: String?,
+    val description: String?,
     val searchImage: String,
     val detailImage: String,
     val locale: String,
