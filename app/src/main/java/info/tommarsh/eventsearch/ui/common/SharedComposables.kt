@@ -172,9 +172,11 @@ internal fun <T : Any> WithPagingRefreshState(
     onLoaded: @Composable () -> Unit = {}
 ) {
 
-    Surface(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
         when (items.loadState.refresh) {
             is LoadState.Loading -> onLoading()
             is LoadState.Error -> onError()

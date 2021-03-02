@@ -102,15 +102,9 @@ private fun AttractionDetailContent(
             )
         }
 
-        stickyHeader { MenuStrip(listState) }
-
         item { UnderlineTitle(text = stringResource(id = R.string.event_details_title)) }
 
         item { CalendarList(attraction.events) }
-
-        item { UnderlineTitle(text = stringResource(id = R.string.about_attraction_title)) }
-
-        item { AboutExcerpt(attraction.description ?: "No description") }
     }
 }
 
@@ -121,7 +115,6 @@ private fun PosterImage(
     isLiked: Boolean,
     toggleLike: (attraction: LikedAttractionModel) -> Unit
 ) {
-    val (loaded, setLoaded) = remember { mutableStateOf(false) }
     Box(
         modifier = modifier
             .wrapContentHeight()
@@ -130,7 +123,6 @@ private fun PosterImage(
         CoilImage(
             data = attraction.detailImage.orEmpty(),
             contentDescription = attraction.name,
-            onRequestCompleted = { setLoaded(true) },
             contentScale = ContentScale.FillWidth,
             fadeIn = true
         )
@@ -145,17 +137,14 @@ private fun PosterImage(
                 .padding(start = 16.dp, bottom = 16.dp)
                 .align(Alignment.BottomStart)
         ) {
-            if (loaded) {
-                Text(
-                    text = attraction.genre,
-                    style = MaterialTheme.typography.subtitle2.copy(color = Color.White)
-                )
-                Text(
-                    text = attraction.name,
-                    style = MaterialTheme.typography.h4.copy(color = Color.White)
-                )
-
-            }
+            Text(
+                text = attraction.genre,
+                style = MaterialTheme.typography.subtitle2.copy(color = Color.White)
+            )
+            Text(
+                text = attraction.name,
+                style = MaterialTheme.typography.h4.copy(color = Color.White)
+            )
         }
         Icon(
             imageVector = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
@@ -167,40 +156,6 @@ private fun PosterImage(
                 .statusBarsPadding()
                 .clickable(onClick = { toggleLike(attraction.toLikedAttraction()) })
         )
-    }
-}
-
-@Composable
-private fun MenuStrip(listState: LazyListState) {
-    val (selectedIndex, setSelectedIndex) = remember { mutableStateOf(0) }
-    val scope = rememberCoroutineScope()
-
-    TabRow(
-        selectedTabIndex = selectedIndex,
-        backgroundColor = MaterialTheme.colors.onBackground,
-        contentColor = MaterialTheme.colors.background
-    ) {
-        Tab(selected = selectedIndex == 0,
-            onClick = {
-                setSelectedIndex(0)
-                scope.launch { listState.animateScrollToItem(1) }
-            }) {
-            Text(
-                text = stringResource(id = R.string.event_details_title), modifier = Modifier
-                    .padding(8.dp)
-                    .statusBarsPadding()
-            )
-        }
-        Tab(selected = selectedIndex == 1, onClick = {
-            setSelectedIndex(1)
-            scope.launch { listState.animateScrollToItem(4) }
-        }) {
-            Text(
-                text = stringResource(id = R.string.about_attraction_title), modifier = Modifier
-                    .padding(8.dp)
-                    .statusBarsPadding()
-            )
-        }
     }
 }
 
@@ -288,14 +243,6 @@ private fun RowWithNoDate(reason: String, venue: String) {
             }
         }
     }
-}
-
-@Composable
-private fun AboutExcerpt(description: String) {
-    Text(
-        text = description,
-        modifier = Modifier.padding(16.dp)
-    )
 }
 
 @Preview
