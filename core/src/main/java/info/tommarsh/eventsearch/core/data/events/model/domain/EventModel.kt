@@ -4,11 +4,21 @@ data class EventModel(
     val id: String,
     val name: String,
     val venue: String,
-    val initialStartDateTime: String?,
+    val dates: DatesModel,
     val promoter: PromoterModel?,
     val presales: List<PresalesModel>?,
     val publicSales: PublicModel?,
     val imageUrl: String
+)
+
+data class DatesModel(
+    val start: StartModel
+)
+
+data class StartModel(
+    val dateTime: String?,
+    val dateTBD: Boolean,
+    val dateTBA: Boolean,
 )
 
 data class PromoterModel(

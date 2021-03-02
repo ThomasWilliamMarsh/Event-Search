@@ -1,6 +1,7 @@
 import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
+import info.tommarsh.eventsearch.model.EventDateViewModel
 import info.tommarsh.eventsearch.model.EventViewModel
 
 internal val musicCategory = CategoryViewModel(id = "", name = "Music")
@@ -25,10 +26,13 @@ internal val attractionDetail = AttractionDetailsViewModel(
     id = "123",
     name = "The Book of Mormon",
     genre = "Theatre",
-    description= "Great fun for all the family... maybe",
+    description = "Great fun for all the family... maybe",
     numberOfEvents = 1,
     detailImage = "https://bookofmormonbroadway.com/images/responsive/mobile/title-treatment-alt-nosp.png",
     events = listOf(
-        EventViewModel("Feb", "05", "Friday - 11:00", "Arrowhead Stadium")
+        EventViewModel(
+            date = EventDateViewModel.Date("Feb", "05", "Friday - 11:00"),
+            venue = "Arrowhead Stadium"
+        )
     )
 )

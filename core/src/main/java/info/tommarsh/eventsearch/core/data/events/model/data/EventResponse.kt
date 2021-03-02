@@ -1,22 +1,22 @@
 package info.tommarsh.eventsearch.core.data.events.model.data
 
-data class EventResponse(
+internal data class EventResponse(
     val _embedded: Embedded,
     val page: Page
 )
 
-data class Embedded(
+internal data class Embedded(
     val events: List<Event>
 )
 
-data class Page(
+internal data class Page(
     val size: Int,
     val totalElements: Int,
     val totalPages: Int,
     val number: Int
 )
 
-data class Event(
+internal data class Event(
     val name: String,
     val id: String,
     val info: String?,
@@ -28,13 +28,13 @@ data class Event(
     val _embedded: EmbeddedEvent
 )
 
-data class EmbeddedEvent(
+internal data class EmbeddedEvent(
     val venues: List<Venue>
 )
 
-data class Venue(val name: String)
+internal data class Venue(val name: String)
 
-data class Images(
+internal data class Images(
     val ratio: String,
     val url: String,
     val width: Int,
@@ -42,38 +42,36 @@ data class Images(
     val fallback: Boolean
 )
 
-data class Sales(
+internal data class Sales(
     val public: Public?,
     val presales: List<Presales>?
 )
 
-data class Dates(
-    val initialStartDate: InitialStartDate?,
-    val timezone: String?,
-    val spanMultipleDays: Boolean
+internal data class Dates(
+    val start: Start
 )
 
-data class Public(
+internal data class Start(
+    val dateTime: String?,
+    val dateTBD: Boolean,
+    val dateTBA: Boolean,
+)
+
+internal data class Public(
     val startDateTime: String?,
     val startTBD: Boolean,
     val startTBA: Boolean,
     val endDateTime: String?
 )
 
-data class Presales(
+internal data class Presales(
     val startDateTime: String?,
     val endDateTime: String?,
     val name: String
 )
 
-data class Promoter(
+internal data class Promoter(
     val id: String,
     val name: String
-)
-
-data class InitialStartDate(
-    val localDate: String,
-    val localTime: String,
-    val dateTime: String
 )
 

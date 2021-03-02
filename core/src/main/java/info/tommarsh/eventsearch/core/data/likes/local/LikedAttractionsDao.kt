@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface LikedAttractionsDao {
 
     @Query("SELECT * FROM LikedAttraction")
-    fun getLikedAttractions() : Flow<List<LikedAttraction>>
+    fun getLikedAttractions(): Flow<List<LikedAttraction>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addLikedAttraction(attraction: LikedAttraction)

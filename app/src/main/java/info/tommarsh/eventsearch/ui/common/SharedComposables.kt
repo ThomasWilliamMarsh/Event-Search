@@ -139,14 +139,16 @@ internal fun <T> WithFetchState(
 @Composable
 private fun RetryView(onRetry: () -> Unit) {
     Column(
-        modifier = Modifier.background(MaterialTheme.colors.error)
+        modifier = Modifier
+            .background(MaterialTheme.colors.error)
             .padding(top = 16.dp)
             .navigationBarsPadding()
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
         Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
                 .padding(bottom = 8.dp),
             text = stringResource(id = R.string.error_loading_page),
             style = MaterialTheme.typography.button.copy(color = MaterialTheme.colors.onError),
@@ -170,7 +172,9 @@ internal fun <T : Any> WithPagingRefreshState(
     onLoaded: @Composable () -> Unit = {}
 ) {
 
-    Surface(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+    Surface(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()) {
         when (items.loadState.refresh) {
             is LoadState.Loading -> onLoading()
             is LoadState.Error -> onError()

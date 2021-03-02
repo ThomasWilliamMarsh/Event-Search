@@ -76,7 +76,8 @@ private fun CategoryList(
     navigateToAttraction: (id: String) -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier.statusBarsPadding()
+        modifier = Modifier
+            .statusBarsPadding()
             .fillMaxWidth()
             .fillMaxHeight()
     ) {

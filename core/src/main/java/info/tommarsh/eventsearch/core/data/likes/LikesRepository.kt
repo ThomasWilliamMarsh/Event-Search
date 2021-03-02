@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LikesRepository {
 
-    fun getLikedAttractions() : Flow<List<LikedAttractionModel>>
+    fun getLikedAttractions(): Flow<List<LikedAttractionModel>>
 
     suspend fun addLikedAttraction(attraction: LikedAttractionModel)
 

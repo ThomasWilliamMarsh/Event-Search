@@ -53,7 +53,8 @@ internal fun LikedAttractionCard(
                 EndToStart -> Alignment.CenterEnd
             }
             Box(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
                     .background(color)
                     .padding(16.dp),
                 contentAlignment = alignment
@@ -74,7 +75,9 @@ private fun DismissContent(
         onClick = { navigateToAttraction(likedModel.id) }) {
         Card(
             elevation = 8.dp,
-            modifier = Modifier.width(128.dp).wrapContentHeight()
+            modifier = Modifier
+                .width(128.dp)
+                .wrapContentHeight()
         ) {
             CoilImage(
                 likedModel.imageUrl,

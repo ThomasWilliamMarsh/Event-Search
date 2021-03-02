@@ -6,5 +6,5 @@ import info.tommarsh.eventsearch.core.data.likes.model.data.LikedAttraction
 
 @Database(entities = [LikedAttraction::class], version = 1)
 internal abstract class LikesDatabase : RoomDatabase() {
-    abstract fun likedAttractionsDao() : LikedAttractionsDao
+    abstract fun likedAttractionsDao(): LikedAttractionsDao
 }

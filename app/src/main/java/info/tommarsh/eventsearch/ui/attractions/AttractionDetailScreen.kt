@@ -26,9 +26,10 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
+import info.tommarsh.eventsearch.model.*
 import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
+import info.tommarsh.eventsearch.model.EventDateViewModel
 import info.tommarsh.eventsearch.model.EventViewModel
-import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.model.toLikedAttraction
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
@@ -110,8 +111,6 @@ private fun AttractionDetailContent(
         item { UnderlineTitle(text = stringResource(id = R.string.about_attraction_title)) }
 
         item { AboutExcerpt(attraction.description ?: "No description") }
-
-        item { UnderlineTitle(text = stringResource(id = R.string.photos_title)) }
     }
 }
 
@@ -183,28 +182,24 @@ private fun MenuStrip(listState: LazyListState) {
     ) {
         Tab(selected = selectedIndex == 0,
             onClick = {
-            setSelectedIndex(0)
-            scope.launch { listState.animateScrollToItem(1) }
-        }) {
-            Text(text = stringResource(id = R.string.event_details_title), modifier = Modifier
-                .padding(8.dp)
-                .statusBarsPadding())
+                setSelectedIndex(0)
+                scope.launch { listState.animateScrollToItem(1) }
+            }) {
+            Text(
+                text = stringResource(id = R.string.event_details_title), modifier = Modifier
+                    .padding(8.dp)
+                    .statusBarsPadding()
+            )
         }
         Tab(selected = selectedIndex == 1, onClick = {
             setSelectedIndex(1)
             scope.launch { listState.animateScrollToItem(4) }
         }) {
-            Text(text = stringResource(id = R.string.about_attraction_title), modifier = Modifier
-                .padding(8.dp)
-                .statusBarsPadding())
-        }
-        Tab(selected = selectedIndex == 2, onClick = {
-            setSelectedIndex(2)
-            scope.launch { listState.animateScrollToItem(6) }
-        }) {
-            Text(text = stringResource(id = R.string.photos_title), modifier = Modifier
-                .padding(8.dp)
-                .statusBarsPadding())
+            Text(
+                text = stringResource(id = R.string.about_attraction_title), modifier = Modifier
+                    .padding(8.dp)
+                    .statusBarsPadding()
+            )
         }
     }
 }
@@ -230,7 +225,7 @@ private fun CalendarList(events: List<EventViewModel>) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(start = 16.dp, end = 16.dp)
             .wrapContentHeight()
             .shadow(12.dp)
     ) {
@@ -244,23 +239,52 @@ private fun CalendarList(events: List<EventViewModel>) {
 
 @Composable
 private fun CalendarItem(event: EventViewModel) {
+    when (event.date) {
+        is EventDateViewModel.Date -> {
+            RowWithDate(date = event.date, venue = event.venue)
+        }
+        EventDateViewModel.TBA -> {
+            RowWithNoDate(reason = "TBA", venue = event.venue)
+        }
+        EventDateViewModel.TBC -> {
+            RowWithNoDate(reason = "TBC", venue = event.venue)
+        }
+    }
+}
+
+@Composable
+private fun RowWithDate(date: EventDateViewModel.Date, venue: String) {
     CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
         Row {
             Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = event.month, textAlign = TextAlign.Center)
+                    Text(text = date.month, textAlign = TextAlign.Center)
                 }
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-                    Text(text = event.day, textAlign = TextAlign.Center)
+                    Text(text = date.day, textAlign = TextAlign.Center)
                 }
             }
             Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = event.dowAndTime)
+                    Text(text = date.dowAndTime)
                 }
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-                    Text(text = event.venue)
+                    Text(text = venue)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RowWithNoDate(reason: String, venue: String) {
+    CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
+        Row {
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                Text(text = reason)
+            }
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
+                Text(text = venue)
             }
         }
     }

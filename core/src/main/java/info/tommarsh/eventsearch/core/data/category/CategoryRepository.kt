@@ -4,6 +4,6 @@ import info.tommarsh.eventsearch.core.data.category.model.domain.CategoryModel
 
 interface CategoryRepository {
 
-    fun getCategories() : List<CategoryModel>
+    fun getCategories(): List<CategoryModel>
 
 }
