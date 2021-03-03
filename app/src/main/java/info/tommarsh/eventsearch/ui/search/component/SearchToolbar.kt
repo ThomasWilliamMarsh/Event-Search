@@ -149,34 +149,3 @@ private fun ErrorText() {
         color = Color.Red
     )
 }
-
-@Preview
-@Composable
-private fun ToolbarFailingToLoadCategories() {
-    EventHomeTheme {
-        SearchToolbar(categoryState = FetchState.Failure(Throwable()),
-            drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-            navigateToCategory = { _, _ -> },
-            onSearch = {})
-    }
-}
-
-@Preview
-@Composable
-private fun ToolbarWithCategories() {
-    EventHomeTheme {
-        SearchToolbar(
-            categoryState = FetchState.Success(
-                data = listOf(
-                    musicCategory,
-                    sportCategory,
-                    artCategory,
-                    familyCategory
-                )
-            ),
-            drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
-            onSearch = {},
-            navigateToCategory = { _, _ -> },
-        )
-    }
-}

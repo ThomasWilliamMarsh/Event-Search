@@ -57,15 +57,3 @@ private fun PosterImage(url: String, contentDescription: String) {
         )
     }
 }
-
-@Preview
-@Composable
-private fun SampleAttractionItem() {
-
-    EventHomeTheme {
-        SearchCard(
-            attraction = attraction,
-            navigateToAttraction = {}
-        )
-    }
-}

@@ -27,10 +27,6 @@ internal data class AttractionDetailsViewModel(
     val events: List<EventViewModel>
 )
 
-internal fun List<AttractionModel>.toViewModel(): List<AttractionViewModel> {
-    return map { domain -> domain.toViewModel() }
-}
-
 internal fun AttractionModel.toViewModel(): AttractionViewModel {
     return AttractionViewModel(
         name = name,

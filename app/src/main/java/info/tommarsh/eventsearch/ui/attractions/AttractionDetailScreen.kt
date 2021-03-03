@@ -1,6 +1,5 @@
 package info.tommarsh.eventsearch.ui.attractions
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,9 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import attractionDetail
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
@@ -35,7 +32,6 @@ import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.WithFetchState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
@@ -256,29 +252,5 @@ private fun RowWithNoDate(reason: String, venue: String) {
                 Text(text = venue)
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AttractionScreenPreview() = AttractionDetailTheme {
-    AttractionDetailScreen(
-        attractionState = FetchState.Success(attractionDetail),
-        isLiked = true,
-        toggleLike = { })
-}
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    uiMode = UI_MODE_NIGHT_YES,
-)
-@Composable
-fun AttractionScreenPreviewNightMode() {
-    AttractionDetailTheme {
-        AttractionDetailScreen(
-            attractionState = FetchState.Success(attractionDetail),
-            isLiked = true,
-            toggleLike = { })
     }
 }
