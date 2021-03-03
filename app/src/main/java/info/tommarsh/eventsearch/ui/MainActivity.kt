@@ -32,9 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setDecorFitsSystemWindows(window, false)
         setContent {
-            ProvideWindowInsets {
-                MainComposable()
-            }
+            MainComposable()
         }
     }
 

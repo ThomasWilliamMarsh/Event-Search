@@ -1,11 +1,11 @@
 package info.tommarsh.eventsearch.ui.attractions
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -68,7 +68,10 @@ private fun AttractionDetailScreen(
     toggleLike: (attraction: LikedAttractionModel) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    Scaffold(scaffoldState = scaffoldState) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        modifier = Modifier.fillMaxHeight()
+    ) {
         WithFetchState(
             state = attractionState,
             onFailure = {
@@ -93,7 +96,10 @@ private fun AttractionDetailContent(
 ) {
     val listState = rememberLazyListState()
 
-    LazyColumn(state = listState) {
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.fillMaxHeight()
+    ) {
         item {
             PosterImage(
                 attraction = attraction,
@@ -211,7 +217,11 @@ private fun CalendarItem(event: EventViewModel) {
 private fun RowWithDate(date: EventDateViewModel.Date, venue: String) {
     CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
         Row {
-            Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 16.dp)
+                    .defaultMinSize(minWidth = 64.dp)
+            ) {
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                     Text(text = date.month, textAlign = TextAlign.Center)
                 }
@@ -234,9 +244,13 @@ private fun RowWithDate(date: EventDateViewModel.Date, venue: String) {
 @Composable
 private fun RowWithNoDate(reason: String, venue: String) {
     CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
-        Row {
+        Row(Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(text = reason)
+                Text(
+                    text = reason, modifier = Modifier
+                        .padding(end = 16.dp)
+                        .defaultMinSize(minWidth = 64.dp)
+                )
             }
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Text(text = venue)
@@ -245,14 +259,26 @@ private fun RowWithNoDate(reason: String, venue: String) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun TestImage() {
+fun AttractionScreenPreview() = AttractionDetailTheme {
+    AttractionDetailScreen(
+        attractionState = FetchState.Success(attractionDetail),
+        isLiked = true,
+        toggleLike = { })
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = UI_MODE_NIGHT_YES,
+)
+@Composable
+fun AttractionScreenPreviewNightMode() {
     AttractionDetailTheme {
-        PosterImage(
-            attraction = attractionDetail,
-            isLiked = false,
-            toggleLike = {}
-        )
+        AttractionDetailScreen(
+            attractionState = FetchState.Success(attractionDetail),
+            isLiked = true,
+            toggleLike = { })
     }
 }

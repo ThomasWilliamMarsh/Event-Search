@@ -33,6 +33,25 @@ internal val attractionDetail = AttractionDetailsViewModel(
         EventViewModel(
             date = EventDateViewModel.Date("Feb", "05", "Friday - 11:00"),
             venue = "Arrowhead Stadium"
+        ),
+        EventViewModel(
+            date = EventDateViewModel.Date("Feb", "06", "Friday - 11:00"),
+            venue = "Arrowhead Stadium"
+        ),
+        EventViewModel(
+            date = EventDateViewModel.Date("Feb", "07", "Friday - 11:00"),
+            venue = "Arrowhead Stadium"
+        ),
+        EventViewModel(
+            date = EventDateViewModel.Date("Feb", "08", "Friday - 11:00"),
+            venue = "Arrowhead Stadium"
+        ),
+        EventViewModel(
+            date = EventDateViewModel.TBA,
+            venue = "Arrowhead Stadium"
+        ), EventViewModel(
+            date = EventDateViewModel.TBC,
+            venue = "Arrowhead Stadium"
         )
     )
 )

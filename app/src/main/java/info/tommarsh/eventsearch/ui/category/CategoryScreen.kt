@@ -11,11 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import attraction
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
@@ -26,6 +28,7 @@ import info.tommarsh.eventsearch.ui.common.WithPagingAppendState
 import info.tommarsh.eventsearch.ui.common.WithPagingRefreshState
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 internal fun CategoryScreen(
@@ -103,5 +106,25 @@ private fun CategoryList(
             WithPagingAppendState(items = attractions)
         }
     }
+}
+
+@Preview
+@Composable
+fun CategoryScreenPreview() = CategoryTheme {
+    val attractions = flowOf(
+        PagingData.from(
+            listOf(
+                attraction,
+                attraction,
+                attraction,
+                attraction
+            )
+
+        )
+    )
+    CategoryScreen(
+        categoryName = "Theatre",
+        attractions = attractions.collectAsLazyPagingItems(),
+        navigateToAttraction = { })
 }
 
