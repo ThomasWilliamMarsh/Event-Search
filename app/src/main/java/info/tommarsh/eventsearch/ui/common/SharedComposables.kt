@@ -199,12 +199,3 @@ internal fun <T : Any> WithPagingAppendState(
     }
 }
 //EndRegion
-
-
-//Region previews
-@Preview(showBackground = true)
-@Composable
-fun RetryViewPreview() {
-    RetryView(onRetry = { })
-}
-//Endregion
