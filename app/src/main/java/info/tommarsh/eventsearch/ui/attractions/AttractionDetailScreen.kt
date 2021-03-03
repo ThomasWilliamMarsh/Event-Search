@@ -1,6 +1,5 @@
 package info.tommarsh.eventsearch.ui.attractions
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -63,6 +62,8 @@ private fun AttractionDetailScreen(
     toggleLike: (attraction: LikedAttractionModel) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
+    val listState = rememberLazyListState()
+
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxHeight()
@@ -75,37 +76,25 @@ private fun AttractionDetailScreen(
                     message = stringResource(id = R.string.error_loading_event_details)
                 )
             },
-            onSuccess = { data ->
-                AttractionDetailContent(data, isLiked, toggleLike)
+            onSuccess = { attraction ->
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxHeight()
+                ) {
+                    item {
+                        PosterImage(
+                            attraction = attraction,
+                            isLiked = isLiked,
+                            toggleLike = toggleLike
+                        )
+                    }
+
+                    item { UnderlineTitle(text = stringResource(id = R.string.event_details_title)) }
+
+                    item { CalendarList(attraction.events) }
+                }
             }
         )
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun AttractionDetailContent(
-    attraction: AttractionDetailsViewModel,
-    isLiked: Boolean,
-    toggleLike: (id: LikedAttractionModel) -> Unit
-) {
-    val listState = rememberLazyListState()
-
-    LazyColumn(
-        state = listState,
-        modifier = Modifier.fillMaxHeight()
-    ) {
-        item {
-            PosterImage(
-                attraction = attraction,
-                isLiked = isLiked,
-                toggleLike = toggleLike
-            )
-        }
-
-        item { UnderlineTitle(text = stringResource(id = R.string.event_details_title)) }
-
-        item { CalendarList(attraction.events) }
     }
 }
 

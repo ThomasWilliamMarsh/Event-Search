@@ -32,7 +32,7 @@ private const val DEBOUNCE_MS = 1000L
 internal fun SearchToolbar(
     categoryState: FetchState<List<CategoryViewModel>>,
     drawerState: DrawerState,
-    onSearch: (keyword: String) -> Unit,
+    onSearch: (query: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit
 ) {
     val scope = rememberCoroutineScope()

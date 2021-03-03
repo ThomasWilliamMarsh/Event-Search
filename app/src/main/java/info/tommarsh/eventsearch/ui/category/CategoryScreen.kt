@@ -56,44 +56,31 @@ private fun CategoryScreen(
             )
         },
         onLoaded = {
-            CategoryList(
-                categoryName = categoryName,
-                attractions = attractions,
-                navigateToAttraction = navigateToAttraction
-            )
-        }
-    )
-}
+            LazyColumn(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+            ) {
+                item {
+                    CategoryTitle(categoryName)
+                }
 
-@Composable
-private fun CategoryList(
-    categoryName: String,
-    attractions: LazyPagingItems<AttractionViewModel>,
-    navigateToAttraction: (id: String) -> Unit,
-) {
-    LazyColumn(
-        modifier = Modifier
-            .statusBarsPadding()
-            .fillMaxWidth()
-            .fillMaxHeight()
-    ) {
-        item {
-            CategoryTitle(categoryName)
-        }
+                itemsIndexed(attractions) { _, attraction ->
+                    if (attraction != null) {
+                        SearchCard(
+                            attraction = attraction,
+                            navigateToAttraction = navigateToAttraction
+                        )
+                    }
+                }
 
-        itemsIndexed(attractions) { _, attraction ->
-            if (attraction != null) {
-                SearchCard(
-                    attraction = attraction,
-                    navigateToAttraction = navigateToAttraction
-                )
+                item {
+                    WithPagingAppendState(items = attractions)
+                }
             }
         }
-
-        item {
-            WithPagingAppendState(items = attractions)
-        }
-    }
+    )
 }
 
 @Composable

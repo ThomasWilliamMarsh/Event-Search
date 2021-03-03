@@ -1,15 +1,21 @@
 package info.tommarsh.eventsearch.ui.search
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,6 +39,7 @@ import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
@@ -60,6 +67,7 @@ internal fun SearchScreen(
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun SearchScreen(
     attractions: LazyPagingItems<AttractionViewModel>,
@@ -72,27 +80,16 @@ private fun SearchScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val drawerState = scaffoldState.drawerState
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
 
     Scaffold(
-        topBar = {
-            SearchToolbar(
-                categoryState,
-                drawerState,
-                onSearch,
-                navigateToCategory
-            )
-        },
         drawerContent = {
-            LazyColumn(modifier = Modifier.statusBarsPadding()) {
-                item { LikedAttractionsHeader() }
-                items(likedAttractions) { attraction ->
-                    LikedAttractionCard(
-                        likedModel = attraction,
-                        navigateToAttraction = navigateToAttraction,
-                        deleteLikedAttraction = deleteLikedAttraction
-                    )
-                }
-            }
+            SavedEventsDrawer(
+                likedAttractions = likedAttractions,
+                deleteLikedAttraction = deleteLikedAttraction,
+                navigateToAttraction = navigateToAttraction
+            )
         },
         scaffoldState = scaffoldState
     ) {
@@ -108,33 +105,64 @@ private fun SearchScreen(
                 )
             },
             onLoaded = {
-                SearchList(
-                    attractions = attractions,
-                    navigateToAttraction = navigateToAttraction
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        item {
+                            SearchToolbar(
+                                categoryState,
+                                drawerState,
+                                onSearch,
+                                navigateToCategory
+                            )
+                        }
+
+                        itemsIndexed(attractions) { _, attraction ->
+                            if (attraction != null) {
+                                SearchCard(
+                                    attraction = attraction,
+                                    navigateToAttraction = navigateToAttraction
+                                )
+                            }
+                        }
+
+                        item {
+                            WithPagingAppendState(items = attractions)
+                        }
+                    }
+
+                    AnimatedVisibility(
+                        visible = listState.firstVisibleItemIndex > 0,
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(16.dp)
+                    ) {
+                        ScrollToTopButton {
+                            scope.launch { listState.animateScrollToItem(0) }
+                        }
+                    }
+                }
             }
         )
     }
 }
 
 @Composable
-private fun SearchList(
-    attractions: LazyPagingItems<AttractionViewModel>,
-    navigateToAttraction: (id: String) -> Unit
+private fun SavedEventsDrawer(
+    likedAttractions: List<LikedAttractionModel>,
+    navigateToAttraction: (id: String) -> Unit,
+    deleteLikedAttraction: (LikedAttractionModel) -> Unit
 ) {
-    LazyColumn {
-
-        itemsIndexed(attractions) { _, attraction ->
-            if (attraction != null) {
-                SearchCard(
-                    attraction = attraction,
-                    navigateToAttraction = navigateToAttraction
-                )
-            }
-        }
-
-        item {
-            WithPagingAppendState(items = attractions)
+    LazyColumn(modifier = Modifier.statusBarsPadding()) {
+        item { LikedAttractionsHeader() }
+        items(likedAttractions) { attraction ->
+            LikedAttractionCard(
+                likedModel = attraction,
+                navigateToAttraction = navigateToAttraction,
+                deleteLikedAttraction = deleteLikedAttraction
+            )
         }
     }
 }
@@ -146,4 +174,14 @@ private fun LikedAttractionsHeader() {
         modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
         style = MaterialTheme.typography.h5
     )
+}
+
+@Composable
+private fun ScrollToTopButton(onClick: () -> Unit) {
+    FloatingActionButton(
+        onClick = onClick,
+        backgroundColor = MaterialTheme.colors.primaryVariant
+    ) {
+        Icon(imageVector = Icons.Filled.ArrowUpward, contentDescription = "Top")
+    }
 }
