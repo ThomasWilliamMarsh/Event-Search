@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddAlert
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -29,7 +30,7 @@ internal fun LikedAttractionCard(
         when (value) {
             DismissValue.DismissedToEnd -> {
                 deleteLikedAttraction(likedModel)
-                true
+                return@rememberDismissState true
             }
             else -> false
         }

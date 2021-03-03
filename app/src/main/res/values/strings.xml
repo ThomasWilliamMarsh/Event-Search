@@ -5,7 +5,6 @@
     <!-- Toolbar -->
     <string name="toolbar_hint_text">Search by Artist, Event or Venue</string>
     <string name="failed_to_load_categories">Failed to load categories.</string>
-    <string name="no_results">No results found :(</string>
 
     <!-- Drawer -->
     <string name="saved_events">Saved Events</string>
@@ -17,7 +16,6 @@
     <!-- Event details -->
     <string name="number_events">%1$d events</string>
     <string name="event_details_title">Events</string>
-    <string name="about_attraction_title">About</string>
     <string name="error_loading_event_details">Error loading event details</string>
     <string name="favourite">Favourite</string>
     <string name="open_liked_attractions_menu">Open liked attractions menu</string>

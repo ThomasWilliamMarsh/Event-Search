@@ -4,8 +4,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
-
 
 @Composable
 fun AttractionDetailTheme(
@@ -55,13 +53,10 @@ private fun EventSearchAppTheme(
     colors: Colors,
     content: @Composable () -> Unit
 ) {
-
-    ProvideWindowInsets {
-        MaterialTheme(
-            colors = colors,
-            typography = EventSearchTypography,
-            shapes = shapes,
-            content = content
-        )
-    }
+    MaterialTheme(
+        colors = colors,
+        typography = EventSearchTypography,
+        shapes = shapes,
+        content = content
+    )
 }

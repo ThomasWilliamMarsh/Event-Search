@@ -46,7 +46,6 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerVersion =  "1.4.30"
         kotlinCompilerExtensionVersion = Versions.compose
     }
 }
@@ -61,16 +60,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}")
 
     //Android
-    implementation("androidx.activity:activity-compose:${Versions.activity}")
-    implementation("androidx.activity:activity-ktx:${Versions.activity}")
     implementation("androidx.core:core-ktx:${Versions.coreKtx}")
     implementation("androidx.appcompat:appcompat:${Versions.appCompat}")
-    implementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
     implementation("com.google.android.material:material:${Versions.material}")
-    implementation("androidx.paging:paging-compose:${Versions.pagingCompose}")
-    implementation("androidx.hilt:hilt-navigation:${Versions.hiltJetpack}")
-    implementation("androidx.hilt:hilt-navigation-fragment:${Versions.hiltJetpack}")
     kapt("androidx.room:room-compiler:${Versions.room}")
 
     //Data
@@ -82,13 +75,33 @@ dependencies {
     implementation("joda-time:joda-time:${Versions.jodaTime}")
 
     //Compose
-    ComposeDependencies.forEach { dependency ->
-        implementation(dependency)
-    }
+    implementation("dev.chrisbanes.accompanist:accompanist-insets:${Versions.accompanist}")
+    implementation("dev.chrisbanes.accompanist:accompanist-coil:${Versions.accompanist}")
+    implementation("androidx.activity:activity-compose:${Versions.activity}")
+    implementation("androidx.compose.runtime:runtime:${Versions.compose}")
+    implementation("androidx.compose.animation:animation:${Versions.compose}")
+    implementation("androidx.compose.animation:animation-core:${Versions.compose}")
+    implementation("androidx.compose.ui:ui:${Versions.compose}")
+    implementation("androidx.compose.foundation:foundation:${Versions.compose}")
+    implementation("androidx.paging:paging-compose:${Versions.pagingCompose}")
+    implementation("androidx.compose.foundation:foundation-layout:${Versions.compose}")
+    implementation("androidx.compose.material:material:${Versions.compose}")
+    implementation("androidx.compose.material:material-icons-core:${Versions.compose}")
+    implementation("androidx.compose.material:material-icons-extended:${Versions.compose}")
+    implementation("androidx.compose.ui:ui-text:${Versions.compose}")
+    implementation("androidx.compose.ui:ui-util:${Versions.compose}")
+    implementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
+    implementation("androidx.navigation:navigation-compose:${Versions.composeNavigation}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}")
 
-    //Dagger
+    //Test
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
+
+    //DI
     implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hiltJetpack}")
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
+    implementation("androidx.hilt:hilt-navigation:${Versions.hiltJetpack}")
+    implementation("androidx.hilt:hilt-navigation-fragment:${Versions.hiltJetpack}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
     kapt("androidx.hilt:hilt-compiler:${Versions.hiltJetpack}")
 }

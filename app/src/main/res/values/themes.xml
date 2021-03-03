@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/bluegray_700</item>
         <item name="colorPrimaryDark">@color/bluegray_900</item>
         <item name="colorAccent">@color/bluegray_700</item>
+        <item name="android:colorBackground">@android:color/white</item>
         <item name="android:statusBarColor">@color/immersive_sys_ui</item>
         <item name="android:navigationBarColor">@color/nav_bar</item>
     </style>

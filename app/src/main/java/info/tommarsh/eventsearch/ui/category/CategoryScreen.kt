@@ -20,7 +20,6 @@ import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.theme.CategoryTheme
-import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.WithPagingAppendState
 import info.tommarsh.eventsearch.ui.common.WithPagingRefreshState
@@ -50,9 +49,6 @@ private fun CategoryScreen(
     val scaffoldState = rememberScaffoldState()
     WithPagingRefreshState(
         items = attractions,
-        onLoading = {
-            CenteredCircularProgress()
-        },
         onError = {
             ErrorSnackbar(
                 snackbarHostState = scaffoldState.snackbarHostState,
@@ -82,12 +78,7 @@ private fun CategoryList(
             .fillMaxHeight()
     ) {
         item {
-            Text(
-                modifier = Modifier.padding(16.dp),
-                text = categoryName,
-                color = MaterialTheme.colors.onBackground,
-                style = MaterialTheme.typography.h4.copy(color = Color.White)
-            )
+            CategoryTitle(categoryName)
         }
 
         itemsIndexed(attractions) { _, attraction ->
@@ -103,4 +94,14 @@ private fun CategoryList(
             WithPagingAppendState(items = attractions)
         }
     }
+}
+
+@Composable
+private fun CategoryTitle(name: String) {
+    Text(
+        modifier = Modifier.padding(16.dp),
+        text = name,
+        color = MaterialTheme.colors.onBackground,
+        style = MaterialTheme.typography.h4.copy(color = Color.White)
+    )
 }

@@ -1,8 +1,4 @@
-import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
-import info.tommarsh.eventsearch.model.AttractionViewModel
-import info.tommarsh.eventsearch.model.CategoryViewModel
-import info.tommarsh.eventsearch.model.EventDateViewModel
-import info.tommarsh.eventsearch.model.EventViewModel
+import info.tommarsh.eventsearch.model.*
 
 internal val musicCategory = CategoryViewModel(id = "", name = "Music")
 internal val sportCategory = CategoryViewModel(id = "", name = "Sport")

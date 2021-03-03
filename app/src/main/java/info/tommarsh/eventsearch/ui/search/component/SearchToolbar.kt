@@ -11,27 +11,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Navigation
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import artCategory
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
-import familyCategory
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.FetchState
-import info.tommarsh.eventsearch.theme.EventHomeTheme
 import info.tommarsh.eventsearch.ui.common.BorderButton
 import info.tommarsh.eventsearch.ui.common.TopToolbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import musicCategory
-import sportCategory
 
 private const val DEBOUNCE_MS = 1000L
 

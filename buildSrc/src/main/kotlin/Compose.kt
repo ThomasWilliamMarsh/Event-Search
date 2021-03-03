@@ -19,8 +19,8 @@ object Compose {
         "androidx.compose.ui:ui-text:${Versions.compose}",
         "androidx.compose.ui:ui-unit:${Versions.compose}",
         "androidx.compose.ui:ui-util:${Versions.compose}",
+        "androidx.compose.ui:ui-tooling:${Versions.compose}",
         "androidx.navigation:navigation-compose:${Versions.composeNavigation}",
         "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}"
-
     )
 }
