@@ -1,7 +1,6 @@
 package info.tommarsh.eventsearch.ui.category
 
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
@@ -12,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -20,9 +20,9 @@ import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.theme.CategoryTheme
+import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
-import info.tommarsh.eventsearch.ui.common.WithPagingAppendState
-import info.tommarsh.eventsearch.ui.common.WithPagingRefreshState
+import info.tommarsh.eventsearch.ui.common.LoadStateFooter
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import kotlinx.coroutines.flow.Flow
 
@@ -47,40 +47,39 @@ private fun CategoryScreen(
     navigateToAttraction: (id: String) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    WithPagingRefreshState(
-        items = attractions,
-        onError = {
-            ErrorSnackbar(
-                snackbarHostState = scaffoldState.snackbarHostState,
-                message = stringResource(id = R.string.error_loading_events)
-            )
-        },
-        onLoaded = {
-            LazyColumn(
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-            ) {
-                item {
-                    CategoryTitle(categoryName)
-                }
 
-                itemsIndexed(attractions) { _, attraction ->
-                    if (attraction != null) {
-                        SearchCard(
-                            attraction = attraction,
-                            navigateToAttraction = navigateToAttraction
-                        )
-                    }
-                }
+    LazyColumn(
+        modifier = Modifier
+            .statusBarsPadding()
+            .fillMaxSize()
+    ) {
+        item {
+            CategoryTitle(categoryName)
+        }
 
-                item {
-                    WithPagingAppendState(items = attractions)
-                }
+        itemsIndexed(attractions) { _, attraction ->
+            if (attraction != null) {
+                SearchCard(
+                    attraction = attraction,
+                    navigateToAttraction = navigateToAttraction
+                )
             }
         }
-    )
+
+        item {
+            LoadStateFooter(items = attractions)
+        }
+    }
+
+    when (attractions.loadState.refresh) {
+        is LoadState.Loading -> CenteredCircularProgress()
+        is LoadState.Error -> ErrorSnackbar(
+            snackbarHostState = scaffoldState.snackbarHostState,
+            message = stringResource(id = R.string.error_loading_events)
+        )
+        is LoadState.NotLoading -> {
+        }
+    }
 }
 
 @Composable

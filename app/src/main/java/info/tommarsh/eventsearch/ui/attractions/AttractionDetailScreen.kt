@@ -27,8 +27,8 @@ import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.*
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
+import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
-import info.tommarsh.eventsearch.ui.common.WithFetchState
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 
@@ -68,33 +68,29 @@ private fun AttractionDetailScreen(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxHeight()
     ) {
-        WithFetchState(
-            state = attractionState,
-            onFailure = {
-                ErrorSnackbar(
-                    snackbarHostState = scaffoldState.snackbarHostState,
-                    message = stringResource(id = R.string.error_loading_event_details)
-                )
-            },
-            onSuccess = { attraction ->
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier.fillMaxHeight()
-                ) {
-                    item {
-                        PosterImage(
-                            attraction = attraction,
-                            isLiked = isLiked,
-                            toggleLike = toggleLike
-                        )
-                    }
-
-                    item { UnderlineTitle(text = stringResource(id = R.string.event_details_title)) }
-
-                    item { CalendarList(attraction.events) }
+        when (attractionState) {
+            is FetchState.Loading -> CenteredCircularProgress()
+            is FetchState.Success -> LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                item {
+                    PosterImage(
+                        attraction = attractionState.data,
+                        isLiked = isLiked,
+                        toggleLike = toggleLike
+                    )
                 }
+
+                item { UnderlineTitle(text = stringResource(id = R.string.event_details_title)) }
+
+                item { CalendarList(attractionState.data.events) }
             }
-        )
+            is FetchState.Failure -> ErrorSnackbar(
+                snackbarHostState = scaffoldState.snackbarHostState,
+                message = stringResource(id = R.string.error_loading_event_details)
+            )
+        }
     }
 }
 

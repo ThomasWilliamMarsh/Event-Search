@@ -16,7 +16,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.model.FetchState
 
 @Composable
 internal fun TopToolbar(
@@ -97,16 +96,15 @@ internal fun EventSearchHorizontalCard(
     }
 }
 
-
 @Composable
 internal fun CenteredCircularProgress() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) { CircularProgressIndicator() }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -120,21 +118,7 @@ internal fun ErrorSnackbar(
     }
 }
 
-@Composable
-internal fun <T> WithFetchState(
-    state: FetchState<T>,
-    onLoading: @Composable () -> Unit = { CenteredCircularProgress() },
-    onFailure: @Composable (throwable: Throwable) -> Unit,
-    onSuccess: @Composable (data: T) -> Unit
-) {
-    when (state) {
-        is FetchState.Loading -> onLoading()
-        is FetchState.Success -> onSuccess(state.data)
-        is FetchState.Failure -> onFailure(state.throwable)
-    }
-}
-
-//Region Paging 3 composables
+//Region Paging 3 composable
 @Composable
 private fun RetryView(onRetry: () -> Unit) {
     Column(
@@ -164,21 +148,7 @@ private fun RetryView(onRetry: () -> Unit) {
 }
 
 @Composable
-internal fun <T : Any> WithPagingRefreshState(
-    items: LazyPagingItems<T>,
-    onLoading: @Composable () -> Unit = { CenteredCircularProgress() },
-    onError: @Composable () -> Unit = { },
-    onLoaded: @Composable () -> Unit = {}
-) {
-    when (items.loadState.refresh) {
-        is LoadState.Loading -> onLoading()
-        is LoadState.Error -> onError()
-        is LoadState.NotLoading -> onLoaded()
-    }
-}
-
-@Composable
-internal fun <T : Any> WithPagingAppendState(
+internal fun <T : Any> LoadStateFooter(
     items: LazyPagingItems<T>,
     onLoading: @Composable () -> Unit = { CenteredCircularProgress() },
     onError: @Composable () -> Unit = { RetryView(onRetry = { items.retry() }) },

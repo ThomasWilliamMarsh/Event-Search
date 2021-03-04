@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -32,8 +33,7 @@ import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.theme.EventHomeTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
-import info.tommarsh.eventsearch.ui.common.WithPagingAppendState
-import info.tommarsh.eventsearch.ui.common.WithPagingRefreshState
+import info.tommarsh.eventsearch.ui.common.LoadStateFooter
 import info.tommarsh.eventsearch.ui.search.component.LikedAttractionCard
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
@@ -93,59 +93,55 @@ private fun SearchScreen(
         },
         scaffoldState = scaffoldState
     ) {
-        WithPagingRefreshState(
-            items = attractions,
-            onLoading = {
-                CenteredCircularProgress()
-            },
-            onError = {
-                ErrorSnackbar(
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                item {
+                    SearchToolbar(
+                        categoryState,
+                        drawerState,
+                        onSearch,
+                        navigateToCategory
+                    )
+                }
+
+                itemsIndexed(attractions) { _, attraction ->
+                    if (attraction != null) {
+                        SearchCard(
+                            attraction = attraction,
+                            navigateToAttraction = navigateToAttraction
+                        )
+                    }
+                }
+
+                item {
+                    LoadStateFooter(items = attractions)
+                }
+            }
+
+            when (attractions.loadState.refresh) {
+                is LoadState.Loading -> CenteredCircularProgress()
+                is LoadState.Error -> ErrorSnackbar(
                     snackbarHostState = scaffoldState.snackbarHostState,
                     message = stringResource(id = R.string.error_loading_events)
                 )
-            },
-            onLoaded = {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    LazyColumn(
-                        state = listState,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        item {
-                            SearchToolbar(
-                                categoryState,
-                                drawerState,
-                                onSearch,
-                                navigateToCategory
-                            )
-                        }
-
-                        itemsIndexed(attractions) { _, attraction ->
-                            if (attraction != null) {
-                                SearchCard(
-                                    attraction = attraction,
-                                    navigateToAttraction = navigateToAttraction
-                                )
-                            }
-                        }
-
-                        item {
-                            WithPagingAppendState(items = attractions)
-                        }
-                    }
-
-                    AnimatedVisibility(
-                        visible = listState.firstVisibleItemIndex > 0,
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(16.dp)
-                    ) {
-                        ScrollToTopButton {
-                            scope.launch { listState.animateScrollToItem(0) }
-                        }
-                    }
+                is LoadState.NotLoading -> {
                 }
             }
-        )
+
+            AnimatedVisibility(
+                visible = listState.firstVisibleItemIndex > 0,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(16.dp)
+            ) {
+                ScrollToTopButton {
+                    scope.launch { listState.animateScrollToItem(0) }
+                }
+            }
+        }
     }
 }
 
