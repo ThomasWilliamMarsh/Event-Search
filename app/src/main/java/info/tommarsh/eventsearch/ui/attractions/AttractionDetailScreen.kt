@@ -18,38 +18,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
-import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 @Composable
-internal fun AttractionDetailScreen(
-    fetchFlow: Flow<FetchState<AttractionDetailsViewModel>>,
-    likedFlow: Flow<Boolean>,
-    onLiked: (attraction: LikedAttractionModel) -> Unit,
-    onUnliked: (attraction: LikedAttractionModel) -> Unit
-) = AttractionDetailTheme {
-    val attractionState by fetchFlow.collectAsState(initial = FetchState.Loading(true))
-    val isLiked by likedFlow.collectAsState(initial = false)
+internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) = AttractionDetailTheme {
+    val id = backStackEntry.stringArg("id")
+    val viewModel = viewModel<AttractionDetailViewModel>(
+        factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
+    )
+    val attractionState by viewModel.attraction(id).collectAsState()
+    val isLiked by viewModel.liked(id).collectAsState()
 
     AttractionDetailScreen(
         attractionState = attractionState,
         isLiked = isLiked,
         toggleLike = { attraction ->
             if (isLiked) {
-                onUnliked(attraction)
+                viewModel.removeLikedAttraction(attraction)
             } else {
-                onLiked(attraction)
+                viewModel.addLikedAttraction(attraction)
             }
         }
     )

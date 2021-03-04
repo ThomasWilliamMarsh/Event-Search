@@ -1,9 +1,9 @@
 package info.tommarsh.eventsearch.ui.category
 
 import androidx.lifecycle.ViewModel
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
@@ -15,16 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class CategoryViewModel @Inject constructor(
-    private val attractionsRepository: AttractionsRepository,
-    private val pagingConfig: PagingConfig
+    private val attractionsRepository: AttractionsRepository
 ) : ViewModel() {
 
-    fun attractionsFlow(category: String): Flow<PagingData<AttractionViewModel>> {
-        return Pager(
-            config = pagingConfig,
-            initialKey = 0
-        ) {
-            attractionsRepository.getAttractionsForCategory(category)
-        }.flow.map { page -> page.map { attraction -> attraction.toViewModel() } }
+    fun attractions(category: String): Flow<PagingData<AttractionViewModel>> {
+        return attractionsRepository.getAttractionsForCategory(category)
+            .map { page -> page.map { attraction -> attraction.toViewModel() } }
+            .cachedIn(viewModelScope)
     }
 }

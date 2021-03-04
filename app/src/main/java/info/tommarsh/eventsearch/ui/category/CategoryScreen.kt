@@ -9,34 +9,44 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
+import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.CategoryTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.LoadStateFooter
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 internal fun CategoryScreen(
-    categoryName: String,
-    attractionsFlow: Flow<PagingData<AttractionViewModel>>,
-    navigateToEvent: (id: String) -> Unit
+    backStackEntry: NavBackStackEntry,
+    controller: NavHostController
 ) = CategoryTheme {
-    val attractions = attractionsFlow.collectAsLazyPagingItems()
+    val viewModel = viewModel<CategoryViewModel>(
+        factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
+    )
+    val id = backStackEntry.stringArg("id")
+    val name = backStackEntry.stringArg("name")
+    val attractions = viewModel.attractions(id).collectAsLazyPagingItems()
+
     CategoryScreen(
-        categoryName = categoryName,
+        categoryName = name,
         attractions = attractions,
-        navigateToAttraction = navigateToEvent
+        navigateToAttraction = { controller.navigate("Event/$it") }
     )
 }
 

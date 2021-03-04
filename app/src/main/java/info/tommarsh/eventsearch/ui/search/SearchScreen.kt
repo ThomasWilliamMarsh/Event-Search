@@ -11,16 +11,18 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
@@ -38,32 +40,30 @@ import info.tommarsh.eventsearch.ui.search.component.LikedAttractionCard
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 internal fun SearchScreen(
-    attractionsFlow: Flow<PagingData<AttractionViewModel>>,
-    categoriesFlow: Flow<FetchState<List<CategoryViewModel>>>,
-    likedItemsFlow: Flow<List<LikedAttractionModel>>,
-    deleteLikedAttraction: (LikedAttractionModel) -> Unit,
-    navigateToEvent: (id: String) -> Unit,
-    navigateToCategory: (id: String, name: String) -> Unit,
-    setCurrentQuery: (query: String) -> Unit
+    backStackEntry: NavBackStackEntry,
+    controller: NavHostController
 ) = EventHomeTheme {
-    val attractions = attractionsFlow.collectAsLazyPagingItems()
-    val likedItems by likedItemsFlow.collectAsState(initial = emptyList())
-    val categories by categoriesFlow.collectAsState(initial = FetchState.Loading(true))
+    val viewModel = viewModel<SearchViewModel>(
+        factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
+    )
+    val (currentQuery, setCurrentQuery) = remember { mutableStateOf("") }
+    val attractions = viewModel.attractions(currentQuery).collectAsLazyPagingItems()
+    val likedItems by viewModel.likedAttractions.collectAsState(initial = emptyList())
+    val categories by viewModel.categories.collectAsState(initial = FetchState.Loading(true))
 
     SearchScreen(
         attractions = attractions,
         categoryState = categories,
         likedAttractions = likedItems,
-        deleteLikedAttraction = deleteLikedAttraction,
+        deleteLikedAttraction = viewModel::deleteLikedAttraction,
         onSearch = setCurrentQuery,
-        navigateToAttraction = navigateToEvent,
-        navigateToCategory = navigateToCategory
+        navigateToAttraction = { id -> controller.navigate("Event/$id") },
+        navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") }
     )
 }
 

@@ -2,9 +2,8 @@ package info.tommarsh.eventsearch.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
@@ -20,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,29 +29,37 @@ import javax.inject.Inject
 internal class SearchViewModel @Inject constructor(
     private val attractionsRepository: AttractionsRepository,
     private val categoryRepository: CategoryRepository,
-    private val likesRepository: LikesRepository,
-    private val pagingConfig: PagingConfig,
+    private val likesRepository: LikesRepository
 ) : ViewModel() {
 
-    private val _categoriesFlow =
-        MutableStateFlow<FetchState<List<CategoryViewModel>>>(FetchState.Loading(true))
-    val categoriesFlow: StateFlow<FetchState<List<CategoryViewModel>>> = _categoriesFlow
+    private var query: String? = null
 
-    val likedAttractionsFlow = likesRepository.getLikedAttractions()
+    private var attractions: Flow<PagingData<AttractionViewModel>>? = null
+
+    private val _categories =
+        MutableStateFlow<FetchState<List<CategoryViewModel>>>(FetchState.Loading(true))
+    val categories = _categories.asStateFlow()
+
+    val likedAttractions = likesRepository.getLikedAttractions()
 
     init {
         getCategories()
     }
 
-    fun attractionsFlow(query: String = ""): Flow<PagingData<AttractionViewModel>> {
-        return Pager(
-            config = pagingConfig,
-            initialKey = 0
-        ) {
-            attractionsRepository.getAttractionsForQuery(query)
-        }.flow.map { page -> page.map { attraction -> attraction.toViewModel() } }
-    }
+    fun attractions(query: String = ""): Flow<PagingData<AttractionViewModel>> {
+        val currentAttractions = attractions
+        if (query == this.query && currentAttractions != null) {
+            return currentAttractions
+        }
 
+        this.query = query
+        val newAttractions = attractionsRepository.getAttractionsForQuery(query)
+            .map { page -> page.map { attraction -> attraction.toViewModel() } }
+            .cachedIn(viewModelScope)
+
+        attractions = newAttractions
+        return newAttractions
+    }
 
     fun deleteLikedAttraction(model: LikedAttractionModel) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,6 +68,6 @@ internal class SearchViewModel @Inject constructor(
     }
 
     private fun getCategories() = viewModelScope.launch(Dispatchers.IO) {
-        _categoriesFlow.value = fetch { categoryRepository.getCategories().toViewModel() }
+        _categories.value = fetch { categoryRepository.getCategories().toViewModel() }
     }
 }
