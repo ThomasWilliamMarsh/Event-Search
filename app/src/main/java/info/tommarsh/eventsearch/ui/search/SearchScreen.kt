@@ -84,6 +84,14 @@ private fun SearchScreen(
     val scope = rememberCoroutineScope()
 
     Scaffold(
+        topBar = {
+            SearchToolbar(
+                categoryState,
+                drawerState,
+                onSearch,
+                navigateToCategory
+            )
+        },
         drawerContent = {
             SavedEventsDrawer(
                 likedAttractions = likedAttractions,
@@ -94,32 +102,6 @@ private fun SearchScreen(
         scaffoldState = scaffoldState
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                item {
-                    SearchToolbar(
-                        categoryState,
-                        drawerState,
-                        onSearch,
-                        navigateToCategory
-                    )
-                }
-
-                itemsIndexed(attractions) { _, attraction ->
-                    if (attraction != null) {
-                        SearchCard(
-                            attraction = attraction,
-                            navigateToAttraction = navigateToAttraction
-                        )
-                    }
-                }
-
-                item {
-                    LoadStateFooter(items = attractions)
-                }
-            }
 
             when (attractions.loadState.refresh) {
                 is LoadState.Loading -> CenteredCircularProgress()
@@ -128,17 +110,35 @@ private fun SearchScreen(
                     message = stringResource(id = R.string.error_loading_events)
                 )
                 is LoadState.NotLoading -> {
-                }
-            }
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
 
-            AnimatedVisibility(
-                visible = listState.firstVisibleItemIndex > 0,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(16.dp)
-            ) {
-                ScrollToTopButton {
-                    scope.launch { listState.animateScrollToItem(0) }
+                        itemsIndexed(attractions) { _, attraction ->
+                            if (attraction != null) {
+                                SearchCard(
+                                    attraction = attraction,
+                                    navigateToAttraction = navigateToAttraction
+                                )
+                            }
+                        }
+
+                        item {
+                            LoadStateFooter(items = attractions)
+                        }
+                    }
+
+                    AnimatedVisibility(
+                        visible = listState.firstVisibleItemIndex > 0,
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(16.dp)
+                    ) {
+                        ScrollToTopButton {
+                            scope.launch { listState.animateScrollToItem(0) }
+                        }
+                    }
                 }
             }
         }
