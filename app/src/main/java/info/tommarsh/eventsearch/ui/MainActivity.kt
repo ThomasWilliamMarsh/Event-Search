@@ -10,6 +10,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import info.tommarsh.eventsearch.navigation.Arguments
+import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
 import info.tommarsh.eventsearch.ui.category.CategoryScreen
 import info.tommarsh.eventsearch.ui.search.SearchScreen
@@ -34,20 +36,20 @@ class MainActivity : AppCompatActivity() {
         val controller = rememberNavController()
         NavHost(
             navController = controller,
-            startDestination = "Search"
+            startDestination = Destinations.SEARCH
         ) {
-            composable("Search") { backStackEntry ->
+            composable(Destinations.SEARCH) { backStackEntry ->
                 SearchScreen(
                     backStackEntry = backStackEntry,
                     controller = controller
                 )
             }
-            composable("Event/{id}") { backStackEntry ->
+            composable("${Destinations.EVENT}/{${Arguments.ID}}") { backStackEntry ->
                 AttractionDetailScreen(
                     backStackEntry = backStackEntry
                 )
             }
-            composable("Category/{id}/{name}") { backStackEntry ->
+            composable("${Destinations.CATEGORY}/{${Arguments.ID}}/{${Arguments.NAME}}") { backStackEntry ->
                 CategoryScreen(
                     backStackEntry = backStackEntry,
                     controller = controller

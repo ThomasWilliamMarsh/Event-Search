@@ -24,6 +24,8 @@ import androidx.paging.compose.itemsIndexed
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
+import info.tommarsh.eventsearch.navigation.Arguments
+import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.CategoryTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
@@ -39,14 +41,14 @@ internal fun CategoryScreen(
     val viewModel = viewModel<CategoryViewModel>(
         factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
     )
-    val id = backStackEntry.stringArg("id")
-    val name = backStackEntry.stringArg("name")
+    val id = backStackEntry.stringArg(Arguments.ID)
+    val name = backStackEntry.stringArg(Arguments.NAME)
     val attractions = viewModel.attractions(id).collectAsLazyPagingItems()
 
     CategoryScreen(
         categoryName = name,
         attractions = attractions,
-        navigateToAttraction = { controller.navigate("Event/$it") }
+        navigateToAttraction = { controller.navigate("${Destinations.EVENT}/$it") }
     )
 }
 

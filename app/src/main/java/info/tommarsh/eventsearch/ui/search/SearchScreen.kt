@@ -32,6 +32,7 @@ import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionMod
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.FetchState
+import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.theme.EventHomeTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
@@ -62,8 +63,8 @@ internal fun SearchScreen(
         likedAttractions = likedItems,
         deleteLikedAttraction = viewModel::deleteLikedAttraction,
         onSearch = setCurrentQuery,
-        navigateToAttraction = { id -> controller.navigate("Event/$id") },
-        navigateToCategory = { id, name -> controller.navigate("Category/$id/$name") }
+        navigateToAttraction = { id -> controller.navigate("${Destinations.EVENT}/$id") },
+        navigateToCategory = { id, name -> controller.navigate("${Destinations.CATEGORY}/$id/$name") }
     )
 }
 
