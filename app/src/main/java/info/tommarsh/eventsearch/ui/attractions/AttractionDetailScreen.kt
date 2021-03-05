@@ -30,6 +30,7 @@ import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
@@ -38,7 +39,7 @@ import java.util.*
 
 @Composable
 internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) = AttractionDetailTheme {
-    val id = backStackEntry.stringArg("id")
+    val id = backStackEntry.stringArg(Arguments.ID)
     val viewModel = viewModel<AttractionDetailViewModel>(
         factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
     )
