@@ -20,7 +20,7 @@ fun AttractionDetailTheme(
 }
 
 @Composable
-fun EventHomeTheme(
+fun SearchTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

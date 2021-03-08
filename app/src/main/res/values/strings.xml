@@ -18,6 +18,7 @@
     <string name="event_details_title">Events</string>
     <string name="error_loading_event_details">Error loading event details</string>
     <string name="favourite">Favourite</string>
+    <string name="unFavourite">Unfavourite</string>
     <string name="open_liked_attractions_menu">Open liked attractions menu</string>
     <string name="search">Search</string>
 

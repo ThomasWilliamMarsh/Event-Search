@@ -34,7 +34,7 @@ import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
 import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.navigation.Destinations
-import info.tommarsh.eventsearch.theme.EventHomeTheme
+import info.tommarsh.eventsearch.theme.SearchTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.LoadStateFooter
@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 internal fun SearchScreen(
     backStackEntry: NavBackStackEntry,
     controller: NavHostController
-) = EventHomeTheme {
+) {
     val viewModel = viewModel<SearchViewModel>(
         factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
     )
@@ -71,7 +71,7 @@ internal fun SearchScreen(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun SearchScreen(
+internal fun SearchScreen(
     attractions: LazyPagingItems<AttractionViewModel>,
     categoryState: FetchState<List<CategoryViewModel>>,
     likedAttractions: List<LikedAttractionModel>,
@@ -79,7 +79,7 @@ private fun SearchScreen(
     onSearch: (query: String) -> Unit,
     navigateToAttraction: (id: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit,
-) {
+) = SearchTheme {
     val scaffoldState = rememberScaffoldState()
     val drawerState = scaffoldState.drawerState
     val listState = rememberLazyListState()

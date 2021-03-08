@@ -37,7 +37,7 @@ import info.tommarsh.eventsearch.ui.search.component.SearchCard
 internal fun CategoryScreen(
     backStackEntry: NavBackStackEntry,
     controller: NavHostController
-) = CategoryTheme {
+) {
     val viewModel = viewModel<CategoryViewModel>(
         factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
     )
@@ -57,7 +57,7 @@ private fun CategoryScreen(
     categoryName: String,
     attractions: LazyPagingItems<AttractionViewModel>,
     navigateToAttraction: (id: String) -> Unit
-) {
+) = CategoryTheme {
     val scaffoldState = rememberScaffoldState()
 
     LazyColumn(

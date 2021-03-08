@@ -23,7 +23,7 @@ internal val attractionDetail = AttractionDetailsViewModel(
     name = "The Book of Mormon",
     genre = "Theatre",
     description = "Great fun for all the family... maybe",
-    numberOfEvents = 1,
+    numberOfEvents = 6,
     detailImage = "https://bookofmormonbroadway.com/images/responsive/mobile/title-treatment-alt-nosp.png",
     events = listOf(
         EventViewModel(

@@ -1,7 +1,6 @@
 package info.tommarsh.eventsearch.ui.attractions
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,6 +18,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,7 +38,7 @@ import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import java.util.*
 
 @Composable
-internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) = AttractionDetailTheme {
+internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) {
     val id = backStackEntry.stringArg(Arguments.ID)
     val viewModel = viewModel<AttractionDetailViewModel>(
         factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
@@ -60,11 +60,11 @@ internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) = Attract
 }
 
 @Composable
-private fun AttractionDetailScreen(
+internal fun AttractionDetailScreen(
     attractionState: FetchState<AttractionDetailsViewModel>,
     isLiked: Boolean,
     toggleLike: (attraction: LikedAttractionModel) -> Unit
-) {
+) = AttractionDetailTheme {
     val scaffoldState = rememberScaffoldState()
     val listState = rememberLazyListState()
 
@@ -105,12 +105,16 @@ private fun PosterImage(
     isLiked: Boolean,
     toggleLike: (attraction: LikedAttractionModel) -> Unit
 ) {
+    val description = stringResource(if (isLiked) R.string.favourite else R.string.unFavourite)
+    val icon = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder
+
     Box(
         modifier = modifier
             .wrapContentHeight()
             .fillMaxWidth()
     ) {
         CoilImage(
+            modifier = Modifier.sizeIn(minHeight = 128.dp),
             data = attraction.detailImage.orEmpty(),
             contentDescription = attraction.name,
             contentScale = ContentScale.FillWidth,
@@ -136,16 +140,22 @@ private fun PosterImage(
                 style = MaterialTheme.typography.h4.copy(color = Color.White)
             )
         }
-        Icon(
-            imageVector = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder,
-            contentDescription = stringResource(R.string.favourite),
-            tint = Color.White,
+
+        IconToggleButton(
+            checked = isLiked,
+            onCheckedChange = { toggleLike(attraction.toLikedAttraction()) },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
                 .statusBarsPadding()
-                .clickable(onClick = { toggleLike(attraction.toLikedAttraction()) })
-        )
+                .testTag("LikedIcon")
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = description,
+                tint = Color.White,
+            )
+        }
     }
 }
 
@@ -174,7 +184,7 @@ private fun CalendarList(events: List<EventViewModel>) {
             .wrapContentHeight()
             .shadow(12.dp)
     ) {
-        Column {
+        Column(modifier = Modifier.testTag("Calendar List")) {
             events.forEach { event ->
                 CalendarItem(event = event)
             }
@@ -200,7 +210,7 @@ private fun CalendarItem(event: EventViewModel) {
 @Composable
 private fun RowWithDate(date: EventDateViewModel.Date, venue: String) {
     CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
-        Row {
+        Row(modifier = Modifier.testTag("Row With Date")) {
             Column(
                 modifier = Modifier
                     .padding(horizontal = 8.dp, vertical = 16.dp)
@@ -228,7 +238,11 @@ private fun RowWithDate(date: EventDateViewModel.Date, venue: String) {
 @Composable
 private fun RowWithNoDate(reason: String, venue: String) {
     CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
-        Row(Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
+        Row(
+            Modifier
+                .padding(horizontal = 8.dp, vertical = 16.dp)
+                .testTag("Row With No Date")
+        ) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
                     text = reason, modifier = Modifier

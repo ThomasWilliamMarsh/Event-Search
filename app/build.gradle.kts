@@ -21,6 +21,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    packagingOptions {
+        excludes.addAll(listOf("META-INF/AL2.0", "META-INF/LGPL2.1"))
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
