@@ -1,10 +1,15 @@
 package info.tommarsh.eventsearch.ui.common
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -92,6 +97,26 @@ internal fun EventSearchHorizontalCard(
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             content()
+        }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun ScrollToTopButton(
+    modifier: Modifier = Modifier,
+    listState: LazyListState,
+    onClick: () -> Unit
+) {
+    AnimatedVisibility(
+        visible = listState.firstVisibleItemIndex > 0,
+        modifier = modifier.then(Modifier.padding(16.dp))
+    ) {
+        FloatingActionButton(
+            onClick = onClick,
+            backgroundColor = MaterialTheme.colors.primaryVariant
+        ) {
+            Icon(imageVector = Icons.Filled.ArrowUpward, contentDescription = stringResource(R.string.scroll_to_top))
         }
     }
 }

@@ -38,6 +38,7 @@ import info.tommarsh.eventsearch.theme.SearchTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.LoadStateFooter
+import info.tommarsh.eventsearch.ui.common.ScrollToTopButton
 import info.tommarsh.eventsearch.ui.search.component.LikedAttractionCard
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
@@ -168,24 +169,4 @@ private fun LikedAttractionsHeader() {
         modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
         style = MaterialTheme.typography.h5
     )
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-private fun ScrollToTopButton(
-    modifier: Modifier = Modifier,
-    listState: LazyListState,
-    onClick: () -> Unit
-) {
-    AnimatedVisibility(
-        visible = listState.firstVisibleItemIndex > 0,
-        modifier = modifier.then(Modifier.padding(16.dp))
-    ) {
-        FloatingActionButton(
-            onClick = onClick,
-            backgroundColor = MaterialTheme.colors.primaryVariant
-        ) {
-            Icon(imageVector = Icons.Filled.ArrowUpward, contentDescription = "Top")
-        }
-    }
 }
