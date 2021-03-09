@@ -1,17 +1,16 @@
 package info.tommarsh.eventsearch.ui.search
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,6 +64,7 @@ internal fun SearchScreen(
         likedAttractions = likedItems,
         deleteLikedAttraction = viewModel::deleteLikedAttraction,
         onSearch = setCurrentQuery,
+        navigateToSettings = { controller.navigate(Destinations.SETTINGS)},
         navigateToAttraction = { id -> controller.navigate("${Destinations.EVENT}/$id") },
         navigateToCategory = { id, name -> controller.navigate("${Destinations.CATEGORY}/$id/$name") }
     )
@@ -78,6 +78,7 @@ internal fun SearchScreen(
     likedAttractions: List<LikedAttractionModel>,
     deleteLikedAttraction: (LikedAttractionModel) -> Unit,
     onSearch: (query: String) -> Unit,
+    navigateToSettings: () -> Unit,
     navigateToAttraction: (id: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit,
 ) = SearchTheme {
@@ -107,6 +108,7 @@ internal fun SearchScreen(
                         categoryState,
                         drawerState,
                         onSearch,
+                        navigateToSettings,
                         navigateToCategory
                     )
                 }

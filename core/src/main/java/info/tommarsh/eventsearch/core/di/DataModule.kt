@@ -25,6 +25,8 @@ import info.tommarsh.eventsearch.core.data.likes.LikesRepository
 import info.tommarsh.eventsearch.core.data.likes.LikesRepositoryImpl
 import info.tommarsh.eventsearch.core.data.likes.local.LikedAttractionsDao
 import info.tommarsh.eventsearch.core.data.likes.local.LikesDatabase
+import info.tommarsh.eventsearch.core.data.preferences.DataStorePreferencesRepository
+import info.tommarsh.eventsearch.core.data.preferences.PreferencesRepository
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -49,6 +51,10 @@ internal object DataModule {
 
     @Provides
     fun bindAttractionDetailsUseCase(impl: AttractionDetailsUseCaseImpl): AttractionDetailsUseCase =
+        impl
+
+    @Provides
+    fun bindPreferenceRepository(impl: DataStorePreferencesRepository): PreferencesRepository =
         impl
 
     @Provides

@@ -15,6 +15,7 @@ import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
 import info.tommarsh.eventsearch.ui.category.CategoryScreen
 import info.tommarsh.eventsearch.ui.search.SearchScreen
+import info.tommarsh.eventsearch.ui.settings.SettingsScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -53,6 +54,11 @@ class MainActivity : AppCompatActivity() {
                 CategoryScreen(
                     backStackEntry = backStackEntry,
                     controller = controller
+                )
+            }
+            composable(Destinations.SETTINGS) { backStackEntry ->
+                SettingsScreen(
+                    backStackEntry = backStackEntry
                 )
             }
         }

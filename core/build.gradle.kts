@@ -27,11 +27,13 @@ android {
 dependencies {
 
     //Android
+    api("androidx.appcompat:appcompat:${Versions.appCompat}")
     api("androidx.fragment:fragment-ktx:${Versions.fragment}")
     api("androidx.activity:activity-ktx:${Versions.activity}")
     api("androidx.paging:paging-runtime:${Versions.paging}")
     api("androidx.room:room-runtime:${Versions.room}")
     api("androidx.room:room-ktx:${Versions.room}")
+    api("androidx.datastore:datastore-preferences:${Versions.datastore}")
 
     //Kotlin
     api("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")

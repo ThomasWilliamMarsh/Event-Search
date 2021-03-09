@@ -4,6 +4,7 @@ object Destinations {
     const val SEARCH = "search"
     const val EVENT = "event"
     const val CATEGORY = "category"
+    const val SETTINGS = "settings"
 }
 
 object Arguments {

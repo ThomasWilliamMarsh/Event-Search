@@ -14,6 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +38,7 @@ internal fun SearchToolbar(
     categoryState: FetchState<List<CategoryViewModel>>,
     drawerState: DrawerState,
     onSearch: (query: String) -> Unit,
+    navigateToSettings: () -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -53,6 +55,14 @@ internal fun SearchToolbar(
                     Icon(
                         imageVector = Icons.Filled.Menu,
                         contentDescription = stringResource(R.string.open_liked_attractions_menu)
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = { navigateToSettings() }) {
+                    Icon(
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = stringResource(R.string.settings)
                     )
                 }
             }
@@ -119,8 +129,11 @@ private fun SearchTextField(onSearch: (keyword: String) -> Unit) {
             )
         },
         shape = RoundedCornerShape(4.dp),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch(text)})
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(onSearch = { onSearch(text) })
     )
 }
 

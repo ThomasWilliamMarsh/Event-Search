@@ -47,6 +47,20 @@ fun CategoryTheme(
     EventSearchAppTheme(colors = colors, content = content)
 }
 
+@Composable
+fun SettingsTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colors = if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
+
+    EventSearchAppTheme(colors = colors, content = content)
+}
+
 
 @Composable
 private fun EventSearchAppTheme(

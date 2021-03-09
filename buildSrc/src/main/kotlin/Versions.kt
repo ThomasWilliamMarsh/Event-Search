@@ -26,6 +26,7 @@ object Versions {
     const val composeNavigation = "1.0.0-alpha08"
     const val lifecycle = "2.2.0"
     const val paging = "3.0.0-beta01"
+    const val datastore = "1.0.0-alpha07"
     const val pagingCompose = "1.0.0-alpha08"
     const val hiltJetpack = "1.0.0-alpha03"
     const val jodaTime = "2.10.6"
