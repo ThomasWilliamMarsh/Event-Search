@@ -1,19 +1,18 @@
 package info.tommarsh.eventsearch.ui.settings
 
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.appcompat.app.AppCompatDelegate.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowLeft
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,16 +30,30 @@ fun SettingsScreen(backStackEntry: NavBackStackEntry) {
 
     val darkMode = viewModel.darkMode.collectAsState(initial = MODE_NIGHT_FOLLOW_SYSTEM)
 
-    SettingsScreen(darkMode = darkMode.value)
+    SettingsScreen(darkMode = darkMode.value, onOptionSelected = { mode ->
+        viewModel.setDarkMode(mode)
+        setDefaultNightMode(mode)
+    })
 }
 
 @Composable
-fun SettingsScreen(darkMode: Int) = SettingsTheme {
+fun SettingsScreen(
+    darkMode: Int,
+    onOptionSelected: (choice: Int) -> Unit
+) = SettingsTheme {
+    val darkModeString = when (darkMode) {
+        MODE_NIGHT_FOLLOW_SYSTEM -> stringResource(R.string.dark_mode_follow_system)
+        MODE_NIGHT_NO -> stringResource(R.string.dark_mode_light)
+        MODE_NIGHT_YES -> stringResource(R.string.dark_mode_dark)
+        else -> throw IllegalArgumentException("Invalid Dark mode")
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { SettingsToolbar() }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item { SettingsTitle() }
+            item { DarkModeList(darkModeString, onOptionSelected = onOptionSelected) }
         }
     }
 }
@@ -71,4 +84,66 @@ private fun SettingsTitle() {
         color = MaterialTheme.colors.onBackground,
         style = MaterialTheme.typography.h4.copy(color = Color.White)
     )
+}
+
+@Composable
+private fun SettingItem(
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit,
+    content: @Composable () -> Unit = {}
+) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .clickable { onClick() }) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
+                Text(text = title, style = MaterialTheme.typography.h6)
+            }
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                Text(text = subtitle, style = MaterialTheme.typography.subtitle1)
+            }
+        }
+        content()
+    }
+}
+
+@Composable
+private fun DarkModeList(
+    currentMode: String,
+    onOptionSelected: (choice: Int) -> Unit
+) {
+    val (expanded, setExpanded) = remember { mutableStateOf(false) }
+
+    SettingItem(
+        title = stringResource(R.string.dark_mode),
+        subtitle = currentMode,
+        onClick = { setExpanded(!expanded) }) {
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { setExpanded(false) },
+            offset = DpOffset(0.dp, 0.dp)
+        ) {
+            DropdownMenuItem(onClick = {
+                onOptionSelected(MODE_NIGHT_YES)
+                setExpanded(false)
+            }) {
+                Text(text = stringResource(id = R.string.dark_mode_dark))
+            }
+
+            DropdownMenuItem(onClick = {
+                onOptionSelected(MODE_NIGHT_NO)
+                setExpanded(false)
+            }) {
+                Text(text = stringResource(id = R.string.dark_mode_light))
+            }
+
+            DropdownMenuItem(onClick = {
+                onOptionSelected(MODE_NIGHT_FOLLOW_SYSTEM)
+                setExpanded(false)
+            }) {
+                Text(text = stringResource(id = R.string.dark_mode_follow_system))
+            }
+        }
+    }
 }

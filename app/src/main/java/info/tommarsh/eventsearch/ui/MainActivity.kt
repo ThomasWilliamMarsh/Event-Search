@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import info.tommarsh.eventsearch.core.data.preferences.PreferencesRepository
 import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
@@ -17,15 +18,20 @@ import info.tommarsh.eventsearch.ui.category.CategoryScreen
 import info.tommarsh.eventsearch.ui.search.SearchScreen
 import info.tommarsh.eventsearch.ui.settings.SettingsScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var preferencesRepository: PreferencesRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setDecorFitsSystemWindows(window, false)
         setContent {
+
             ProvideWindowInsets {
                 MainComposable()
             }

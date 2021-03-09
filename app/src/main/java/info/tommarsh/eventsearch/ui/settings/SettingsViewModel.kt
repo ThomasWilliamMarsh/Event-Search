@@ -12,7 +12,7 @@ class SettingsViewModel
 @Inject constructor(private val repository: PreferencesRepository) :
     ViewModel() {
 
-    val darkMode = repository.darkModePreference()
+    val darkMode = repository.getDarkModePreference()
 
     fun setDarkMode(preference: Int) = viewModelScope.launch {
         repository.setDarkModePreference(preference)

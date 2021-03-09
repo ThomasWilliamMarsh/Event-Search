@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PreferencesRepository {
 
-    fun darkModePreference() : Flow<Int>
+    fun getDarkModePreference() : Flow<Int>
 
     suspend fun setDarkModePreference(preference: Int)
 }

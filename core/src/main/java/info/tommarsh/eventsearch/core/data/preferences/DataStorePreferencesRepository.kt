@@ -8,6 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.single
 import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore(name = "settings")
@@ -16,7 +17,7 @@ internal class DataStorePreferencesRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) : PreferencesRepository {
 
-    override fun darkModePreference(): Flow<Int> {
+    override fun getDarkModePreference(): Flow<Int> {
         return context.dataStore.data.map { preferences ->
             preferences[DARK_MODE_KEY] ?: MODE_NIGHT_FOLLOW_SYSTEM
         }
