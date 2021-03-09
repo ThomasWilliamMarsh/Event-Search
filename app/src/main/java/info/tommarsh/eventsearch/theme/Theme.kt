@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun AttractionDetailTheme(
@@ -55,7 +56,7 @@ fun SettingsTheme(
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
-        LightColorPalette
+        LightColorPalette.copy(primary = gray200, onPrimary = Color.Black)
     }
 
     EventSearchAppTheme(colors = colors, content = content)

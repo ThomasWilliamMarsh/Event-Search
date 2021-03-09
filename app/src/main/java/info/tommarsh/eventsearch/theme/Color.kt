@@ -5,7 +5,7 @@ import androidx.compose.material.lightColors
 import androidx.compose.ui.graphics.Color
 
 //Light
-val grey200 = Color(0xFFEEEEEE)
+val gray200 = Color(0xFFEEEEEE)
 val blueGray300 = Color(0xFF90A4AE)
 val blueGray900 = Color(0xFF263238)
 val blueGray700 = Color(0xFF455A64)
@@ -31,7 +31,7 @@ val LightColorPalette = lightColors(
     primaryVariant = blueGray900,
     surface = Color.White,
     onSurface = Color.Black,
-    background = grey200,
+    background = gray200,
     error = red200,
     onError = Color.White
 )

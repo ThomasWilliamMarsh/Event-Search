@@ -64,7 +64,8 @@ class MainActivity : AppCompatActivity() {
             }
             composable(Destinations.SETTINGS) { backStackEntry ->
                 SettingsScreen(
-                    backStackEntry = backStackEntry
+                    backStackEntry = backStackEntry,
+                    controller = controller,
                 )
             }
         }

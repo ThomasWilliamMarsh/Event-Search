@@ -17,12 +17,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.theme.SettingsTheme
 
 @Composable
-fun SettingsScreen(backStackEntry: NavBackStackEntry) {
+fun SettingsScreen(
+    backStackEntry: NavBackStackEntry,
+    controller: NavHostController
+) {
 
     val viewModel = viewModel<SettingsViewModel>(
         factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
@@ -30,15 +34,18 @@ fun SettingsScreen(backStackEntry: NavBackStackEntry) {
 
     val darkMode = viewModel.darkMode.collectAsState(initial = MODE_NIGHT_FOLLOW_SYSTEM)
 
-    SettingsScreen(darkMode = darkMode.value, onOptionSelected = { mode ->
-        viewModel.setDarkMode(mode)
-        setDefaultNightMode(mode)
-    })
+    SettingsScreen(darkMode = darkMode.value,
+        navigateBack = { controller.popBackStack()  },
+        onOptionSelected = { mode ->
+            viewModel.setDarkMode(mode)
+            setDefaultNightMode(mode)
+        })
 }
 
 @Composable
 fun SettingsScreen(
     darkMode: Int,
+    navigateBack: () -> Unit,
     onOptionSelected: (choice: Int) -> Unit
 ) = SettingsTheme {
     val darkModeString = when (darkMode) {
@@ -50,7 +57,7 @@ fun SettingsScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { SettingsToolbar() }) {
+        topBar = { SettingsToolbar(navigateBack) }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item { SettingsTitle() }
             item { DarkModeList(darkModeString, onOptionSelected = onOptionSelected) }
@@ -59,17 +66,18 @@ fun SettingsScreen(
 }
 
 @Composable
-fun SettingsToolbar() {
+fun SettingsToolbar(navigateBack: () -> Unit) {
 
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
         title = { },
         elevation = 0.dp,
         navigationIcon = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { navigateBack() }) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
+                    tint = MaterialTheme.colors.onBackground,
+                    contentDescription = stringResource(R.string.back),
                 )
             }
         },
