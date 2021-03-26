@@ -17,24 +17,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.*
 import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailAction
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailAction.ClickLiked
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailAction.FetchDetails
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailState
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import java.util.*
@@ -42,36 +41,28 @@ import java.util.*
 @Composable
 internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) {
     val id = backStackEntry.stringArg(Arguments.ID)
-    val viewModel = hiltNavGraphViewModel<AttractionDetailViewModel>()
-    AttractionDetailScreen(id, viewModel)
+    val viewModel = hiltNavGraphViewModel<AttractionDetailViewModel>().also {
+        it.postAction(FetchDetails(id))
+    }
+    AttractionDetailScreen(viewModel)
 }
 
 @Composable
 internal fun AttractionDetailScreen(
-    id: String,
     viewModel: AttractionDetailViewModel
 ) {
-    val attractionState by viewModel.attraction(id).collectAsState()
-    val isLiked by viewModel.liked(id).collectAsState()
+    val screenState by viewModel.screenState.collectAsState()
 
     AttractionDetailScreen(
-        attractionState = attractionState,
-        isLiked = isLiked,
-        toggleLike = { attraction ->
-            if (isLiked) {
-                viewModel.removeLikedAttraction(attraction)
-            } else {
-                viewModel.addLikedAttraction(attraction)
-            }
-        }
+        screenState = screenState,
+        actioner = { action -> viewModel.postAction(action) }
     )
 }
 
 @Composable
 internal fun AttractionDetailScreen(
-    attractionState: FetchState<AttractionDetailsViewModel>,
-    isLiked: Boolean,
-    toggleLike: (attraction: LikedAttractionModel) -> Unit
+    screenState: AttractionDetailState,
+    actioner: (AttractionDetailAction) -> Unit
 ) = AttractionDetailTheme {
     val scaffoldState = rememberScaffoldState()
     val listState = rememberLazyListState()
@@ -80,7 +71,7 @@ internal fun AttractionDetailScreen(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxHeight()
     ) {
-        when (attractionState) {
+        when (val fetchState = screenState.fetchState) {
             is FetchState.Loading -> CenteredCircularProgress()
             is FetchState.Success -> LazyColumn(
                 state = listState,
@@ -88,15 +79,15 @@ internal fun AttractionDetailScreen(
             ) {
                 item {
                     PosterImage(
-                        attraction = attractionState.data,
-                        isLiked = isLiked,
-                        toggleLike = toggleLike
+                        attraction = fetchState.data,
+                        isLiked = screenState.isLiked,
+                        actioner = actioner
                     )
                 }
 
                 item { UnderlineTitle(text = stringResource(id = R.string.event_details_title)) }
 
-                item { CalendarList(attractionState.data.events) }
+                item { CalendarList(fetchState.data.events) }
             }
             is FetchState.Failure -> ErrorSnackbar(
                 snackbarHostState = scaffoldState.snackbarHostState,
@@ -111,7 +102,7 @@ private fun PosterImage(
     modifier: Modifier = Modifier,
     attraction: AttractionDetailsViewModel,
     isLiked: Boolean,
-    toggleLike: (attraction: LikedAttractionModel) -> Unit
+    actioner: (AttractionDetailAction) -> Unit
 ) {
     val description = stringResource(if (isLiked) R.string.favourite else R.string.unFavourite)
     val icon = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder
@@ -151,7 +142,7 @@ private fun PosterImage(
 
         IconToggleButton(
             checked = isLiked,
-            onCheckedChange = { toggleLike(attraction.toLikedAttraction()) },
+            onCheckedChange = { actioner(ClickLiked(attraction.toLikedAttraction())) },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)

@@ -1,9 +1,9 @@
 package info.tommarsh.eventsearch.core.data.likes
 
 import info.tommarsh.eventsearch.core.data.likes.local.LikedAttractionsDao
+import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.core.data.likes.model.toDaoModel
 import info.tommarsh.eventsearch.core.data.likes.model.toDomainModel
-import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -13,7 +13,14 @@ internal class LikesRepositoryImpl
 
     override fun getLikedAttractions(): Flow<List<LikedAttractionModel>> {
         return likedAttractionsDao.getLikedAttractions()
-            .map { liked -> liked.map { dbModel -> dbModel.toDomainModel() } }
+            .map { liked ->
+                liked.map { dbModel -> dbModel.toDomainModel() }
+            }
+    }
+
+    override fun getAttractionLiked(id: String): Flow<Boolean> {
+        return likedAttractionsDao.getLikedAttractions()
+            .map { attractions -> attractions.find { liked -> liked.id == id } != null }
     }
 
     override suspend fun addLikedAttraction(attraction: LikedAttractionModel) {

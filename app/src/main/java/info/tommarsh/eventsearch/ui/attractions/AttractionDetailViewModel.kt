@@ -7,11 +7,13 @@ import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCase
 import info.tommarsh.eventsearch.core.data.likes.LikesRepository
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.fetch
-import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
-import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.model.toViewModel
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailAction
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,31 +24,38 @@ internal class AttractionDetailViewModel @Inject constructor(
     private val likedRepository: LikesRepository
 ) : ViewModel() {
 
-    private var liked: StateFlow<Boolean>? = null
+    private val _screenState = MutableStateFlow(AttractionDetailState())
 
-    private var attraction: StateFlow<FetchState<AttractionDetailsViewModel>>? = null
+    val screenState = _screenState.asStateFlow()
 
-    fun liked(id: String): StateFlow<Boolean> {
-        liked = liked ?: likedRepository.getLikedAttractions()
-            .map { attractions -> attractions.find { liked -> liked.id == id } != null }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
-
-        return liked!!
+    fun postAction(action: AttractionDetailAction) {
+        when (action) {
+            is AttractionDetailAction.FetchDetails -> fetchDetails(action.id)
+            is AttractionDetailAction.ClickLiked -> toggleLiked(action.attraction)
+        }
     }
 
-    fun attraction(id: String): StateFlow<FetchState<AttractionDetailsViewModel>> {
-        attraction = attraction ?: flow {
-            emit(fetch { attractionDetailsUseCase.get(id).toViewModel() })
-        }.stateIn(viewModelScope, SharingStarted.Eagerly, FetchState.Loading(true))
+    private fun fetchDetails(id: String) {
 
-        return attraction!!
+        viewModelScope.launch {
+            likedRepository.getAttractionLiked(id)
+                .collectLatest { _screenState.emit(screenState.value.copy(isLiked = it)) }
+        }
+
+        viewModelScope.launch {
+            _screenState.value = screenState.value.copy(fetchState = fetch {
+                attractionDetailsUseCase.get(id).toViewModel()
+            })
+        }
     }
 
-    fun addLikedAttraction(attraction: LikedAttractionModel) = viewModelScope.launch {
-        likedRepository.addLikedAttraction(attraction)
-    }
-
-    fun removeLikedAttraction(attraction: LikedAttractionModel) = viewModelScope.launch {
-        likedRepository.removeLikedAttraction(attraction)
+    private fun toggleLiked(attraction: LikedAttractionModel) {
+        viewModelScope.launch {
+            if (screenState.value.isLiked) {
+                likedRepository.removeLikedAttraction(attraction)
+            } else {
+                likedRepository.addLikedAttraction(attraction)
+            }
+        }
     }
 }
