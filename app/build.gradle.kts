@@ -1,5 +1,3 @@
-import Compose.ComposeDependencies
-
 plugins {
     id("com.android.application")
     id("dagger.hilt.android.plugin")
@@ -78,8 +76,8 @@ dependencies {
     implementation("joda-time:joda-time:${Versions.jodaTime}")
 
     //Compose
-    implementation("dev.chrisbanes.accompanist:accompanist-insets:${Versions.accompanist}")
-    implementation("dev.chrisbanes.accompanist:accompanist-coil:${Versions.accompanist}")
+    implementation("com.google.accompanist:accompanist-insets:${Versions.accompanist}")
+    implementation("com.google.accompanist:accompanist-coil:${Versions.accompanist}")
     implementation("androidx.activity:activity-compose:${Versions.activity}")
     implementation("androidx.compose.runtime:runtime:${Versions.compose}")
     implementation("androidx.compose.animation:animation:${Versions.compose}")
@@ -96,15 +94,13 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
     implementation("androidx.navigation:navigation-compose:${Versions.composeNavigation}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}")
+    implementation("androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigation}")
 
     //Test
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
 
     //DI
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hiltJetpack}")
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
-    implementation("androidx.hilt:hilt-navigation:${Versions.hiltJetpack}")
-    implementation("androidx.hilt:hilt-navigation-fragment:${Versions.hiltJetpack}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
     kapt("androidx.hilt:hilt-compiler:${Versions.hiltJetpack}")
 }

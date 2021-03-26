@@ -46,7 +46,6 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
 
     //Dagger
-    api("androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hiltJetpack}")
     api("com.google.dagger:hilt-android:${Versions.hilt}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
     kapt("androidx.hilt:hilt-compiler:${Versions.hiltJetpack}")

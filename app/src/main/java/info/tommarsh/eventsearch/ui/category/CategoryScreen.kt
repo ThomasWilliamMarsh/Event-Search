@@ -17,15 +17,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.navigation.Arguments
@@ -42,15 +44,29 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun CategoryScreen(
     backStackEntry: NavBackStackEntry,
-    controller: NavHostController
+    controller: NavController
 ) {
-    val viewModel = viewModel<CategoryViewModel>(
-        factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
-    )
+    val viewModel = hiltNavGraphViewModel<CategoryViewModel>()
     val id = backStackEntry.stringArg(Arguments.ID)
     val name = backStackEntry.stringArg(Arguments.NAME)
-    val attractions = viewModel.attractions(id).collectAsLazyPagingItems()
 
+    CategoryScreen(
+        viewModel = viewModel,
+        controller = controller,
+        id = id,
+        name = name
+    )
+}
+
+@Composable
+internal fun CategoryScreen(
+    viewModel: CategoryViewModel,
+    controller: NavController,
+    id: String,
+    name: String
+
+) {
+    val attractions = viewModel.attractions(id).collectAsLazyPagingItems()
     CategoryScreen(
         categoryName = name,
         attractions = attractions,

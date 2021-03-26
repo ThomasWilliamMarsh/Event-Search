@@ -8,8 +8,8 @@ import androidx.core.view.WindowCompat.setDecorFitsSystemWindows
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import info.tommarsh.eventsearch.core.data.preferences.PreferencesRepository
 import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.navigation.Destinations
@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setDecorFitsSystemWindows(window, false)
         setContent {
-
             ProvideWindowInsets {
                 MainComposable()
             }
@@ -45,11 +44,8 @@ class MainActivity : AppCompatActivity() {
             navController = controller,
             startDestination = Destinations.SEARCH
         ) {
-            composable(Destinations.SEARCH) { backStackEntry ->
-                SearchScreen(
-                    backStackEntry = backStackEntry,
-                    controller = controller
-                )
+            composable(Destinations.SEARCH) { _ ->
+                SearchScreen(controller = controller)
             }
             composable("${Destinations.EVENT}/{${Arguments.ID}}") { backStackEntry ->
                 AttractionDetailScreen(
@@ -62,9 +58,8 @@ class MainActivity : AppCompatActivity() {
                     controller = controller
                 )
             }
-            composable(Destinations.SETTINGS) { backStackEntry ->
+            composable(Destinations.SETTINGS) { _ ->
                 SettingsScreen(
-                    backStackEntry = backStackEntry,
                     controller = controller,
                 )
             }

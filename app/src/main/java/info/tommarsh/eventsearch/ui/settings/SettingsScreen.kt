@@ -15,27 +15,32 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.theme.SettingsTheme
 
 @Composable
-fun SettingsScreen(
-    backStackEntry: NavBackStackEntry,
-    controller: NavHostController
-) {
-
-    val viewModel = viewModel<SettingsViewModel>(
-        factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
+fun SettingsScreen(controller: NavHostController) {
+    val viewModel = hiltNavGraphViewModel<SettingsViewModel>()
+    SettingsScreen(
+        viewModel = viewModel,
+        controller = controller
     )
+}
 
+@Composable
+internal fun SettingsScreen(
+    viewModel: SettingsViewModel,
+    controller: NavController
+) {
     val darkMode = viewModel.darkMode.collectAsState(initial = MODE_NIGHT_FOLLOW_SYSTEM)
-
     SettingsScreen(darkMode = darkMode.value,
-        navigateBack = { controller.popBackStack()  },
+        navigateBack = { controller.popBackStack() },
         onOptionSelected = { mode ->
             viewModel.setDarkMode(mode)
             setDefaultNightMode(mode)
@@ -43,7 +48,7 @@ fun SettingsScreen(
 }
 
 @Composable
-fun SettingsScreen(
+internal fun SettingsScreen(
     darkMode: Int,
     navigateBack: () -> Unit,
     onOptionSelected: (choice: Int) -> Unit
@@ -66,7 +71,7 @@ fun SettingsScreen(
 }
 
 @Composable
-fun SettingsToolbar(navigateBack: () -> Unit) {
+internal fun SettingsToolbar(navigateBack: () -> Unit) {
 
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),

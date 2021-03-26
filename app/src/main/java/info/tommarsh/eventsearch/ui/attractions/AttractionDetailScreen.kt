@@ -23,10 +23,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
-import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import androidx.navigation.NavController
+import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.*
@@ -40,9 +42,15 @@ import java.util.*
 @Composable
 internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) {
     val id = backStackEntry.stringArg(Arguments.ID)
-    val viewModel = viewModel<AttractionDetailViewModel>(
-        factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
-    )
+    val viewModel = hiltNavGraphViewModel<AttractionDetailViewModel>()
+    AttractionDetailScreen(id, viewModel)
+}
+
+@Composable
+internal fun AttractionDetailScreen(
+    id: String,
+    viewModel: AttractionDetailViewModel
+) {
     val attractionState by viewModel.attraction(id).collectAsState()
     val isLiked by viewModel.liked(id).collectAsState()
 

@@ -18,15 +18,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.AttractionViewModel
@@ -47,12 +49,20 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 internal fun SearchScreen(
-    backStackEntry: NavBackStackEntry,
-    controller: NavHostController
+    controller: NavController
 ) {
-    val viewModel = viewModel<SearchViewModel>(
-        factory = HiltViewModelFactory(LocalContext.current, backStackEntry)
+    val viewModel = hiltNavGraphViewModel<SearchViewModel>()
+    SearchScreen(
+        viewModel = viewModel,
+        controller = controller
     )
+}
+
+@Composable
+internal fun SearchScreen(
+    viewModel: SearchViewModel,
+    controller: NavController
+) {
     val (currentQuery, setCurrentQuery) = remember { mutableStateOf("") }
     val attractions = viewModel.attractions(currentQuery).collectAsLazyPagingItems()
     val likedItems by viewModel.likedAttractions.collectAsState(initial = emptyList())
@@ -64,10 +74,11 @@ internal fun SearchScreen(
         likedAttractions = likedItems,
         deleteLikedAttraction = viewModel::deleteLikedAttraction,
         onSearch = setCurrentQuery,
-        navigateToSettings = { controller.navigate(Destinations.SETTINGS)},
+        navigateToSettings = { controller.navigate(Destinations.SETTINGS) },
         navigateToAttraction = { id -> controller.navigate("${Destinations.EVENT}/$id") },
         navigateToCategory = { id, name -> controller.navigate("${Destinations.CATEGORY}/$id/$name") }
     )
+
 }
 
 @OptIn(ExperimentalAnimationApi::class)
