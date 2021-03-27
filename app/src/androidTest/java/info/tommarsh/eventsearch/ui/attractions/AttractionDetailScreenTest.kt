@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import attractionDetail
 import com.google.accompanist.insets.ProvideWindowInsets
 import info.tommarsh.eventsearch.model.FetchState
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailState
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenState
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,7 +20,7 @@ class AttractionDetailScreenTest {
             setContent {
                 ProvideWindowInsets {
                     AttractionDetailScreen(
-                        screenState = AttractionDetailState(
+                        screenState = AttractionDetailScreenState(
                             isLiked = true,
                             fetchState = FetchState.Success(attractionDetail)
                         ),
@@ -41,7 +41,7 @@ class AttractionDetailScreenTest {
             setContent {
                 ProvideWindowInsets {
                     AttractionDetailScreen(
-                        screenState = AttractionDetailState(
+                        screenState = AttractionDetailScreenState(
                             isLiked = false,
                             fetchState = FetchState.Success(attractionDetail)
                         ),
@@ -63,7 +63,7 @@ class AttractionDetailScreenTest {
             setContent {
                 ProvideWindowInsets {
                     AttractionDetailScreen(
-                        screenState = AttractionDetailState(
+                        screenState = AttractionDetailScreenState(
                             isLiked = true,
                             fetchState = FetchState.Success(attractionDetail)
                         ),

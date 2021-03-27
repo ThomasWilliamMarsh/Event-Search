@@ -3,8 +3,8 @@ package info.tommarsh.eventsearch.core.data.attractions.model
 import info.tommarsh.eventsearch.core.data.attractions.model.data.AttractionResponse
 import info.tommarsh.eventsearch.core.data.attractions.model.data.AttractionsResponse
 import info.tommarsh.eventsearch.core.data.attractions.model.data.ImageResponse
-import info.tommarsh.eventsearch.core.util.ScreenWidthResolver
 import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionModel
+import info.tommarsh.eventsearch.core.util.ScreenWidthResolver
 
 private const val RATIO_16_9 = "16_9"
 private const val RATIO_3_2 = "3_2"

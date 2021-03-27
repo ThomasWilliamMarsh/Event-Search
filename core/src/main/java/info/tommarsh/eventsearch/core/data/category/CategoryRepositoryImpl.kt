@@ -1,8 +1,8 @@
 package info.tommarsh.eventsearch.core.data.category
 
 import info.tommarsh.eventsearch.core.data.category.model.data.CategoryResponse
-import info.tommarsh.eventsearch.core.data.category.model.toDomainModel
 import info.tommarsh.eventsearch.core.data.category.model.domain.CategoryModel
+import info.tommarsh.eventsearch.core.data.category.model.toDomainModel
 import javax.inject.Inject
 
 internal class CategoryRepositoryImpl @Inject constructor() : CategoryRepository {

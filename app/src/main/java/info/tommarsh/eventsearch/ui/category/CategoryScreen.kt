@@ -31,7 +31,7 @@ import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.CategoryTheme
 import info.tommarsh.eventsearch.ui.category.model.CategoryScreenAction
-import info.tommarsh.eventsearch.ui.category.model.CategoryScreenAction.*
+import info.tommarsh.eventsearch.ui.category.model.CategoryScreenAction.ClickedAttractions
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.LoadStateFooter

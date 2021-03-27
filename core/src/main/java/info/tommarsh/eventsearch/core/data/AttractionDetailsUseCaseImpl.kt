@@ -1,8 +1,8 @@
 package info.tommarsh.eventsearch.core.data
 
 import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
-import info.tommarsh.eventsearch.core.data.events.EventRepository
 import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionDetailsModel
+import info.tommarsh.eventsearch.core.data.events.EventRepository
 import javax.inject.Inject
 
 class AttractionDetailsUseCaseImpl

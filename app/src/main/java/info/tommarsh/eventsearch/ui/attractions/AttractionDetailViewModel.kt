@@ -8,8 +8,10 @@ import info.tommarsh.eventsearch.core.data.likes.LikesRepository
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.fetch
 import info.tommarsh.eventsearch.model.toViewModel
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailAction
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailState
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction.ClickLiked
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction.FetchDetails
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,14 +26,14 @@ internal class AttractionDetailViewModel @Inject constructor(
     private val likedRepository: LikesRepository
 ) : ViewModel() {
 
-    private val _screenState = MutableStateFlow(AttractionDetailState())
+    private val _screenState = MutableStateFlow(AttractionDetailScreenState())
 
     val screenState = _screenState.asStateFlow()
 
-    fun postAction(action: AttractionDetailAction) {
+    fun postAction(action: AttractionDetailScreenAction) {
         when (action) {
-            is AttractionDetailAction.FetchDetails -> fetchDetails(action.id)
-            is AttractionDetailAction.ClickLiked -> toggleLiked(action.attraction)
+            is FetchDetails -> fetchDetails(action.id)
+            is ClickLiked -> toggleLiked(action.attraction)
         }
     }
 

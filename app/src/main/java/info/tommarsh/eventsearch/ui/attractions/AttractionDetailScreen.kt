@@ -30,10 +30,10 @@ import info.tommarsh.eventsearch.model.*
 import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailAction
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailAction.ClickLiked
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailAction.FetchDetails
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailState
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction.ClickLiked
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction.FetchDetails
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenState
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import java.util.*
@@ -60,8 +60,8 @@ internal fun AttractionDetailScreen(
 
 @Composable
 internal fun AttractionDetailScreen(
-    screenState: AttractionDetailState,
-    actionDispatcher: (AttractionDetailAction) -> Unit
+    screenState: AttractionDetailScreenState,
+    actionDispatcher: (AttractionDetailScreenAction) -> Unit
 ) = AttractionDetailTheme {
     val scaffoldState = rememberScaffoldState()
     val listState = rememberLazyListState()

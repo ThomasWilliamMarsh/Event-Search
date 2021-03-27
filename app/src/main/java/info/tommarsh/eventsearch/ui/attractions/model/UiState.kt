@@ -4,12 +4,12 @@ import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionMod
 import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
 import info.tommarsh.eventsearch.model.FetchState
 
-internal data class AttractionDetailState(
+internal data class AttractionDetailScreenState(
     val isLiked: Boolean = false,
     val fetchState: FetchState<AttractionDetailsViewModel> = FetchState.Loading(true)
 )
 
-internal sealed class AttractionDetailAction {
-    data class FetchDetails(val id: String) : AttractionDetailAction()
-    data class ClickLiked(val attraction: LikedAttractionModel) : AttractionDetailAction()
+internal sealed class AttractionDetailScreenAction {
+    data class FetchDetails(val id: String) : AttractionDetailScreenAction()
+    data class ClickLiked(val attraction: LikedAttractionModel) : AttractionDetailScreenAction()
 }

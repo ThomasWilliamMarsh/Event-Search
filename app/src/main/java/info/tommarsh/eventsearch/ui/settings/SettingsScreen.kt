@@ -10,19 +10,19 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.theme.SettingsTheme
+import info.tommarsh.eventsearch.ui.settings.model.SettingsScreenAction
+import info.tommarsh.eventsearch.ui.settings.model.SettingsScreenAction.NavigateBack
+import info.tommarsh.eventsearch.ui.settings.model.SettingsScreenAction.NightModeChanged
+import info.tommarsh.eventsearch.ui.settings.model.SettingsScreenState
 
 @Composable
 fun SettingsScreen(controller: NavHostController) {
@@ -38,22 +38,21 @@ internal fun SettingsScreen(
     viewModel: SettingsViewModel,
     controller: NavController
 ) {
-    val darkMode = viewModel.darkMode.collectAsState(initial = MODE_NIGHT_FOLLOW_SYSTEM)
-    SettingsScreen(darkMode = darkMode.value,
-        navigateBack = { controller.popBackStack() },
-        onOptionSelected = { mode ->
-            viewModel.setDarkMode(mode)
-            setDefaultNightMode(mode)
-        })
+    val screenState by viewModel.screenState.collectAsState()
+    SettingsScreen(screenState = screenState) { action ->
+        when (action) {
+            is NavigateBack -> controller.popBackStack()
+            else -> viewModel.postAction(action)
+        }
+    }
 }
 
 @Composable
 internal fun SettingsScreen(
-    darkMode: Int,
-    navigateBack: () -> Unit,
-    onOptionSelected: (choice: Int) -> Unit
+    screenState: SettingsScreenState,
+    actionDispatcher: (SettingsScreenAction) -> Unit
 ) = SettingsTheme {
-    val darkModeString = when (darkMode) {
+    val darkModeString = when (screenState.darkMode) {
         MODE_NIGHT_FOLLOW_SYSTEM -> stringResource(R.string.dark_mode_follow_system)
         MODE_NIGHT_NO -> stringResource(R.string.dark_mode_light)
         MODE_NIGHT_YES -> stringResource(R.string.dark_mode_dark)
@@ -62,10 +61,14 @@ internal fun SettingsScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { SettingsToolbar(navigateBack) }) {
+        topBar = { SettingsToolbar { actionDispatcher(NavigateBack) } }) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item { SettingsTitle() }
-            item { DarkModeList(darkModeString, onOptionSelected = onOptionSelected) }
+            item {
+                DarkModeList(
+                    darkModeString,
+                    onOptionSelected = { nightMode -> actionDispatcher(NightModeChanged(nightMode)) })
+            }
         }
     }
 }

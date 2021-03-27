@@ -8,7 +8,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.single
 import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore(name = "settings")

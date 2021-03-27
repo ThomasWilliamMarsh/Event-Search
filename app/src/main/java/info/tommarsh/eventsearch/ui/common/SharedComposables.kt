@@ -116,7 +116,10 @@ fun ScrollToTopButton(
             onClick = onClick,
             backgroundColor = MaterialTheme.colors.primaryVariant
         ) {
-            Icon(imageVector = Icons.Filled.ArrowUpward, contentDescription = stringResource(R.string.scroll_to_top))
+            Icon(
+                imageVector = Icons.Filled.ArrowUpward,
+                contentDescription = stringResource(R.string.scroll_to_top)
+            )
         }
     }
 }

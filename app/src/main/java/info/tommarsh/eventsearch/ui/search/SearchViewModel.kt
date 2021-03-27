@@ -13,6 +13,8 @@ import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionMod
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.toViewModel
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction.AttractionDeleted
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction.QueryEntered
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -50,6 +52,14 @@ internal class SearchViewModel @Inject constructor(
         }
     }
 
+    fun postAction(action: SearchScreenAction) {
+        when (action) {
+            is AttractionDeleted -> deleteLikedAttraction(action.model)
+            is QueryEntered -> setQuery(action.query)
+            else -> throw NotImplementedError("Not handling action: $action")
+        }
+    }
+
     fun attractions(query: String = ""): Flow<PagingData<AttractionViewModel>> {
         val currentAttractions = attractions
         if (query == this.query && currentAttractions != null) {
@@ -63,14 +73,6 @@ internal class SearchViewModel @Inject constructor(
 
         attractions = newAttractions
         return newAttractions
-    }
-
-    fun postAction(action: SearchScreenAction) {
-        when (action) {
-            is SearchScreenAction.AttractionDeleted -> deleteLikedAttraction(action.model)
-            is SearchScreenAction.QueryEntered -> setQuery(action.query)
-            else -> throw NotImplementedError("Not handling action: $action")
-        }
     }
 
     private fun setQuery(query: String) {

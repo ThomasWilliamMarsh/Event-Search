@@ -3,9 +3,9 @@ package info.tommarsh.eventsearch.core.data.attractions.remote
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import info.tommarsh.eventsearch.core.data.attractions.model.data.AttractionsResponse
+import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionModel
 import info.tommarsh.eventsearch.core.data.attractions.model.toDomainModel
 import info.tommarsh.eventsearch.core.util.ScreenWidthResolver
-import info.tommarsh.eventsearch.core.data.attractions.model.domain.AttractionModel
 
 class AttractionsPagingSource(
     private val api: AttractionsAPI,
