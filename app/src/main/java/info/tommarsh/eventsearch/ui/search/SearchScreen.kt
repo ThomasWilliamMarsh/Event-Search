@@ -11,18 +11,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -32,8 +30,6 @@ import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.AttractionViewModel
-import info.tommarsh.eventsearch.model.CategoryViewModel
-import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.theme.SearchTheme
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
@@ -43,6 +39,9 @@ import info.tommarsh.eventsearch.ui.common.ScrollToTopButton
 import info.tommarsh.eventsearch.ui.search.component.LikedAttractionCard
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction.*
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -63,35 +62,28 @@ internal fun SearchScreen(
     viewModel: SearchViewModel,
     controller: NavController
 ) {
-    val (currentQuery, setCurrentQuery) = remember { mutableStateOf("") }
-    val attractions = viewModel.attractions(currentQuery).collectAsLazyPagingItems()
-    val likedItems by viewModel.likedAttractions.collectAsState(initial = emptyList())
-    val categories by viewModel.categories.collectAsState(initial = FetchState.Loading(true))
+    val screenState by viewModel.screenState.collectAsState()
+    val attractions = viewModel.attractions(screenState.query).collectAsLazyPagingItems()
 
     SearchScreen(
         attractions = attractions,
-        categoryState = categories,
-        likedAttractions = likedItems,
-        deleteLikedAttraction = viewModel::deleteLikedAttraction,
-        onSearch = setCurrentQuery,
-        navigateToSettings = { controller.navigate(Destinations.SETTINGS) },
-        navigateToAttraction = { id -> controller.navigate("${Destinations.EVENT}/$id") },
-        navigateToCategory = { id, name -> controller.navigate("${Destinations.CATEGORY}/$id/$name") }
-    )
-
+        screenState = screenState
+    ) { action ->
+        when (action) {
+            is SettingsButtonClicked -> controller.navigate(Destinations.SETTINGS)
+            is AttractionClicked -> controller.navigate("${Destinations.EVENT}/${action.id}")
+            is CategoryClicked -> controller.navigate("${Destinations.CATEGORY}/${action.id}/${action.name}")
+            else -> viewModel.postAction(action)
+        }
+    }
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun SearchScreen(
     attractions: LazyPagingItems<AttractionViewModel>,
-    categoryState: FetchState<List<CategoryViewModel>>,
-    likedAttractions: List<LikedAttractionModel>,
-    deleteLikedAttraction: (LikedAttractionModel) -> Unit,
-    onSearch: (query: String) -> Unit,
-    navigateToSettings: () -> Unit,
-    navigateToAttraction: (id: String) -> Unit,
-    navigateToCategory: (id: String, name: String) -> Unit,
+    screenState: SearchScreenState,
+    actionDispatcher: (SearchScreenAction) -> Unit
 ) = SearchTheme {
     val scaffoldState = rememberScaffoldState()
     val drawerState = scaffoldState.drawerState
@@ -101,9 +93,9 @@ internal fun SearchScreen(
     Scaffold(
         drawerContent = {
             SavedEventsDrawer(
-                likedAttractions = likedAttractions,
-                deleteLikedAttraction = deleteLikedAttraction,
-                navigateToAttraction = navigateToAttraction
+                likedAttractions = screenState.likedAttractions,
+                deleteLikedAttraction = { model -> actionDispatcher(AttractionDeleted(model)) },
+                navigateToAttraction = { id -> actionDispatcher(AttractionClicked(id)) }
             )
         },
         scaffoldState = scaffoldState
@@ -116,11 +108,11 @@ internal fun SearchScreen(
 
                 item {
                     SearchToolbar(
-                        categoryState,
+                        screenState.categories,
                         drawerState,
-                        onSearch,
-                        navigateToSettings,
-                        navigateToCategory
+                        { query -> actionDispatcher(QueryEntered(query)) },
+                        { actionDispatcher(SettingsButtonClicked) },
+                        { id, name -> actionDispatcher(CategoryClicked(id, name)) }
                     )
                 }
 
@@ -128,7 +120,7 @@ internal fun SearchScreen(
                     if (attraction != null) {
                         SearchCard(
                             attraction = attraction,
-                            navigateToAttraction = navigateToAttraction
+                            navigateToAttraction = { id -> actionDispatcher(AttractionClicked(id)) }
                         )
                     }
                 }

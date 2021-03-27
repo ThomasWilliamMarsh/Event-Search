@@ -10,17 +10,13 @@ import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
 import info.tommarsh.eventsearch.core.data.category.CategoryRepository
 import info.tommarsh.eventsearch.core.data.likes.LikesRepository
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
-import info.tommarsh.eventsearch.fetch
 import info.tommarsh.eventsearch.model.AttractionViewModel
-import info.tommarsh.eventsearch.model.CategoryViewModel
-import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.model.toViewModel
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,18 +28,26 @@ internal class SearchViewModel @Inject constructor(
     private val likesRepository: LikesRepository
 ) : ViewModel() {
 
-    private var query: String? = null
-
+    private var query = ""
     private var attractions: Flow<PagingData<AttractionViewModel>>? = null
 
-    private val _categories =
-        MutableStateFlow<FetchState<List<CategoryViewModel>>>(FetchState.Loading(true))
-    val categories = _categories.asStateFlow()
-
-    val likedAttractions = likesRepository.getLikedAttractions()
+    private val _screenState = MutableStateFlow(SearchScreenState())
+    val screenState = _screenState.asStateFlow()
 
     init {
-        getCategories()
+        viewModelScope.launch {
+            _screenState.value = screenState.value.copy(
+                categories = categoryRepository.getCategories().toViewModel()
+            )
+        }
+
+        viewModelScope.launch {
+            likesRepository.getLikedAttractions().collectLatest { likedAttractions ->
+                _screenState.value = screenState.value.copy(
+                    likedAttractions = likedAttractions
+                )
+            }
+        }
     }
 
     fun attractions(query: String = ""): Flow<PagingData<AttractionViewModel>> {
@@ -61,13 +65,23 @@ internal class SearchViewModel @Inject constructor(
         return newAttractions
     }
 
-    fun deleteLikedAttraction(model: LikedAttractionModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            likesRepository.removeLikedAttraction(model)
+    fun postAction(action: SearchScreenAction) {
+        when (action) {
+            is SearchScreenAction.AttractionDeleted -> deleteLikedAttraction(action.model)
+            is SearchScreenAction.QueryEntered -> setQuery(action.query)
+            else -> throw NotImplementedError("Not handling action: $action")
         }
     }
 
-    private fun getCategories() = viewModelScope.launch(Dispatchers.IO) {
-        _categories.value = fetch { categoryRepository.getCategories().toViewModel() }
+    private fun setQuery(query: String) {
+        if (query != screenState.value.query) {
+            _screenState.value = screenState.value.copy(query = query)
+        }
+    }
+
+    private fun deleteLikedAttraction(model: LikedAttractionModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            likesRepository.removeLikedAttraction(model)
+        }
     }
 }

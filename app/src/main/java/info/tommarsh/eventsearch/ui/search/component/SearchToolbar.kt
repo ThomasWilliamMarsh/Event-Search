@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.CategoryViewModel
-import info.tommarsh.eventsearch.model.FetchState
 import info.tommarsh.eventsearch.ui.common.BorderButton
 import info.tommarsh.eventsearch.ui.common.TopToolbar
 import kotlinx.coroutines.delay
@@ -35,7 +34,7 @@ private const val DEBOUNCE_MS = 1000L
 
 @Composable
 internal fun SearchToolbar(
-    categoryState: FetchState<List<CategoryViewModel>>,
+    categories: List<CategoryViewModel>,
     drawerState: DrawerState,
     onSearch: (query: String) -> Unit,
     navigateToSettings: () -> Unit,
@@ -68,7 +67,7 @@ internal fun SearchToolbar(
             }
         )
         SearchField(
-            categoryState = categoryState,
+            categories = categories,
             onSearch = onSearch,
             navigateToCategory = navigateToCategory
         )
@@ -77,23 +76,17 @@ internal fun SearchToolbar(
 
 @Composable
 private fun SearchField(
-    categoryState: FetchState<List<CategoryViewModel>>,
+    categories: List<CategoryViewModel>,
     onSearch: (keyword: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit
 ) {
     Surface(color = MaterialTheme.colors.primaryVariant) {
         Column {
             SearchTextField(onSearch)
-            when (categoryState) {
-                is FetchState.Loading -> {
-                    /**No need to do anything here.**/
-                }
-                is FetchState.Success -> CategoriesList(
-                    categories = categoryState.data,
-                    navigateToCategory = navigateToCategory
-                )
-                is FetchState.Failure -> ErrorText()
-            }
+            CategoriesList(
+                categories = categories,
+                navigateToCategory = navigateToCategory
+            )
         }
     }
 }

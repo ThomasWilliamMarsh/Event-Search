@@ -3,7 +3,7 @@ package info.tommarsh.eventsearch.ui.attractions
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import attractionDetail
-import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.ProvideWindowInsets
 import info.tommarsh.eventsearch.model.FetchState
 import org.junit.Rule
 import org.junit.Test

@@ -61,7 +61,7 @@ internal fun AttractionDetailScreen(
 @Composable
 internal fun AttractionDetailScreen(
     screenState: AttractionDetailState,
-    actioner: (AttractionDetailAction) -> Unit
+    actionDispatcher: (AttractionDetailAction) -> Unit
 ) = AttractionDetailTheme {
     val scaffoldState = rememberScaffoldState()
     val listState = rememberLazyListState()
@@ -80,7 +80,7 @@ internal fun AttractionDetailScreen(
                     PosterImage(
                         attraction = fetchState.data,
                         isLiked = screenState.isLiked,
-                        onLikedClicked = { actioner(ClickLiked(fetchState.data.toLikedAttraction())) }
+                        onLikedClicked = { actionDispatcher(ClickLiked(fetchState.data.toLikedAttraction())) }
                     )
                 }
 
