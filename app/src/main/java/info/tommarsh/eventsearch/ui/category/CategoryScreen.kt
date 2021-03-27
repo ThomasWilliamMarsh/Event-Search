@@ -13,15 +13,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -34,6 +30,8 @@ import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.CategoryTheme
+import info.tommarsh.eventsearch.ui.category.model.CategoryScreenAction
+import info.tommarsh.eventsearch.ui.category.model.CategoryScreenAction.*
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.LoadStateFooter
@@ -69,16 +67,19 @@ internal fun CategoryScreen(
     val attractions = viewModel.attractions(id).collectAsLazyPagingItems()
     CategoryScreen(
         categoryName = name,
-        attractions = attractions,
-        navigateToAttraction = { controller.navigate("${Destinations.EVENT}/$it") }
-    )
+        attractions = attractions
+    ) { action ->
+        when (action) {
+            is ClickedAttractions -> controller.navigate("${Destinations.EVENT}/${action.id}")
+        }
+    }
 }
 
 @Composable
 private fun CategoryScreen(
     categoryName: String,
     attractions: LazyPagingItems<AttractionViewModel>,
-    navigateToAttraction: (id: String) -> Unit
+    actioner: (CategoryScreenAction) -> Unit
 ) = CategoryTheme {
     val scaffoldState = rememberScaffoldState()
     val listState = rememberLazyListState()
@@ -99,7 +100,7 @@ private fun CategoryScreen(
                 if (attraction != null) {
                     SearchCard(
                         attraction = attraction,
-                        navigateToAttraction = navigateToAttraction
+                        navigateToAttraction = { actioner(ClickedAttractions(attraction.id)) }
                     )
                 }
             }

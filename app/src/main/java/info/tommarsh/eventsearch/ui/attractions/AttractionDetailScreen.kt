@@ -53,10 +53,9 @@ internal fun AttractionDetailScreen(
 ) {
     val screenState by viewModel.screenState.collectAsState()
 
-    AttractionDetailScreen(
-        screenState = screenState,
-        actioner = { action -> viewModel.postAction(action) }
-    )
+    AttractionDetailScreen(screenState = screenState) { action ->
+        viewModel.postAction(action)
+    }
 }
 
 @Composable
@@ -81,7 +80,7 @@ internal fun AttractionDetailScreen(
                     PosterImage(
                         attraction = fetchState.data,
                         isLiked = screenState.isLiked,
-                        actioner = actioner
+                        onLikedClicked = { actioner(ClickLiked(fetchState.data.toLikedAttraction())) }
                     )
                 }
 
@@ -102,7 +101,7 @@ private fun PosterImage(
     modifier: Modifier = Modifier,
     attraction: AttractionDetailsViewModel,
     isLiked: Boolean,
-    actioner: (AttractionDetailAction) -> Unit
+    onLikedClicked: () -> Unit
 ) {
     val description = stringResource(if (isLiked) R.string.favourite else R.string.unFavourite)
     val icon = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder
@@ -142,7 +141,7 @@ private fun PosterImage(
 
         IconToggleButton(
             checked = isLiked,
-            onCheckedChange = { actioner(ClickLiked(attraction.toLikedAttraction())) },
+            onCheckedChange = { onLikedClicked() },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
