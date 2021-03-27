@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import attractionDetail
 import com.google.accompanist.insets.ProvideWindowInsets
 import info.tommarsh.eventsearch.model.FetchState
+import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailState
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,9 +20,12 @@ class AttractionDetailScreenTest {
             setContent {
                 ProvideWindowInsets {
                     AttractionDetailScreen(
-                        attractionState = FetchState.Success(data = attractionDetail),
-                        isLiked = true,
-                        toggleLike = { })
+                        screenState = AttractionDetailState(
+                            isLiked = true,
+                            fetchState = FetchState.Success(attractionDetail)
+                        ),
+                        actionDispatcher = {}
+                    )
                 }
                 onNodeWithTag("LikedIcon").assertIsOn()
                 onNodeWithText("Theatre").assertIsDisplayed()
@@ -37,9 +41,12 @@ class AttractionDetailScreenTest {
             setContent {
                 ProvideWindowInsets {
                     AttractionDetailScreen(
-                        attractionState = FetchState.Success(data = attractionDetail),
-                        isLiked = false,
-                        toggleLike = { })
+                        screenState = AttractionDetailState(
+                            isLiked = false,
+                            fetchState = FetchState.Success(attractionDetail)
+                        ),
+                        actionDispatcher = {}
+                    )
                 }
             }
 
@@ -56,9 +63,12 @@ class AttractionDetailScreenTest {
             setContent {
                 ProvideWindowInsets {
                     AttractionDetailScreen(
-                        attractionState = FetchState.Success(data = attractionDetail),
-                        isLiked = true,
-                        toggleLike = { })
+                        screenState = AttractionDetailState(
+                            isLiked = true,
+                            fetchState = FetchState.Success(attractionDetail)
+                        ),
+                        actionDispatcher = {}
+                    )
                 }
             }
 
