@@ -14,9 +14,9 @@ val amber200 = Color(0xFFFFD740)
 val ebon = Color(0x222222)
 
 val DarkColorPalette = darkColors(
-    primary = blueGray300,
+    primary = blueGray700,
     onPrimary = Color.White,
-    primaryVariant = blueGray700,
+    primaryVariant = blueGray300,
     surface = Color.Black,
     onSurface = Color.White,
     onBackground = Color.White,
@@ -26,9 +26,9 @@ val DarkColorPalette = darkColors(
 )
 
 val LightColorPalette = lightColors(
-    primary = blueGray700,
+    primary = blueGray900,
     onPrimary = Color.White,
-    primaryVariant = blueGray900,
+    primaryVariant = blueGray700,
     surface = Color.White,
     onSurface = Color.Black,
     background = gray200,

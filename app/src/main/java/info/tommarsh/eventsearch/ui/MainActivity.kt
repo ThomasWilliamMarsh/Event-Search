@@ -22,10 +22,13 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+internal class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var preferencesRepository: PreferencesRepository
+
+    @Inject
+    lateinit var reminderDialog: ReminderDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             startDestination = Destinations.SEARCH
         ) {
             composable(Destinations.SEARCH) { _ ->
-                SearchScreen(controller = controller)
+                SearchScreen(controller = controller, reminderDialog = reminderDialog)
             }
             composable("${Destinations.EVENT}/{${Arguments.ID}}") { backStackEntry ->
                 AttractionDetailScreen(

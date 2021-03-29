@@ -17,9 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.android.material.datepicker.MaterialDatePicker
 import info.tommarsh.eventsearch.R
 
 @Composable
@@ -38,7 +40,7 @@ internal fun TopToolbar(
             )
         },
         actions = actions,
-        backgroundColor = MaterialTheme.colors.primaryVariant,
+        backgroundColor = MaterialTheme.colors.primary,
         elevation = 0.dp,
         navigationIcon = navigationIcon,
         modifier = modifier
@@ -114,7 +116,7 @@ fun ScrollToTopButton(
     ) {
         FloatingActionButton(
             onClick = onClick,
-            backgroundColor = MaterialTheme.colors.primaryVariant
+            backgroundColor = MaterialTheme.colors.primary
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowUpward,

@@ -32,6 +32,7 @@ import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionMod
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.theme.SearchTheme
+import info.tommarsh.eventsearch.ui.ReminderDialog
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.LoadStateFooter
@@ -48,11 +49,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 internal fun SearchScreen(
-    controller: NavController
+    controller: NavController,
+    reminderDialog: ReminderDialog
 ) {
     val viewModel = hiltNavGraphViewModel<SearchViewModel>()
     SearchScreen(
         viewModel = viewModel,
+        reminderDialog = reminderDialog,
         controller = controller
     )
 }
@@ -60,6 +63,7 @@ internal fun SearchScreen(
 @Composable
 internal fun SearchScreen(
     viewModel: SearchViewModel,
+    reminderDialog: ReminderDialog,
     controller: NavController
 ) {
     val screenState by viewModel.screenState.collectAsState()
@@ -73,6 +77,7 @@ internal fun SearchScreen(
             is SettingsButtonClicked -> controller.navigate(Destinations.SETTINGS)
             is AttractionClicked -> controller.navigate("${Destinations.EVENT}/${action.id}")
             is CategoryClicked -> controller.navigate("${Destinations.CATEGORY}/${action.id}/${action.name}")
+            is SetReminder -> reminderDialog.show(action.attraction)
             else -> viewModel.postAction(action)
         }
     }
@@ -94,6 +99,7 @@ internal fun SearchScreen(
         drawerContent = {
             SavedEventsDrawer(
                 likedAttractions = screenState.likedAttractions,
+                setAttractionReminder = { model -> actionDispatcher(SetReminder(model)) },
                 deleteLikedAttraction = { model -> actionDispatcher(AttractionDeleted(model)) },
                 navigateToAttraction = { id -> actionDispatcher(AttractionClicked(id)) }
             )
@@ -153,6 +159,7 @@ internal fun SearchScreen(
 private fun SavedEventsDrawer(
     likedAttractions: List<LikedAttractionModel>,
     navigateToAttraction: (id: String) -> Unit,
+    setAttractionReminder: (LikedAttractionModel) -> Unit,
     deleteLikedAttraction: (LikedAttractionModel) -> Unit
 ) {
     LazyColumn(modifier = Modifier.statusBarsPadding()) {
@@ -160,6 +167,7 @@ private fun SavedEventsDrawer(
         items(likedAttractions) { attraction ->
             LikedAttractionCard(
                 likedModel = attraction,
+                setAttractionReminder = setAttractionReminder,
                 navigateToAttraction = navigateToAttraction,
                 deleteLikedAttraction = deleteLikedAttraction
             )

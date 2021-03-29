@@ -1,11 +1,17 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.EventSearch" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/bluegray_300</item>
-        <item name="colorPrimaryDark">@color/bluegray_700</item>
-        <item name="colorAccent">@color/bluegray_300</item>
+    <style name="Theme.EventSearch" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/bluegray_700</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorPrimaryVariant">@color/bluegray_300</item>
+        <item name="colorSurface">@android:color/black</item>
+        <item name="colorOnSurface">@android:color/white</item>
         <item name="android:colorBackground">@android:color/black</item>
+        <item name="colorOnBackground">@android:color/white</item>
+        <item name="colorError">@color/red200</item>
+        <item name="colorOnError">@android:color/white</item>
         <item name="android:statusBarColor">@color/immersive_sys_ui</item>
         <item name="android:navigationBarColor">@color/nav_bar</item>
+        <item name="materialCalendarTheme">@style/EventSearch.Widget.Calendar</item>
     </style>
 </resources>

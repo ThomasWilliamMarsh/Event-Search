@@ -41,7 +41,7 @@ internal fun SearchToolbar(
     navigateToCategory: (id: String, name: String) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    Column(modifier = Modifier.background(color = MaterialTheme.colors.primaryVariant)) {
+    Column(modifier = Modifier.background(color = MaterialTheme.colors.primary)) {
         TopToolbar(
             title = stringResource(id = R.string.app_name),
             modifier = Modifier.statusBarsPadding(),
@@ -80,7 +80,7 @@ private fun SearchField(
     onSearch: (keyword: String) -> Unit,
     navigateToCategory: (id: String, name: String) -> Unit
 ) {
-    Surface(color = MaterialTheme.colors.primaryVariant) {
+    Surface(color = MaterialTheme.colors.primary) {
         Column {
             SearchTextField(onSearch)
             CategoriesList(
