@@ -1,6 +1,7 @@
 package info.tommarsh.eventsearch.core.ui
 
 import android.content.Context
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.qualifiers.ActivityContext
@@ -36,6 +37,7 @@ class ReminderDialog @Inject internal constructor(
                 id = id.hashCode(),
                 notification = notification
             )
+            Toast.makeText(context, "Reminder set!", Toast.LENGTH_SHORT).show()
         }
 
         picker.show((context as AppCompatActivity).supportFragmentManager, "date")
