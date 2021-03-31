@@ -3,7 +3,6 @@ package info.tommarsh.eventsearch.core.notifications
 import android.app.Notification
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
 import coil.ImageLoader
@@ -22,6 +21,9 @@ internal class NotificationFactory
     @ApplicationContext private val context: Context,
     private val imageLoader: ImageLoader
 ) {
+
+    private val imageHeight = 300
+    private val imageWidth = 534
 
     suspend fun create(type: NotificationType): Notification {
         return when (type) {
@@ -46,9 +48,9 @@ internal class NotificationFactory
             .data(url)
             .build()
 
-        return when(val result = imageLoader.execute(request)) {
+        return when (val result = imageLoader.execute(request)) {
             is ErrorResult -> null
-            is SuccessResult -> (result.drawable as BitmapDrawable).bitmap
+            is SuccessResult -> result.drawable.toBitmap(imageWidth, imageHeight)
         }
     }
 }
