@@ -18,3 +18,7 @@ internal sealed class SearchScreenAction {
     data class QueryEntered(val query: String) : SearchScreenAction()
     data class AttractionDeleted(val model: LikedAttractionModel) : SearchScreenAction()
 }
+
+internal sealed class SearchScreenEffect {
+    data class ShowReminderDialog(val id: String, val name: String, val image: String) : SearchScreenEffect()
+}

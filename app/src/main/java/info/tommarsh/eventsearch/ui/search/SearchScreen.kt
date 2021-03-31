@@ -11,10 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,10 +26,10 @@ import androidx.paging.compose.itemsIndexed
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
+import info.tommarsh.eventsearch.core.ui.ReminderDialog
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.theme.SearchTheme
-import info.tommarsh.eventsearch.ui.ReminderDialog
 import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
 import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
 import info.tommarsh.eventsearch.ui.common.LoadStateFooter
@@ -42,8 +39,11 @@ import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction.*
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenEffect
+import info.tommarsh.eventsearch.ui.search.model.SearchScreenEffect.*
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -77,8 +77,15 @@ internal fun SearchScreen(
             is SettingsButtonClicked -> controller.navigate(Destinations.SETTINGS)
             is AttractionClicked -> controller.navigate("${Destinations.EVENT}/${action.id}")
             is CategoryClicked -> controller.navigate("${Destinations.CATEGORY}/${action.id}/${action.name}")
-            is SetReminder -> reminderDialog.show(action.attraction)
             else -> viewModel.postAction(action)
+        }
+    }
+
+    LaunchedEffect(viewModel) {
+        viewModel.effects.collectLatest { effect ->
+            when(effect) {
+                is ShowReminderDialog -> reminderDialog.show(effect.id, effect.name, effect.image)
+            }
         }
     }
 }

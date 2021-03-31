@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
 import info.tommarsh.eventsearch.core.data.preferences.PreferencesRepository
+import info.tommarsh.eventsearch.core.ui.ReminderDialog
 import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen

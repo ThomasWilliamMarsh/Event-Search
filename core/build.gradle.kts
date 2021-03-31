@@ -8,6 +8,7 @@ android {
     compileSdkVersion(Versions.compileSdk)
 
     defaultConfig {
+        minSdkVersion(Versions.minkSdk)
         testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
         consumerProguardFiles("consumer-rules.pro")
         buildConfigField("String", "TICKETMASTER_API_KEY", "\"XpumtmXUMaZMTgnVA2UGNQ88okEFHMOk\"")
@@ -34,6 +35,11 @@ dependencies {
     api("androidx.room:room-runtime:${Versions.room}")
     api("androidx.room:room-ktx:${Versions.room}")
     api("androidx.datastore:datastore-preferences:${Versions.datastore}")
+    api("com.google.android.material:material:${Versions.material}")
+    api("androidx.startup:startup-runtime:${Versions.appStartup}")
+
+    //Image loading
+    api("io.coil-kt:coil:1.1.1")
 
     //Kotlin
     api("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")

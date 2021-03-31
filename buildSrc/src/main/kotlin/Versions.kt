@@ -39,5 +39,6 @@ object Versions {
     const val activity = "1.3.0-alpha05"
     const val material = "1.3.0"
     const val room = "2.2.5"
+    const val appStartup = "1.0.0"
     //endregion
 }
