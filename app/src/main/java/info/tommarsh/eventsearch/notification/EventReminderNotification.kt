@@ -28,7 +28,7 @@ internal class EventReminderNotification
     private val imageLoader: ImageLoader
 ) {
 
-     suspend fun create(id: String, name: String, image: String): Notification {
+    suspend fun create(id: String, name: String, image: String): Notification {
         return NotificationCompat.Builder(context, EventReminderChannel.CHANNEL_ID)
             .setContentTitle(context.getString(R.string.event_reminder_notification_title))
             .setContentText(name)

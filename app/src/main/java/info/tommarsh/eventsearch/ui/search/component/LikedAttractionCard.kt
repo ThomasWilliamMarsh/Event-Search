@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
-import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.theme.amber200
 import info.tommarsh.eventsearch.theme.red200
 import info.tommarsh.eventsearch.ui.common.EventSearchHorizontalCard

@@ -12,11 +12,11 @@ import androidx.navigation.navDeepLink
 import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
 import info.tommarsh.eventsearch.core.data.preferences.PreferencesRepository
-import info.tommarsh.eventsearch.ui.common.ReminderDialog
 import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
 import info.tommarsh.eventsearch.ui.category.CategoryScreen
+import info.tommarsh.eventsearch.ui.common.ReminderDialog
 import info.tommarsh.eventsearch.ui.search.SearchScreen
 import info.tommarsh.eventsearch.ui.settings.SettingsScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,7 +54,9 @@ internal class MainActivity : AppCompatActivity() {
             }
             composable(
                 route = "${Destinations.ATTRACTION}/{${Arguments.ID}}",
-                deepLinks = listOf(navDeepLink { uriPattern = "app://eventsearch.app/attraction/{id}" })
+                deepLinks = listOf(navDeepLink {
+                    uriPattern = "app://eventsearch.app/attraction/{id}"
+                })
             ) { backStackEntry ->
                 AttractionDetailScreen(
                     backStackEntry = backStackEntry

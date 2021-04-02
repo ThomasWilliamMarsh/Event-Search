@@ -13,7 +13,7 @@ import info.tommarsh.eventsearch.core.notifications.NotificationChannelFactory
 
 class NotificationInitialiser : Initializer<Unit> {
     override fun create(context: Context) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = context.getSystemService<NotificationManager>()
             val channelsProvider = EntryPointAccessors.fromApplication(
                 context,

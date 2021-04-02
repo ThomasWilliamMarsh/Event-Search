@@ -13,7 +13,7 @@ import dagger.hilt.components.SingletonComponent
 object ImageModule {
 
     @Provides
-    fun provideImageLoader(@ApplicationContext context: Context) : ImageLoader {
+    fun provideImageLoader(@ApplicationContext context: Context): ImageLoader {
         return ImageLoader.invoke(context)
     }
 }

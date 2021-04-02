@@ -1,7 +1,6 @@
 package info.tommarsh.eventsearch.ui.search.model
 
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
-import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.model.CategoryViewModel
 
 internal data class SearchScreenState(
@@ -20,5 +19,6 @@ internal sealed class SearchScreenAction {
 }
 
 internal sealed class SearchScreenEffect {
-    data class ShowReminderDialog(val id: String, val name: String, val image: String) : SearchScreenEffect()
+    data class ShowReminderDialog(val id: String, val name: String, val image: String) :
+        SearchScreenEffect()
 }

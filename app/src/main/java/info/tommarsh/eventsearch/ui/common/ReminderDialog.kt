@@ -17,7 +17,7 @@ class ReminderDialog @Inject internal constructor(
     private val notificationScheduler: NotificationScheduler,
     private val notificationFactory: EventReminderNotification,
 
-) {
+    ) {
 
     suspend fun show(id: String, eventName: String, url: String) {
 
@@ -27,7 +27,8 @@ class ReminderDialog @Inject internal constructor(
             .build()
 
         val notification = notificationFactory.create(id = id, name = eventName, image = url)
-        picker.addOnPositiveButtonClickListener { time -> notificationScheduler.schedule(
+        picker.addOnPositiveButtonClickListener { time ->
+            notificationScheduler.schedule(
                 time = time,
                 id = id.hashCode(),
                 notification = notification
