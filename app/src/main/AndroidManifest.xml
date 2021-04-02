@@ -19,8 +19,8 @@
             android:theme="@style/Theme.EventSearch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data android:scheme="app" android:host="eventsearch.app" />
             </intent-filter>
         </activity>
 

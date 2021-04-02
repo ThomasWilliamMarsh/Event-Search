@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.core.ui
+package info.tommarsh.eventsearch.ui.common
 
 import android.content.Context
 import android.widget.Toast
@@ -7,16 +7,16 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.scopes.ActivityScoped
 import info.tommarsh.eventsearch.core.R
-import info.tommarsh.eventsearch.core.notifications.NotificationFactory
 import info.tommarsh.eventsearch.core.notifications.NotificationScheduler
-import info.tommarsh.eventsearch.core.notifications.NotificationType
+import info.tommarsh.eventsearch.notification.EventReminderNotification
 import javax.inject.Inject
 
 @ActivityScoped
 class ReminderDialog @Inject internal constructor(
     @ActivityContext private val context: Context,
     private val notificationScheduler: NotificationScheduler,
-    private val notificationFactory: NotificationFactory
+    private val notificationFactory: EventReminderNotification,
+
 ) {
 
     suspend fun show(id: String, eventName: String, url: String) {
@@ -26,12 +26,7 @@ class ReminderDialog @Inject internal constructor(
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
 
-        val notification = notificationFactory.create(
-            NotificationType.EventReminder(
-                eventName = eventName,
-                imageUrl = url
-            )
-        )
+        val notification = notificationFactory.create(id = id, name = eventName, image = url)
         picker.addOnPositiveButtonClickListener { time -> notificationScheduler.schedule(
                 time = time,
                 id = id.hashCode(),

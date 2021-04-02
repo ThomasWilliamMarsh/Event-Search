@@ -2,7 +2,7 @@ package info.tommarsh.eventsearch.navigation
 
 object Destinations {
     const val SEARCH = "search"
-    const val EVENT = "event"
+    const val ATTRACTION = "attraction"
     const val CATEGORY = "category"
     const val SETTINGS = "settings"
 }

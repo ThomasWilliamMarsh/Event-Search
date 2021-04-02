@@ -70,7 +70,7 @@ internal fun CategoryScreen(
         attractions = attractions
     ) { action ->
         when (action) {
-            is ClickedAttractions -> controller.navigate("${Destinations.EVENT}/${action.id}")
+            is ClickedAttractions -> controller.navigate("${Destinations.ATTRACTION}/${action.id}")
         }
     }
 }

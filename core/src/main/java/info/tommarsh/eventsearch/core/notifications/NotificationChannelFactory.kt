@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.core.notifications.channel
+package info.tommarsh.eventsearch.core.notifications
 
 import android.app.NotificationChannel
 import android.content.Context

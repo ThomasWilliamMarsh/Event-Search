@@ -1,16 +1,16 @@
-package info.tommarsh.eventsearch.core.di
+package info.tommarsh.eventsearch.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
-import info.tommarsh.eventsearch.core.notifications.channel.EventReminderChannel
-import info.tommarsh.eventsearch.core.notifications.channel.NotificationChannelFactory
+import info.tommarsh.eventsearch.notification.EventReminderChannel
+import info.tommarsh.eventsearch.core.notifications.NotificationChannelFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal abstract class NotificationChannelModule {
+internal abstract class NotificationModule {
 
     @Binds
     @IntoSet

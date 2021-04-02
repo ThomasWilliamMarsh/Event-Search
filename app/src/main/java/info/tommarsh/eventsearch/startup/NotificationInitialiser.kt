@@ -9,7 +9,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import info.tommarsh.eventsearch.core.notifications.channel.NotificationChannelFactory
+import info.tommarsh.eventsearch.core.notifications.NotificationChannelFactory
 
 class NotificationInitialiser : Initializer<Unit> {
     override fun create(context: Context) {

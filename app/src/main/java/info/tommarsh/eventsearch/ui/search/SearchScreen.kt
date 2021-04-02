@@ -26,7 +26,7 @@ import androidx.paging.compose.itemsIndexed
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
-import info.tommarsh.eventsearch.core.ui.ReminderDialog
+import info.tommarsh.eventsearch.ui.common.ReminderDialog
 import info.tommarsh.eventsearch.model.AttractionViewModel
 import info.tommarsh.eventsearch.navigation.Destinations
 import info.tommarsh.eventsearch.theme.SearchTheme
@@ -39,7 +39,6 @@ import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import info.tommarsh.eventsearch.ui.search.component.SearchToolbar
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenAction.*
-import info.tommarsh.eventsearch.ui.search.model.SearchScreenEffect
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenEffect.*
 import info.tommarsh.eventsearch.ui.search.model.SearchScreenState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -75,7 +74,7 @@ internal fun SearchScreen(
     ) { action ->
         when (action) {
             is SettingsButtonClicked -> controller.navigate(Destinations.SETTINGS)
-            is AttractionClicked -> controller.navigate("${Destinations.EVENT}/${action.id}")
+            is AttractionClicked -> controller.navigate("${Destinations.ATTRACTION}/${action.id}")
             is CategoryClicked -> controller.navigate("${Destinations.CATEGORY}/${action.id}/${action.name}")
             else -> viewModel.postAction(action)
         }
