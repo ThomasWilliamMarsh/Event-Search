@@ -26,8 +26,7 @@ import androidx.paging.compose.itemsIndexed
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
-import info.tommarsh.eventsearch.navigation.Arguments
-import info.tommarsh.eventsearch.navigation.Destinations
+import info.tommarsh.eventsearch.navigation.Screen
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.CategoryTheme
 import info.tommarsh.eventsearch.ui.category.model.CategoryScreenAction
@@ -45,8 +44,8 @@ internal fun CategoryScreen(
     controller: NavController
 ) {
     val viewModel = hiltNavGraphViewModel<CategoryViewModel>()
-    val id = backStackEntry.stringArg(Arguments.ID)
-    val name = backStackEntry.stringArg(Arguments.NAME)
+    val id = backStackEntry.stringArg("id")
+    val name = backStackEntry.stringArg("name")
 
     CategoryScreen(
         viewModel = viewModel,
@@ -70,7 +69,7 @@ internal fun CategoryScreen(
         attractions = attractions
     ) { action ->
         when (action) {
-            is ClickedAttractions -> controller.navigate("${Destinations.ATTRACTION}/${action.id}")
+            is ClickedAttractions -> controller.navigate(Screen.Attraction.route(action.id))
         }
     }
 }

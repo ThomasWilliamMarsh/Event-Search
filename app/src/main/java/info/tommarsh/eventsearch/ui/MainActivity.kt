@@ -11,9 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
-import info.tommarsh.eventsearch.core.data.preferences.PreferencesRepository
-import info.tommarsh.eventsearch.navigation.Arguments
-import info.tommarsh.eventsearch.navigation.Destinations
+import info.tommarsh.eventsearch.navigation.Screen
 import info.tommarsh.eventsearch.ui.attractions.AttractionDetailScreen
 import info.tommarsh.eventsearch.ui.category.CategoryScreen
 import info.tommarsh.eventsearch.ui.common.ReminderDialog
@@ -25,9 +23,6 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var preferencesRepository: PreferencesRepository
 
     @Inject
     lateinit var reminderDialog: ReminderDialog
@@ -47,28 +42,28 @@ internal class MainActivity : AppCompatActivity() {
         val controller = rememberNavController()
         NavHost(
             navController = controller,
-            startDestination = Destinations.SEARCH
+            startDestination = Screen.Search.route
         ) {
-            composable(Destinations.SEARCH) { _ ->
+            composable(Screen.Search.route) {
                 SearchScreen(controller = controller, reminderDialog = reminderDialog)
             }
             composable(
-                route = "${Destinations.ATTRACTION}/{${Arguments.ID}}",
+                route = Screen.Attraction.route,
                 deepLinks = listOf(navDeepLink {
-                    uriPattern = "app://eventsearch.app/attraction/{id}"
+                    uriPattern = Screen.Attraction.deeplink
                 })
             ) { backStackEntry ->
                 AttractionDetailScreen(
                     backStackEntry = backStackEntry
                 )
             }
-            composable("${Destinations.CATEGORY}/{${Arguments.ID}}/{${Arguments.NAME}}") { backStackEntry ->
+            composable(Screen.Category.route) { backStackEntry ->
                 CategoryScreen(
                     backStackEntry = backStackEntry,
                     controller = controller
                 )
             }
-            composable(Destinations.SETTINGS) { _ ->
+            composable(Screen.Settings.route) {
                 SettingsScreen(
                     controller = controller,
                 )

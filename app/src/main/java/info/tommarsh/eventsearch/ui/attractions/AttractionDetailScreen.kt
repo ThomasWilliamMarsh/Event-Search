@@ -27,7 +27,6 @@ import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.*
-import info.tommarsh.eventsearch.navigation.Arguments
 import info.tommarsh.eventsearch.stringArg
 import info.tommarsh.eventsearch.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction
@@ -40,7 +39,7 @@ import java.util.*
 
 @Composable
 internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) {
-    val id = backStackEntry.stringArg(Arguments.ID)
+    val id = backStackEntry.stringArg("id")
     val viewModel = hiltNavGraphViewModel<AttractionDetailViewModel>().also {
         it.postAction(FetchDetails(id))
     }

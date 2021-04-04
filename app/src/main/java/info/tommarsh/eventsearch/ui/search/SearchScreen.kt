@@ -27,7 +27,7 @@ import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.model.AttractionViewModel
-import info.tommarsh.eventsearch.navigation.Destinations
+import info.tommarsh.eventsearch.navigation.Screen
 import info.tommarsh.eventsearch.theme.SearchTheme
 import info.tommarsh.eventsearch.ui.common.*
 import info.tommarsh.eventsearch.ui.search.component.LikedAttractionCard
@@ -69,9 +69,9 @@ internal fun SearchScreen(
         screenState = screenState
     ) { action ->
         when (action) {
-            is SettingsButtonClicked -> controller.navigate(Destinations.SETTINGS)
-            is AttractionClicked -> controller.navigate("${Destinations.ATTRACTION}/${action.id}")
-            is CategoryClicked -> controller.navigate("${Destinations.CATEGORY}/${action.id}/${action.name}")
+            is SettingsButtonClicked -> controller.navigate(Screen.Settings.route)
+            is AttractionClicked -> controller.navigate(Screen.Attraction.route(action.id))
+            is CategoryClicked -> controller.navigate(Screen.Category.route(action.id, action.name))
             else -> viewModel.postAction(action)
         }
     }

@@ -1,13 +1,10 @@
 package info.tommarsh.eventsearch.navigation
 
-object Destinations {
-    const val SEARCH = "search"
-    const val ATTRACTION = "attraction"
-    const val CATEGORY = "category"
-    const val SETTINGS = "settings"
-}
+private const val DEEPLINK_PREFIX = "app://eventsearch.app/"
 
-object Arguments {
-    const val ID = "id"
-    const val NAME = "name"
+sealed class Screen(val route: String, val deeplink: String = DEEPLINK_PREFIX.plus(route)) {
+    object Search : Screen("search")
+    object Attraction : Screen("attraction/{id}") { fun route(id: String) = "attraction/$id"}
+    object Category : Screen("category/{id}/{name}") { fun route(id: String, name:String) = "category/$id/$name"}
+    object Settings : Screen("settings")
 }
