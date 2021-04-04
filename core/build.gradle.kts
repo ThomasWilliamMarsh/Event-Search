@@ -59,4 +59,26 @@ dependencies {
 
     //Time
     api("joda-time:joda-time:${Versions.jodaTime}")
+
+    //Compose
+    api("com.google.accompanist:accompanist-insets:${Versions.accompanist}")
+    api("com.google.accompanist:accompanist-coil:${Versions.accompanist}")
+    api("androidx.activity:activity-compose:${Versions.activity}")
+    api("androidx.compose.runtime:runtime:${Versions.compose}")
+    api("androidx.compose.animation:animation:${Versions.compose}")
+    api("androidx.compose.animation:animation-core:${Versions.compose}")
+    api("androidx.compose.ui:ui:${Versions.compose}")
+    api("androidx.compose.foundation:foundation:${Versions.compose}")
+    api("androidx.paging:paging-compose:${Versions.pagingCompose}")
+    api("androidx.compose.foundation:foundation-layout:${Versions.compose}")
+    api("androidx.compose.material:material:${Versions.compose}")
+    api("androidx.compose.material:material-icons-core:${Versions.compose}")
+    api("androidx.compose.material:material-icons-extended:${Versions.compose}")
+    api("androidx.compose.ui:ui-text:${Versions.compose}")
+    api("androidx.compose.ui:ui-util:${Versions.compose}")
+    api("androidx.compose.ui:ui-tooling:${Versions.compose}")
+    api("androidx.navigation:navigation-compose:${Versions.composeNavigation}")
+    api("androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}")
+    api("androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigation}")
+
 }

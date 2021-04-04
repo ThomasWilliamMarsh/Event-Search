@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.model
+package info.tommarsh.eventsearch.attraction.ui.model
 
 import info.tommarsh.eventsearch.core.data.events.model.domain.EventModel
 import org.joda.time.DateTime

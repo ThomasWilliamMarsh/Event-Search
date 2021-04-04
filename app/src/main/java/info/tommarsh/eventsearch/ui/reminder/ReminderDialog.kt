@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.ui.common
+package info.tommarsh.eventsearch.ui.reminder
 
 import android.content.Context
 import android.widget.Toast

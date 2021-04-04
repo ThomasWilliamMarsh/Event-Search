@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="event_details_title">Events</string>
+    <string name="favourite">Favourite</string>
+    <string name="unFavourite">Unfavourite</string>
+    <string name="error_loading_event_details">Error loading event details</string>
+</resources>

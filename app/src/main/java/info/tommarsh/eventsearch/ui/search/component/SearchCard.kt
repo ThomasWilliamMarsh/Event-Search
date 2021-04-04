@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.CoilImage
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
-import info.tommarsh.eventsearch.ui.common.EventSearchVerticalCard
+import info.tommarsh.eventsearch.core.ui.EventSearchVerticalCard
 
 @Composable
 internal fun SearchCard(

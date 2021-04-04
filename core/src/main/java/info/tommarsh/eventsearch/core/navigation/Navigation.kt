@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.navigation
+package info.tommarsh.eventsearch.core.navigation
 
 private const val DEEPLINK_PREFIX = "app://eventsearch.app/"
 

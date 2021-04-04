@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.theme
+package info.tommarsh.eventsearch.core.theme
 
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors

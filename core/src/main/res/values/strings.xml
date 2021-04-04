@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Notification -->
     <string name="event_reminder_notification_title">Today\'s the day!</string>
     <string name="event_reminder_channel_name">Event Reminders</string>
     <string name="event_reminder_channel_description">Notifies you on the big day!</string>
     <string name="reminder_dialog_title">Set your reminder</string>
+
+    <string name="retry">Retry</string>
+    <string name="scroll_to_top">Scroll to top</string>
+    <string name="error_loading_page">Error loading page</string>
 </resources>

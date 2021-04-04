@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.CategoryViewModel
-import info.tommarsh.eventsearch.ui.common.BorderButton
-import info.tommarsh.eventsearch.ui.common.TopToolbar
+import info.tommarsh.eventsearch.core.ui.BorderButton
+import info.tommarsh.eventsearch.core.ui.TopToolbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

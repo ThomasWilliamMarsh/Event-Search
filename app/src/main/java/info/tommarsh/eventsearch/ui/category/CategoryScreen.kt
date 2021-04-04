@@ -26,15 +26,15 @@ import androidx.paging.compose.itemsIndexed
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.model.AttractionViewModel
-import info.tommarsh.eventsearch.navigation.Screen
+import info.tommarsh.eventsearch.core.navigation.Screen
 import info.tommarsh.eventsearch.stringArg
-import info.tommarsh.eventsearch.theme.CategoryTheme
+import info.tommarsh.eventsearch.core.theme.CategoryTheme
 import info.tommarsh.eventsearch.ui.category.model.CategoryScreenAction
 import info.tommarsh.eventsearch.ui.category.model.CategoryScreenAction.ClickedAttractions
-import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
-import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
-import info.tommarsh.eventsearch.ui.common.LoadStateFooter
-import info.tommarsh.eventsearch.ui.common.ScrollToTopButton
+import info.tommarsh.eventsearch.core.ui.CenteredCircularProgress
+import info.tommarsh.eventsearch.core.ui.ErrorSnackbar
+import info.tommarsh.eventsearch.core.ui.LoadStateFooter
+import info.tommarsh.eventsearch.core.ui.ScrollToTopButton
 import info.tommarsh.eventsearch.ui.search.component.SearchCard
 import kotlinx.coroutines.launch
 

@@ -1,7 +1,7 @@
 package info.tommarsh.eventsearch
 
 import androidx.navigation.NavBackStackEntry
-import info.tommarsh.eventsearch.model.FetchState
+import info.tommarsh.eventsearch.core.data.FetchState
 
 //region NavBackStackEntry
 fun NavBackStackEntry.stringArg(id: String, default: String = ""): String {

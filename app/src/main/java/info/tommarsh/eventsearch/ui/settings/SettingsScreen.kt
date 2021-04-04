@@ -18,7 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.theme.SettingsTheme
+import info.tommarsh.eventsearch.core.theme.SettingsTheme
 import info.tommarsh.eventsearch.ui.settings.model.SettingsScreenAction
 import info.tommarsh.eventsearch.ui.settings.model.SettingsScreenAction.NavigateBack
 import info.tommarsh.eventsearch.ui.settings.model.SettingsScreenAction.NightModeChanged

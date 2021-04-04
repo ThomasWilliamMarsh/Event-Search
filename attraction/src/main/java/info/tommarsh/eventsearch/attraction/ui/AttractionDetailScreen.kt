@@ -1,4 +1,4 @@
-package info.tommarsh.eventsearch.ui.attractions
+package info.tommarsh.eventsearch.attraction.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,20 +25,24 @@ import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavBackStackEntry
 import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.insets.statusBarsPadding
-import info.tommarsh.eventsearch.R
-import info.tommarsh.eventsearch.model.*
+import info.tommarsh.eventsearch.attraction.R
+import info.tommarsh.eventsearch.attraction.ui.model.*
+import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction
 import info.tommarsh.eventsearch.stringArg
-import info.tommarsh.eventsearch.theme.AttractionDetailTheme
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction.ClickLiked
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenAction.FetchDetails
-import info.tommarsh.eventsearch.ui.attractions.model.AttractionDetailScreenState
-import info.tommarsh.eventsearch.ui.common.CenteredCircularProgress
-import info.tommarsh.eventsearch.ui.common.ErrorSnackbar
+import info.tommarsh.eventsearch.core.theme.AttractionDetailTheme
+import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.ClickLiked
+import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.FetchDetails
+import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenState
+import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailsViewModel
+import info.tommarsh.eventsearch.attraction.ui.model.EventDateViewModel
+import info.tommarsh.eventsearch.attraction.ui.model.EventViewModel
+import info.tommarsh.eventsearch.core.data.FetchState
+import info.tommarsh.eventsearch.core.ui.CenteredCircularProgress
+import info.tommarsh.eventsearch.core.ui.ErrorSnackbar
 import java.util.*
 
 @Composable
-internal fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) {
+fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) {
     val id = backStackEntry.stringArg("id")
     val viewModel = hiltNavGraphViewModel<AttractionDetailViewModel>().also {
         it.postAction(FetchDetails(id))

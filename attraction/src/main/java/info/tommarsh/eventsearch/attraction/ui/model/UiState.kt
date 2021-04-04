@@ -1,8 +1,7 @@
-package info.tommarsh.eventsearch.ui.attractions.model
+package info.tommarsh.eventsearch.attraction.ui.model
 
+import info.tommarsh.eventsearch.core.data.FetchState
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
-import info.tommarsh.eventsearch.model.AttractionDetailsViewModel
-import info.tommarsh.eventsearch.model.FetchState
 
 internal data class AttractionDetailScreenState(
     val isLiked: Boolean = false,

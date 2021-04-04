@@ -55,11 +55,7 @@ android {
 dependencies {
 
     implementation(project(":core"))
-
-    //Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}")
+    implementation(project(":attraction"))
 
     //Android
     implementation("androidx.core:core-ktx:${Versions.coreKtx}")
@@ -70,30 +66,6 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
     implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofit}")
     implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
-
-    //Time
-    implementation("joda-time:joda-time:${Versions.jodaTime}")
-
-    //Compose
-    implementation("com.google.accompanist:accompanist-insets:${Versions.accompanist}")
-    implementation("com.google.accompanist:accompanist-coil:${Versions.accompanist}")
-    implementation("androidx.activity:activity-compose:${Versions.activity}")
-    implementation("androidx.compose.runtime:runtime:${Versions.compose}")
-    implementation("androidx.compose.animation:animation:${Versions.compose}")
-    implementation("androidx.compose.animation:animation-core:${Versions.compose}")
-    implementation("androidx.compose.ui:ui:${Versions.compose}")
-    implementation("androidx.compose.foundation:foundation:${Versions.compose}")
-    implementation("androidx.paging:paging-compose:${Versions.pagingCompose}")
-    implementation("androidx.compose.foundation:foundation-layout:${Versions.compose}")
-    implementation("androidx.compose.material:material:${Versions.compose}")
-    implementation("androidx.compose.material:material-icons-core:${Versions.compose}")
-    implementation("androidx.compose.material:material-icons-extended:${Versions.compose}")
-    implementation("androidx.compose.ui:ui-text:${Versions.compose}")
-    implementation("androidx.compose.ui:ui-util:${Versions.compose}")
-    implementation("androidx.compose.ui:ui-tooling:${Versions.compose}")
-    implementation("androidx.navigation:navigation-compose:${Versions.composeNavigation}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}")
-    implementation("androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigation}")
 
     //Test
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
