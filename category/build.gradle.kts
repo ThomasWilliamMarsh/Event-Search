@@ -20,6 +20,11 @@ android {
 
     kotlinOptions {
         jvmTarget = Versions.java
+        useIR = true
+    }
+
+    buildFeatures {
+        compose = true
     }
 }
 

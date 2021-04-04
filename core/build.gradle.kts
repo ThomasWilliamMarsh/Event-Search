@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
-    id("kotlin-android")
-    id("org.jetbrains.kotlin.kapt")
+    kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -22,6 +22,11 @@ android {
 
     kotlinOptions {
         jvmTarget = Versions.java
+        useIR = true
+    }
+
+    buildFeatures {
+        compose = true
     }
 }
 

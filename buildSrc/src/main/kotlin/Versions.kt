@@ -14,7 +14,7 @@ object Versions {
 
     //region java
     const val java = "1.8"
-    const val kotlin = "1.4.31"
+    const val kotlin = "1.4.30"
     //endregion
 
     //region libs
