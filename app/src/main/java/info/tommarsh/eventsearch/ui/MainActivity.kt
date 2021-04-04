@@ -11,12 +11,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
-import info.tommarsh.eventsearch.core.navigation.Screen
 import info.tommarsh.eventsearch.attraction.ui.AttractionDetailScreen
-import info.tommarsh.eventsearch.ui.category.CategoryScreen
+import info.tommarsh.eventsearch.category.ui.CategoryScreen
+import info.tommarsh.eventsearch.core.navigation.Screen
+import info.tommarsh.eventsearch.settings.ui.SettingsScreen
 import info.tommarsh.eventsearch.ui.reminder.ReminderDialog
-import info.tommarsh.eventsearch.ui.search.SearchScreen
-import info.tommarsh.eventsearch.ui.settings.SettingsScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 

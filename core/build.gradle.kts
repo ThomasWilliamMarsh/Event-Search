@@ -80,5 +80,21 @@ dependencies {
     api("androidx.navigation:navigation-compose:${Versions.composeNavigation}")
     api("androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}")
     api("androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigation}")
+}
 
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        // Treat all Kotlin warnings as errors
+        freeCompilerArgs = listOf(
+            "-Xopt-in=kotlin.RequiresOptIn",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=androidx.compose.foundation.lazy.ExperimentalLazyDsl",
+            "-Xallow-jvm-ir-dependencies",
+            "-Xskip-prerelease-check",
+            "-Xopt-in=kotlin.Experimental"
+        )
+        // Set JVM target to 1.8
+        jvmTarget = Versions.java
+        useIR = true
+    }
 }

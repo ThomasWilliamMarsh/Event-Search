@@ -20,7 +20,7 @@ android {
     }
 
     packagingOptions {
-        excludes.addAll(listOf("META-INF/AL2.0", "META-INF/LGPL2.1"))
+        resources.excludes.addAll(listOf("META-INF/AL2.0", "META-INF/LGPL2.1"))
     }
 
     buildTypes {
@@ -55,7 +55,9 @@ android {
 dependencies {
 
     implementation(project(":core"))
+    implementation(project(":settings"))
     implementation(project(":attraction"))
+    implementation(project(":category"))
 
     //Android
     implementation("androidx.core:core-ktx:${Versions.coreKtx}")

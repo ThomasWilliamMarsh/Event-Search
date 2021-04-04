@@ -6,7 +6,13 @@
     <string name="event_reminder_channel_description">Notifies you on the big day!</string>
     <string name="reminder_dialog_title">Set your reminder</string>
 
+    <!-- Attraction card -->
+    <string name="number_events">%1$d events</string>
+
+    <!-- List -->
+    <string name="error_loading_events">Error loading events</string>
     <string name="retry">Retry</string>
     <string name="scroll_to_top">Scroll to top</string>
+
     <string name="error_loading_page">Error loading page</string>
 </resources>

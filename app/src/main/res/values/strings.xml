@@ -8,20 +8,8 @@
     <!-- Drawer -->
     <string name="saved_events">Saved Events</string>
 
-    <!-- Search List -->
-    <string name="error_loading_events">Error loading events</string>
-
     <!-- Event details -->
-    <string name="number_events">%1$d events</string>
     <string name="open_liked_attractions_menu">Open liked attractions menu</string>
     <string name="search">Search</string>
-
-    <!-- SEttings -->
-    <string name="settings">Settings</string>
-    <string name="back">Back</string>
-    <string name="dark_mode">Dark Mode</string>
-    <string name="dark_mode_follow_system">Follow System</string>
-    <string name="dark_mode_light">Light</string>
-    <string name="dark_mode_dark">Dark</string>
 
 </resources>

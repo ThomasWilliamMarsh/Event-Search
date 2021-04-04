@@ -27,18 +27,13 @@ import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.attraction.R
 import info.tommarsh.eventsearch.attraction.ui.model.*
-import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction
-import info.tommarsh.eventsearch.stringArg
-import info.tommarsh.eventsearch.core.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.ClickLiked
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.FetchDetails
-import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenState
-import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailsViewModel
-import info.tommarsh.eventsearch.attraction.ui.model.EventDateViewModel
-import info.tommarsh.eventsearch.attraction.ui.model.EventViewModel
 import info.tommarsh.eventsearch.core.data.FetchState
+import info.tommarsh.eventsearch.core.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.core.ui.CenteredCircularProgress
 import info.tommarsh.eventsearch.core.ui.ErrorSnackbar
+import info.tommarsh.eventsearch.stringArg
 import java.util.*
 
 @Composable

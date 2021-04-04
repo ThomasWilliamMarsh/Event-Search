@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,8 +20,54 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.insets.navigationBarsPadding
 import info.tommarsh.eventsearch.core.R
+
+@Composable
+fun AttractionCard(
+    name: String,
+    numberOfEvents: String,
+    imageUrl: String? = null,
+    onClick: () -> Unit
+) {
+    EventSearchVerticalCard(onClick = { onClick() }) {
+
+        PosterImage(
+            url = imageUrl.orEmpty(),
+            contentDescription = name
+        )
+
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
+            Text(text = name, style = MaterialTheme.typography.h4)
+        }
+
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(
+                text = stringResource(
+                    id = R.string.number_events,
+                    formatArgs = arrayOf(numberOfEvents)
+                ),
+                style = MaterialTheme.typography.subtitle1
+            )
+        }
+    }
+}
+
+@Composable
+private fun PosterImage(url: String, contentDescription: String) {
+    Card(
+        elevation = 8.dp,
+        modifier = Modifier.aspectRatio(16 / 9F)
+    ) {
+        CoilImage(
+            url,
+            fadeIn = true,
+            contentDescription = contentDescription
+        )
+    }
+}
+
 
 @Composable
 fun TopToolbar(
