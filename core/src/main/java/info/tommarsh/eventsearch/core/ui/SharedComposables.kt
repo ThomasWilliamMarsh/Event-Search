@@ -32,7 +32,6 @@ fun AttractionCard(
     onClick: () -> Unit
 ) {
     EventSearchVerticalCard(onClick = { onClick() }) {
-
         PosterImage(
             url = imageUrl.orEmpty(),
             contentDescription = name
@@ -44,10 +43,7 @@ fun AttractionCard(
 
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                text = stringResource(
-                    id = R.string.number_events,
-                    formatArgs = arrayOf(numberOfEvents)
-                ),
+                text = "$numberOfEvents ${stringResource(id = R.string.events)}",
                 style = MaterialTheme.typography.subtitle1
             )
         }
