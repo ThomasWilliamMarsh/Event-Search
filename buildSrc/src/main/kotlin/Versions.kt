@@ -4,12 +4,16 @@ object Versions {
     //endregion
 
     //region Android
-    const val buildTools = "31-rc1"
+    const val buildTools = "31-rc2"
     const val compileSdk = 30
     const val minkSdk = 23
     const val targetSdk = 30
     const val versionCode = 1
     const val versionName = "1.0"
+    //endregion
+
+    //region image
+    const val coil = "1.1.1"
     //endregion
 
     //region java
@@ -21,16 +25,15 @@ object Versions {
     const val coreKtx = "1.5.0-rc01"
     const val coroutines = "1.4.3"
     const val appCompat = "1.3.0-alpha02"
-    const val compose = "1.0.0-beta03"
-    const val composeViewModel = "1.0.0-alpha03"
-    const val composeNavigation = "1.0.0-alpha09"
+    const val compose = "1.0.0-beta04"
+    const val composeViewModel = "1.0.0-alpha04"
+    const val composeNavigation = "1.0.0-alpha10"
     const val lifecycle = "2.2.0"
     const val paging = "3.0.0-beta03"
     const val datastore = "1.0.0-alpha08"
     const val pagingCompose = "1.0.0-alpha08"
     const val hiltJetpack = "1.0.0-beta01"
     const val hiltNavigation = "1.0.0-alpha01"
-    const val hiltViewModel = "1.0.0-alpha03"
     const val jodaTime = "2.10.6"
     const val moshi = "1.9.3"
     const val retrofit = "2.9.0"

@@ -55,7 +55,7 @@ fun AttractionCard(
 }
 
 @Composable
-private fun PosterImage(url: String, contentDescription: String) {
+fun PosterImage(url: String, contentDescription: String) {
     Card(
         elevation = 8.dp,
         modifier = Modifier.aspectRatio(16 / 9F)
