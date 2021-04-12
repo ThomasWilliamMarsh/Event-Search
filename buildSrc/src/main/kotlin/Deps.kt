@@ -1,5 +1,13 @@
 object Deps {
 
+    object Plugin {
+        const val application = "com.android.application"
+        const val hilt = "dagger.hilt.android.plugin"
+        const val kotlin = "kotlin-android"
+        const val library = "com.android.library"
+        const val kapt = "org.jetbrains.kotlin.kapt"
+    }
+
     object Kotlin {
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
         const val refelct = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
@@ -8,7 +16,6 @@ object Deps {
     }
 
     object Android {
-
         const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
         const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
         const val activity = "androidx.activity:activity-ktx:${Versions.activity}"
@@ -25,7 +32,7 @@ object Deps {
     }
 
     object Compose {
-        const val inserts = "com.google.accompanist:accompanist-insets:${Versions.accompanist}"
+        const val insets = "com.google.accompanist:accompanist-insets:${Versions.accompanist}"
         const val coil = "com.google.accompanist:accompanist-coil:${Versions.accompanist}"
         const val activity = "androidx.activity:activity-compose:${Versions.activity}"
         const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
@@ -69,6 +76,7 @@ object Deps {
 
     object Util {
         const val jodaTime = "joda-time:joda-time:${Versions.jodaTime}"
+        const val coil= "io.coil-kt:coil:${Versions.coil}"
     }
 
     object Modules {

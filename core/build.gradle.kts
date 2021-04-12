@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("org.jetbrains.kotlin.kapt")
+    id(Deps.Plugin.library)
+    id(Deps.Plugin.kotlin)
+    id(Deps.Plugin.kapt)
 }
 
 android {
@@ -9,8 +9,7 @@ android {
 
     defaultConfig {
         minSdkVersion(Versions.minkSdk)
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
-        consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner(Application.testRunner)
         buildConfigField("String", "TICKETMASTER_API_KEY", "\"XpumtmXUMaZMTgnVA2UGNQ88okEFHMOk\"")
 
     }
@@ -28,56 +27,58 @@ android {
 dependencies {
 
     //Android
-    api("androidx.appcompat:appcompat:${Versions.appCompat}")
-    api("androidx.fragment:fragment-ktx:${Versions.fragment}")
-    api("androidx.activity:activity-ktx:${Versions.activity}")
-    api("androidx.paging:paging-runtime:${Versions.paging}")
-    api("androidx.room:room-runtime:${Versions.room}")
-    api("androidx.room:room-ktx:${Versions.room}")
-    api("androidx.datastore:datastore-preferences:${Versions.datastore}")
-    api("com.google.android.material:material:${Versions.material}")
-    api("androidx.startup:startup-runtime:${Versions.appStartup}")
+    api(Deps.Android.appCompat)
+    api(Deps.Android.fragment)
+    api(Deps.Android.activity)
+    api(Deps.Android.paging)
+    api(Deps.Android.roomRuntime)
+    api(Deps.Android.room)
+    api(Deps.Android.datastore)
+    api(Deps.Android.material)
+    api(Deps.Android.startup)
+    api(Deps.Android.coreKtx)
+    api(Deps.Android.viewModel)
+    kapt(Deps.Android.roomCompiler)
 
     //Image loading
-    api("io.coil-kt:coil:${Versions.coil}")
+    api(Deps.Util.coil)
 
     //Kotlin
-    api("org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}")
-    api("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}")
+    api(Deps.Kotlin.stdlib)
+    api(Deps.Kotlin.refelct)
+    api(Deps.Kotlin.coroutines)
 
     //Data
-    implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
-    implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofit}")
-    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
+    api(Deps.Network.moshi)
+    api(Deps.Network.moshiAdapter)
+    api(Deps.Network.retrofit)
 
-    //Dagger
-    api("com.google.dagger:hilt-android:${Versions.hilt}")
-    kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
-    kapt("androidx.hilt:hilt-compiler:${Versions.hiltJetpack}")
-    kapt("androidx.room:room-compiler:${Versions.room}")
+    //DI
+    api(Deps.DI.hiltAndroid)
+    kapt(Deps.DI.hiltAndroidCompiler)
+    kapt(Deps.DI.hiltCompiler)
 
     //Time
-    api("joda-time:joda-time:${Versions.jodaTime}")
+    api(Deps.Util.jodaTime)
 
     //Compose
-    api("com.google.accompanist:accompanist-insets:${Versions.accompanist}")
-    api("com.google.accompanist:accompanist-coil:${Versions.accompanist}")
-    api("androidx.activity:activity-compose:${Versions.activity}")
-    api("androidx.compose.runtime:runtime:${Versions.compose}")
-    api("androidx.compose.animation:animation:${Versions.compose}")
-    api("androidx.compose.animation:animation-core:${Versions.compose}")
-    api("androidx.compose.ui:ui:${Versions.compose}")
-    api("androidx.compose.foundation:foundation:${Versions.compose}")
-    api("androidx.paging:paging-compose:${Versions.pagingCompose}")
-    api("androidx.compose.foundation:foundation-layout:${Versions.compose}")
-    api("androidx.compose.material:material:${Versions.compose}")
-    api("androidx.compose.material:material-icons-core:${Versions.compose}")
-    api("androidx.compose.material:material-icons-extended:${Versions.compose}")
-    api("androidx.compose.ui:ui-text:${Versions.compose}")
-    api("androidx.compose.ui:ui-util:${Versions.compose}")
-    api("androidx.compose.ui:ui-tooling:${Versions.compose}")
-    api("androidx.navigation:navigation-compose:${Versions.composeNavigation}")
-    api("androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}")
-    api("androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigation}")
+    api(Deps.Compose.insets)
+    api(Deps.Compose.coil)
+    api(Deps.Compose.activity)
+    api(Deps.Compose.runtime)
+    api(Deps.Compose.animation)
+    api(Deps.Compose.animationCore)
+    api(Deps.Compose.ui)
+    api(Deps.Compose.foundation)
+    api(Deps.Compose.foundationLayout)
+    api(Deps.Compose.paging)
+    api(Deps.Compose.material)
+    api(Deps.Compose.materialIcons)
+    api(Deps.Compose.materialIconsExt)
+    api(Deps.Compose.text)
+    api(Deps.Compose.uiUtil)
+    api(Deps.Compose.uiTooling)
+    api(Deps.Compose.navigation)
+    api(Deps.Compose.viewModel)
+    api(Deps.Compose.navigationHilt)
 }

@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.application")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-android")
-    id("org.jetbrains.kotlin.kapt")
+    id(Deps.Plugin.application)
+    id(Deps.Plugin.hilt)
+    id(Deps.Plugin.kotlin)
+    id(Deps.Plugin.kapt)
 }
 
 android {
@@ -16,7 +16,7 @@ android {
         versionCode = Versions.versionCode
         versionName = Versions.versionName
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = Application.testRunner
     }
 
     packagingOptions {
@@ -45,26 +45,14 @@ android {
 
 dependencies {
 
-    implementation(project(":core"))
-    implementation(project(":settings"))
-    implementation(project(":attraction"))
-    implementation(project(":category"))
+    implementation(project(Deps.Modules.core))
+    implementation(project(Deps.Modules.settings))
+    implementation(project(Deps.Modules.attraction))
+    implementation(project(Deps.Modules.category))
 
-    //Android
-    implementation("androidx.core:core-ktx:${Versions.coreKtx}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}")
-    kapt("androidx.room:room-compiler:${Versions.room}")
+    implementation(Deps.DI.hiltAndroid)
 
-    //Data
-    implementation("com.squareup.moshi:moshi-kotlin:${Versions.moshi}")
-    implementation("com.squareup.retrofit2:converter-moshi:${Versions.retrofit}")
-    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofit}")
-
-    //Test
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
-
-    //DI
-    implementation("com.google.dagger:hilt-android:${Versions.hilt}")
-    kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
-    kapt("androidx.hilt:hilt-compiler:${Versions.hiltJetpack}")
+    kapt(Deps.Android.roomCompiler)
+    kapt(Deps.DI.hiltAndroidCompiler)
+    kapt(Deps.DI.hiltCompiler)
 }

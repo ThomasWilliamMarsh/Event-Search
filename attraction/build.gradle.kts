@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("org.jetbrains.kotlin.kapt")
+    id(Deps.Plugin.library)
+    id(Deps.Plugin.kotlin)
+    id(Deps.Plugin.kapt)
 }
 
 android {
@@ -9,8 +9,7 @@ android {
 
     defaultConfig {
         minSdkVersion(Versions.minkSdk)
-        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
-        consumerProguardFiles("consumer-rules.pro")
+        testInstrumentationRunner(Application.testRunner)
     }
 
     compileOptions {
@@ -24,13 +23,10 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(Deps.Modules.core))
 
-    //Test
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.compose}")
+    implementation(Deps.DI.hiltAndroid)
 
-    //DI
-    implementation("com.google.dagger:hilt-android:${Versions.hilt}")
-    kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
-    kapt("androidx.hilt:hilt-compiler:${Versions.hiltJetpack}")
+    kapt(Deps.DI.hiltAndroidCompiler)
+    kapt(Deps.DI.hiltCompiler)
 }
