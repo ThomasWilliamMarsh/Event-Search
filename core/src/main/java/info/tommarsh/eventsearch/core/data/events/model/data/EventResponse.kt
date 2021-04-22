@@ -1,5 +1,7 @@
 package info.tommarsh.eventsearch.core.data.events.model.data
 
+import info.tommarsh.eventsearch.core.data.attractions.model.data.AttractionResponse
+
 internal data class EventResponse(
     val _embedded: Embedded,
     val page: Page
@@ -29,10 +31,11 @@ internal data class Event(
 )
 
 internal data class EmbeddedEvent(
-    val venues: List<Venue>
+    val venues: List<Venue>,
+    val attractions: List<AttractionResponse>
 )
 
-internal data class Venue(val name: String)
+internal data class Venue(val name: String?)
 
 internal data class Images(
     val ratio: String,

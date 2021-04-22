@@ -51,10 +51,8 @@ internal class MainActivity : AppCompatActivity() {
                 deepLinks = listOf(navDeepLink {
                     uriPattern = Screen.Attraction.deeplink
                 })
-            ) { backStackEntry ->
-                AttractionDetailScreen(
-                    backStackEntry = backStackEntry
-                )
+            ) {
+                AttractionDetailScreen()
             }
             composable(Screen.Category.route) { backStackEntry ->
                 CategoryScreen(

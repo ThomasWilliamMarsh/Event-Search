@@ -4,6 +4,7 @@ import info.tommarsh.eventsearch.core.data.events.model.data.*
 import info.tommarsh.eventsearch.core.data.events.model.domain.*
 
 private const val IMAGE_ASPECT_RATIO = "16_9"
+private const val EVENT_VENUE_UNKNOWN = "Unknown"
 
 internal fun EventResponse.toDomainModel(): List<EventModel> {
     val events = _embedded.events
@@ -15,7 +16,7 @@ internal fun Event.toDomainModel(): EventModel {
         id = id,
         name = name,
         promoter = promoter?.toDomainModel(),
-        venue = _embedded.venues.firstOrNull()?.name.orEmpty(),
+        venue = _embedded.venues.firstOrNull()?.name ?: EVENT_VENUE_UNKNOWN,
         dates = dates.toDomainModel(),
         presales = sales.presales.toDomainModel(),
         publicSales = sales.public.toDomainModel(),

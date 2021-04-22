@@ -40,13 +40,11 @@ fun CategoryScreen(
     controller: NavController
 ) {
     val viewModel = hiltNavGraphViewModel<CategoryViewModel>()
-    val id = backStackEntry.stringArg("id")
     val name = backStackEntry.stringArg("name")
 
     CategoryScreen(
         viewModel = viewModel,
         controller = controller,
-        id = id,
         name = name
     )
 }
@@ -55,11 +53,10 @@ fun CategoryScreen(
 internal fun CategoryScreen(
     viewModel: CategoryViewModel,
     controller: NavController,
-    id: String,
     name: String
 
 ) {
-    val attractions = viewModel.attractions(id).collectAsLazyPagingItems()
+    val attractions = viewModel.attractions.collectAsLazyPagingItems()
     CategoryScreen(
         categoryName = name,
         attractions = attractions

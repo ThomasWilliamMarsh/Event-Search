@@ -1,5 +1,6 @@
 package info.tommarsh.eventsearch.category.ui
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -15,12 +16,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class CategoryViewModel @Inject constructor(
-    private val attractionsRepository: AttractionsRepository
+    attractionsRepository: AttractionsRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    fun attractions(category: String): Flow<PagingData<CategoryAttractionViewModel>> {
-        return attractionsRepository.getAttractionsForCategory(category)
+    val attractions =
+        attractionsRepository.getAttractionsForCategory(savedStateHandle.get<String>("id")!!)
             .map { page -> page.map { attraction -> attraction.toViewModel() } }
             .cachedIn(viewModelScope)
-    }
 }

@@ -1,11 +1,11 @@
 package info.tommarsh.eventsearch.attraction.ui
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.ClickLiked
-import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.FetchDetails
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenState
 import info.tommarsh.eventsearch.attraction.ui.model.toViewModel
 import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCase
@@ -23,22 +23,16 @@ import javax.inject.Inject
 @HiltViewModel
 internal class AttractionDetailViewModel @Inject constructor(
     private val attractionDetailsUseCase: AttractionDetailsUseCase,
-    private val likedRepository: LikesRepository
+    private val likedRepository: LikesRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _screenState = MutableStateFlow(AttractionDetailScreenState())
 
     val screenState = _screenState.asStateFlow()
 
-    fun postAction(action: AttractionDetailScreenAction) {
-        when (action) {
-            is FetchDetails -> fetchDetails(action.id)
-            is ClickLiked -> toggleLiked(action.attraction)
-        }
-    }
-
-    private fun fetchDetails(id: String) {
-
+    init {
+        val id = savedStateHandle.get<String>("id")!!
         viewModelScope.launch {
             likedRepository.getAttractionLiked(id)
                 .collectLatest { _screenState.emit(screenState.value.copy(isLiked = it)) }
@@ -48,6 +42,12 @@ internal class AttractionDetailViewModel @Inject constructor(
             _screenState.value = screenState.value.copy(fetchState = fetch {
                 attractionDetailsUseCase.get(id).toViewModel()
             })
+        }
+    }
+
+    fun postAction(action: AttractionDetailScreenAction) {
+        when (action) {
+            is ClickLiked -> toggleLiked(action.attraction)
         }
     }
 

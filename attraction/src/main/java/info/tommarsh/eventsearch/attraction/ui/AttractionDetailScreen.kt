@@ -28,20 +28,15 @@ import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.attraction.R
 import info.tommarsh.eventsearch.attraction.ui.model.*
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.ClickLiked
-import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.FetchDetails
 import info.tommarsh.eventsearch.core.data.FetchState
 import info.tommarsh.eventsearch.core.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.core.ui.CenteredCircularProgress
 import info.tommarsh.eventsearch.core.ui.ErrorSnackbar
-import info.tommarsh.eventsearch.stringArg
 import java.util.*
 
 @Composable
-fun AttractionDetailScreen(backStackEntry: NavBackStackEntry) {
-    val id = backStackEntry.stringArg("id")
-    val viewModel = hiltNavGraphViewModel<AttractionDetailViewModel>().also {
-        it.postAction(FetchDetails(id))
-    }
+fun AttractionDetailScreen() {
+    val viewModel = hiltNavGraphViewModel<AttractionDetailViewModel>()
     AttractionDetailScreen(viewModel)
 }
 

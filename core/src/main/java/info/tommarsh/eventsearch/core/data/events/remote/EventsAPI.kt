@@ -6,5 +6,5 @@ import retrofit2.http.Query
 
 internal interface EventsAPI {
     @GET("discovery/v2/events.json")
-    suspend fun getEvents(@Query("attraction") attraction: String): EventResponse
+    suspend fun getEvents(@Query("attractionId") attraction: String): EventResponse
 }

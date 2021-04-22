@@ -9,6 +9,5 @@ internal data class AttractionDetailScreenState(
 )
 
 internal sealed class AttractionDetailScreenAction {
-    data class FetchDetails(val id: String) : AttractionDetailScreenAction()
     data class ClickLiked(val attraction: LikedAttractionModel) : AttractionDetailScreenAction()
 }
