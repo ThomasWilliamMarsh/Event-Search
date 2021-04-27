@@ -19,7 +19,6 @@ subprojects {
                 "-Xopt-in=kotlin.RequiresOptIn",
                 "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-Xopt-in=androidx.compose.foundation.lazy.ExperimentalLazyDsl",
-                "-Xallow-jvm-ir-dependencies",
                 "-Xskip-prerelease-check",
                 "-Xopt-in=kotlin.Experimental"
             )

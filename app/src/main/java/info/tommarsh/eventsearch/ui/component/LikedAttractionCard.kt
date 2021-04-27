@@ -1,5 +1,6 @@
 package info.tommarsh.eventsearch.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -12,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.core.theme.amber200
 import info.tommarsh.eventsearch.core.theme.red200
@@ -84,10 +85,9 @@ private fun DismissContent(
                 .width(128.dp)
                 .wrapContentHeight()
         ) {
-            CoilImage(
-                likedModel.imageUrl,
+            Image(
+                painter = rememberCoilPainter(request = likedModel.imageUrl, fadeIn = true),
                 contentDescription = likedModel.name,
-                fadeIn = true
             )
         }
 

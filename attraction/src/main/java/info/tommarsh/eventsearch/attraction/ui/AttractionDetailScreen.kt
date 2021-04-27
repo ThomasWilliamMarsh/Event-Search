@@ -1,5 +1,6 @@
 package info.tommarsh.eventsearch.attraction.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,8 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltNavGraphViewModel
-import androidx.navigation.NavBackStackEntry
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.attraction.R
 import info.tommarsh.eventsearch.attraction.ui.model.*
@@ -104,12 +104,11 @@ private fun PosterImage(
             .wrapContentHeight()
             .fillMaxWidth()
     ) {
-        CoilImage(
+        Image(
+            painter = rememberCoilPainter(request = attraction.detailImage.orEmpty(), fadeIn = true),
             modifier = Modifier.sizeIn(minHeight = 128.dp),
-            data = attraction.detailImage.orEmpty(),
             contentDescription = attraction.name,
             contentScale = ContentScale.FillWidth,
-            fadeIn = true
         )
 
         Box(

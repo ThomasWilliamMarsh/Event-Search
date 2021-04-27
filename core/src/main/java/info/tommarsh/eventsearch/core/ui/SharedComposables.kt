@@ -3,6 +3,7 @@ package info.tommarsh.eventsearch.core.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 import com.google.accompanist.insets.navigationBarsPadding
 import info.tommarsh.eventsearch.core.R
 
@@ -56,9 +57,8 @@ fun PosterImage(url: String, contentDescription: String) {
         elevation = 8.dp,
         modifier = Modifier.aspectRatio(16 / 9F)
     ) {
-        CoilImage(
-            url,
-            fadeIn = true,
+        Image(
+            painter = rememberCoilPainter(request = url, fadeIn = true),
             contentDescription = contentDescription
         )
     }
