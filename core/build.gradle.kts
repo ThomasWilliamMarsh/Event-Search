@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(Versions.compileSdk)
+    compileSdk = Versions.compileSdk
 
     defaultConfig {
-        minSdkVersion(Versions.minkSdk)
-        testInstrumentationRunner(Application.testRunner)
+        minSdk = Versions.minkSdk
+        testInstrumentationRunner = Application.testRunner
         buildConfigField("String", "TICKETMASTER_API_KEY", "\"XpumtmXUMaZMTgnVA2UGNQ88okEFHMOk\"")
 
     }

@@ -22,14 +22,14 @@ object Versions {
     //endregion
 
     //region libs
-    const val coreKtx = "1.5.0-rc01"
+    const val coreKtx = "1.5.0-rc02"
     const val coroutines = "1.5.0-RC"
     const val appCompat = "1.3.0-rc01"
-    const val compose = "1.0.0-beta05"
+    const val compose = "1.0.0-beta06"
     const val composeViewModel = "1.0.0-alpha04"
     const val composeNavigation = "1.0.0-alpha10"
     const val lifecycle = "2.2.0"
-    const val paging = "3.0.0-beta03"
+    const val paging = "3.0.0"
     const val datastore = "1.0.0-beta01"
     const val pagingCompose = "1.0.0-alpha08"
     const val hiltJetpack = "1.0.0-beta01"
