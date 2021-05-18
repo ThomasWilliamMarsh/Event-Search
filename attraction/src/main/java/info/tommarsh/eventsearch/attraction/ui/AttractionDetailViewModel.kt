@@ -8,7 +8,7 @@ import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenActio
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.ClickLiked
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenState
 import info.tommarsh.eventsearch.attraction.ui.model.toViewModel
-import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCase
+import info.tommarsh.eventsearch.core.data.AttractionDetailUseCase
 import info.tommarsh.eventsearch.core.data.likes.LikesRepository
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.fetch
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 internal class AttractionDetailViewModel @Inject constructor(
-    private val attractionDetailsUseCase: AttractionDetailsUseCase,
+    private val attractionDetailUseCase: AttractionDetailUseCase,
     private val likedRepository: LikesRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -40,7 +40,7 @@ internal class AttractionDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             _screenState.value = screenState.value.copy(fetchState = fetch {
-                attractionDetailsUseCase.get(id).toViewModel()
+                attractionDetailUseCase.get(id).toViewModel()
             })
         }
     }

@@ -16,6 +16,7 @@ internal fun AttractionsResponse.toDomainModel(screenWidthResolver: ScreenWidthR
 }
 
 internal fun AttractionResponse.toDomainModel(screenWidthResolver: ScreenWidthResolver): AttractionModel {
+    val genre = classifications.firstOrNull()?.genre
     return AttractionModel(
         name = name,
         type = type,
@@ -24,7 +25,8 @@ internal fun AttractionResponse.toDomainModel(screenWidthResolver: ScreenWidthRe
         additionalInfo = additionalInfo,
         url = url.orEmpty(),
         locale = locale,
-        genre = classifications.firstOrNull()?.genre?.name,
+        genreName = genre?.name,
+        genreId = genre?.id,
         searchImage = images.getLargestImage(screenWidthResolver, RATIO_16_9),
         detailImage = images.getLargestImage(screenWidthResolver, RATIO_3_2),
         numberOfEvents = upcomingEvents._total

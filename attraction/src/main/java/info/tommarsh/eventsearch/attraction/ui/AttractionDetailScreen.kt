@@ -1,18 +1,19 @@
 package info.tommarsh.eventsearch.attraction.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -77,9 +78,24 @@ internal fun AttractionDetailScreen(
                     )
                 }
 
-                item { UnderlineTitle(text = stringResource(id = R.string.event_details_title)) }
+                item {
+                    CollapsableSection(sectionName = stringResource(id = R.string.event_details_title)) {
+                        CalendarList(fetchState.data.events)
+                    }
+                }
 
-                item { CalendarList(fetchState.data.events) }
+                if (fetchState.data.relatedAttractions.isNotEmpty()) {
+                    item {
+                        CollapsableSection(
+                            sectionName = stringResource(
+                                id = R.string.similar_to_section,
+                                fetchState.data.name
+                            )
+                        ) {
+                            RelatedAttractions(fetchState.data.relatedAttractions)
+                        }
+                    }
+                }
             }
             is FetchState.Failure -> ErrorSnackbar(
                 snackbarHostState = scaffoldState.snackbarHostState,
@@ -92,7 +108,7 @@ internal fun AttractionDetailScreen(
 @Composable
 private fun PosterImage(
     modifier: Modifier = Modifier,
-    attraction: AttractionDetailsViewModel,
+    attraction: info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailViewModel,
     isLiked: Boolean,
     onLikedClicked: () -> Unit
 ) {
@@ -105,7 +121,10 @@ private fun PosterImage(
             .fillMaxWidth()
     ) {
         Image(
-            painter = rememberCoilPainter(request = attraction.detailImage.orEmpty(), fadeIn = true),
+            painter = rememberCoilPainter(
+                request = attraction.detailImage.orEmpty(),
+                fadeIn = true
+            ),
             modifier = Modifier.sizeIn(minHeight = 128.dp),
             contentDescription = attraction.name,
             contentScale = ContentScale.FillWidth,
@@ -149,35 +168,67 @@ private fun PosterImage(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun CollapsableSection(sectionName: String, content: @Composable () -> Unit) {
+    val (expanded, setExpanded) = remember { mutableStateOf(true) }
+    Column {
+        UnderlineTitle(text = sectionName, isExpanded = expanded) { setExpanded(!expanded) }
+        AnimatedVisibility(visible = expanded) {
+            content()
+        }
+    }
+}
+
 @Composable
 private fun UnderlineTitle(
     text: String,
-    modifier: Modifier = Modifier
+    isExpanded: Boolean,
+    onToggleExpanded: () -> Unit,
 ) {
-    Column(modifier = modifier.then(Modifier.padding(16.dp))) {
-        Text(text = text.capitalize(Locale.ENGLISH), style = MaterialTheme.typography.h5)
-        Box(
-            Modifier
-                .background(color = MaterialTheme.colors.onBackground)
-                .height(2.dp)
-                .width(24.dp)
-        )
+    val icon = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown
+    val description = stringResource(id = R.string.toggle_section)
+    Row(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+
+        Column {
+            Text(text = text.capitalize(Locale.ENGLISH), style = MaterialTheme.typography.h5)
+            Box(
+                Modifier
+                    .background(color = MaterialTheme.colors.onBackground)
+                    .height(2.dp)
+                    .width(24.dp)
+            )
+        }
+
+        IconToggleButton(
+            checked = isExpanded,
+            onCheckedChange = { onToggleExpanded() },
+            modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = description,
+                tint = Color.White,
+            )
+        }
     }
 }
 
 @Composable
 private fun CalendarList(events: List<EventViewModel>) {
-    Card(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp)
+            .fillMaxWidth()
             .wrapContentHeight()
-            .shadow(12.dp)
+            .testTag("Calendar List")
     ) {
-        Column(modifier = Modifier.testTag("Calendar List")) {
-            events.forEach { event ->
-                CalendarItem(event = event)
-            }
+        events.forEach { event ->
+            CalendarItem(event = event)
         }
     }
 }
@@ -243,6 +294,23 @@ private fun RowWithNoDate(reason: String, venue: String) {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Text(text = venue)
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun RelatedAttractions(attractions: List<RelatedAttractionViewModel>) {
+    LazyRow {
+        items(attractions) { attraction ->
+            Image(
+                modifier = Modifier
+                    .width(128.dp)
+                    .height(128.dp),
+                painter = rememberCoilPainter(request = attraction.imageUrl),
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds
+            )
         }
     }
 }

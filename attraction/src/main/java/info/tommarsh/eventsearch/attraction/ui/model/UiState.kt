@@ -5,7 +5,7 @@ import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionMod
 
 internal data class AttractionDetailScreenState(
     val isLiked: Boolean = false,
-    val fetchState: FetchState<AttractionDetailsViewModel> = FetchState.Loading(true)
+    val fetchState: FetchState<AttractionDetailViewModel> = FetchState.Loading(true)
 )
 
 internal sealed class AttractionDetailScreenAction {

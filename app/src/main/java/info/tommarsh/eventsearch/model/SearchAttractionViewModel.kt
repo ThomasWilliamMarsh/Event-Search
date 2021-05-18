@@ -26,7 +26,7 @@ internal fun AttractionModel.toViewModel(): SearchAttractionViewModel {
         searchImage = searchImage,
         detailImage = detailImage,
         locale = locale,
-        genre = genre,
+        genre = genreName,
         numberOfEvents = numberOfEvents.toString()
     )
 }

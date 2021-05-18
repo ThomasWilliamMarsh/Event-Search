@@ -10,8 +10,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCase
-import info.tommarsh.eventsearch.core.data.AttractionDetailsUseCaseImpl
+import info.tommarsh.eventsearch.core.data.AttractionDetailUseCase
+import info.tommarsh.eventsearch.core.data.AttractionDetailUseCaseImpl
 import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepository
 import info.tommarsh.eventsearch.core.data.attractions.AttractionsRepositoryImpl
 import info.tommarsh.eventsearch.core.data.attractions.remote.AttractionsAPI
@@ -50,7 +50,7 @@ internal object DataModule {
         repository
 
     @Provides
-    fun bindAttractionDetailsUseCase(impl: AttractionDetailsUseCaseImpl): AttractionDetailsUseCase =
+    fun bindAttractionDetailsUseCase(impl: AttractionDetailUseCaseImpl): AttractionDetailUseCase =
         impl
 
     @Provides

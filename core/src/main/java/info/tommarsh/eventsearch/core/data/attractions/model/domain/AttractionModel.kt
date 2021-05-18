@@ -10,6 +10,7 @@ data class AttractionModel(
     val searchImage: String,
     val detailImage: String,
     val locale: String,
-    val genre: String?,
+    val genreName: String?,
+    val genreId: String?,
     val numberOfEvents: Int
 )

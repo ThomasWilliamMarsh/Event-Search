@@ -47,6 +47,10 @@ internal class AttractionsRepositoryImpl
         }.flow
     }
 
+    override suspend fun getAttractionsForGenre(genre: String): List<AttractionModel> {
+        return api.getAttractionsForGenre(genre, 0).toDomainModel(screenWidthResolver)
+    }
+
     override suspend fun getAttraction(id: String): AttractionModel {
         return api.attractionDetails(id).toDomainModel(screenWidthResolver)
     }

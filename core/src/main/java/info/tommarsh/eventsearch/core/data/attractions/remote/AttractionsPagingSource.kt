@@ -42,7 +42,7 @@ interface AttractionsRequest {
 
 class SearchRequest(val query: String) : AttractionsRequest {
     override suspend fun fetch(api: AttractionsAPI, page: Int): AttractionsResponse {
-        return api.searchForAttractions(query, page)
+        return api.getAttractionsForKeyword(query, page)
     }
 }
 

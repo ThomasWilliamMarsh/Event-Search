@@ -10,5 +10,7 @@ interface AttractionsRepository {
 
     fun getAttractionsForCategory(category: String): Flow<PagingData<AttractionModel>>
 
+    suspend fun getAttractionsForGenre(genre: String) : List<AttractionModel>
+
     suspend fun getAttraction(id: String): AttractionModel
 }
