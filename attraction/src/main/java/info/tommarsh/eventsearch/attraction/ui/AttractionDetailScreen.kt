@@ -32,6 +32,7 @@ import info.tommarsh.eventsearch.core.data.FetchState
 import info.tommarsh.eventsearch.core.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.core.ui.CenteredCircularProgress
 import info.tommarsh.eventsearch.core.ui.ErrorSnackbar
+import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailViewModel as DetailModel
 import java.util.*
 
 @Composable
@@ -57,49 +58,61 @@ internal fun AttractionDetailScreen(
     actionDispatcher: (AttractionDetailScreenAction) -> Unit
 ) = AttractionDetailTheme {
     val scaffoldState = rememberScaffoldState()
-    val listState = rememberLazyListState()
-
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = Modifier.fillMaxHeight()
     ) {
         when (val fetchState = screenState.fetchState) {
             is FetchState.Loading -> CenteredCircularProgress()
-            is FetchState.Success -> LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxHeight()
-            ) {
-                item {
-                    PosterImage(
-                        attraction = fetchState.data,
-                        isLiked = screenState.isLiked,
-                        onLikedClicked = { actionDispatcher(ClickLiked(fetchState.data.toLikedAttraction())) }
-                    )
-                }
-
-                item {
-                    CollapsableSection(sectionName = stringResource(id = R.string.event_details_title)) {
-                        CalendarList(fetchState.data.events)
-                    }
-                }
-
-                if (fetchState.data.relatedAttractions.isNotEmpty()) {
-                    item {
-                        CollapsableSection(
-                            sectionName = stringResource(
-                                id = R.string.similar_to_section,
-                                fetchState.data.name
-                            )
-                        ) {
-                            RelatedAttractions(fetchState.data.relatedAttractions)
-                        }
-                    }
-                }
-            }
             is FetchState.Failure -> ErrorSnackbar(
                 snackbarHostState = scaffoldState.snackbarHostState,
                 message = stringResource(id = R.string.error_loading_event_details)
             )
+            is FetchState.Success -> AttractionDetailList(
+                attraction = fetchState.data,
+                isLiked = screenState.isLiked,
+                onLikeClicked = { actionDispatcher(ClickLiked(fetchState.data.toLikedAttraction())) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun AttractionDetailList(
+    attraction: DetailModel,
+    isLiked: Boolean,
+    onLikeClicked: () -> Unit
+) {
+    val listState = rememberLazyListState()
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.fillMaxHeight()
+    ) {
+        item {
+            PosterImage(
+                attraction = attraction,
+                isLiked = isLiked,
+                onLikedClicked = { onLikeClicked() }
+            )
+        }
+
+        item {
+            CollapsableSection(sectionName = stringResource(id = R.string.event_details_title)) {
+                CalendarList(attraction.events)
+            }
+        }
+
+        if (attraction.relatedAttractions.isNotEmpty()) {
+            item {
+                CollapsableSection(
+                    sectionName = stringResource(
+                        id = R.string.similar_to_section,
+                        attraction.name
+                    )
+                ) {
+                    RelatedAttractions(attraction.relatedAttractions)
+                }
+            }
         }
     }
 }
