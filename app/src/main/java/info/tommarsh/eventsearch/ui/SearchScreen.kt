@@ -13,9 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -44,7 +43,7 @@ internal fun SearchScreen(
     controller: NavController,
     reminderDialog: ReminderDialog
 ) {
-    val viewModel = hiltNavGraphViewModel<SearchViewModel>()
+    val viewModel = hiltViewModel<SearchViewModel>()
     SearchScreen(
         viewModel = viewModel,
         reminderDialog = reminderDialog,

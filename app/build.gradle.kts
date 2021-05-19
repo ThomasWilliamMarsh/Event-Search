@@ -6,13 +6,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion(Versions.compileSdk)
+    compileSdk = Versions.compileSdk
     buildToolsVersion = Versions.buildTools
 
     defaultConfig {
         applicationId = Application.id
-        minSdkVersion(Versions.minkSdk)
-        targetSdkVersion(Versions.targetSdk)
+        minSdk = Versions.minkSdk
+        targetSdk = Versions.targetSdk
         versionCode = Versions.versionCode
         versionName = Versions.versionName
 

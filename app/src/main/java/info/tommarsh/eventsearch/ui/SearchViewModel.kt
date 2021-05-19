@@ -2,6 +2,7 @@ package info.tommarsh.eventsearch.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -41,17 +42,18 @@ internal class SearchViewModel @Inject constructor(
     val effects = _effects.asSharedFlow()
 
     init {
-        viewModelScope.launch {
-            _screenState.value = screenState.value.copy(
-                categories = categoryRepository.getCategories().toViewModel()
-            )
-        }
 
         viewModelScope.launch {
-            likesRepository.getLikedAttractions().collectLatest { likedAttractions ->
-                _screenState.value = screenState.value.copy(
+            combine(
+                categoryRepository.getCategories(),
+                likesRepository.getLikedAttractions()
+            ) { categories, likedAttractions ->
+                screenState.value.copy(
+                    categories = categories.toViewModel(),
                     likedAttractions = likedAttractions
                 )
+            }.collectLatest { state ->
+                _screenState.value = state
             }
         }
     }

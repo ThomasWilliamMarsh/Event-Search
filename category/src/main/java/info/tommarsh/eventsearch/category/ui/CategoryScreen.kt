@@ -15,10 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -31,7 +30,7 @@ import info.tommarsh.eventsearch.category.ui.model.CategoryScreenAction.ClickedA
 import info.tommarsh.eventsearch.core.navigation.Screen
 import info.tommarsh.eventsearch.core.theme.CategoryTheme
 import info.tommarsh.eventsearch.core.ui.*
-import info.tommarsh.eventsearch.stringArg
+import info.tommarsh.eventsearch.core.stringArg
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,7 +38,7 @@ fun CategoryScreen(
     backStackEntry: NavBackStackEntry,
     controller: NavController
 ) {
-    val viewModel = hiltNavGraphViewModel<CategoryViewModel>()
+    val viewModel = hiltViewModel<CategoryViewModel>()
     val name = backStackEntry.stringArg("name")
 
     CategoryScreen(

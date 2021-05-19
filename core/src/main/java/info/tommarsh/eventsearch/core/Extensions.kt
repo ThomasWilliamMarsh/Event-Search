@@ -1,7 +1,9 @@
-package info.tommarsh.eventsearch
+package info.tommarsh.eventsearch.core
 
 import androidx.navigation.NavBackStackEntry
 import info.tommarsh.eventsearch.core.data.FetchState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 //region NavBackStackEntry
 fun NavBackStackEntry.stringArg(id: String, default: String = ""): String {
@@ -9,10 +11,11 @@ fun NavBackStackEntry.stringArg(id: String, default: String = ""): String {
 }
 //EndRegion
 
-suspend inline fun <reified T> fetch(crossinline block: suspend () -> T): FetchState<T> {
-    return try {
-        FetchState.Success(block())
+suspend inline fun <reified T> fetch(crossinline block: suspend () -> T): Flow<FetchState<T>> = flow {
+    emit(FetchState.Loading(true))
+    try {
+        emit(FetchState.Success(block()))
     } catch (throwable: Throwable) {
-        FetchState.Failure(throwable)
+        emit(FetchState.Failure<T>(throwable))
     }
 }

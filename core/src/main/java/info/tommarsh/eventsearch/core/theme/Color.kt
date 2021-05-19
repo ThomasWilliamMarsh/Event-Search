@@ -11,7 +11,7 @@ val blueGray900 = Color(0xFF263238)
 val blueGray700 = Color(0xFF455A64)
 val red200 = Color(0xFFFF5252)
 val amber200 = Color(0xFFFFD740)
-val ebon = Color(0x222222)
+val ebon = Color(0xFF222222)
 
 val DarkColorPalette = darkColors(
     primary = blueGray700,

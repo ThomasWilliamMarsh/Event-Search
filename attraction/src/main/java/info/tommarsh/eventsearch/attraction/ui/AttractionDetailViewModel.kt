@@ -11,11 +11,12 @@ import info.tommarsh.eventsearch.attraction.ui.model.toViewModel
 import info.tommarsh.eventsearch.core.data.AttractionDetailUseCase
 import info.tommarsh.eventsearch.core.data.likes.LikesRepository
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
-import info.tommarsh.eventsearch.fetch
+import info.tommarsh.eventsearch.core.fetch
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,15 +34,19 @@ internal class AttractionDetailViewModel @Inject constructor(
 
     init {
         val id = savedStateHandle.get<String>("id")!!
-        viewModelScope.launch {
-            likedRepository.getAttractionLiked(id)
-                .collectLatest { _screenState.emit(screenState.value.copy(isLiked = it)) }
-        }
 
         viewModelScope.launch {
-            _screenState.value = screenState.value.copy(fetchState = fetch {
-                attractionDetailUseCase.get(id).toViewModel()
-            })
+            combine(
+                fetch { attractionDetailUseCase.get(id).toViewModel() },
+                likedRepository.getAttractionLiked(id)
+            ) { fetchState, isLiked ->
+                AttractionDetailScreenState(
+                    fetchState = fetchState,
+                    isLiked = isLiked
+                )
+            }.collectLatest { state ->
+                _screenState.value = state
+            }
         }
     }
 
