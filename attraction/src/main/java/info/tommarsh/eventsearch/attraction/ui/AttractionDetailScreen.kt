@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.*
@@ -23,12 +24,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import info.tommarsh.eventsearch.attraction.R
 import info.tommarsh.eventsearch.attraction.ui.model.*
-import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.ClickLiked
+import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailScreenAction.*
 import info.tommarsh.eventsearch.core.data.FetchState
+import info.tommarsh.eventsearch.core.navigation.Screen
 import info.tommarsh.eventsearch.core.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.core.ui.CenteredCircularProgress
 import info.tommarsh.eventsearch.core.ui.ErrorSnackbar
@@ -36,19 +40,28 @@ import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailViewModel a
 import java.util.*
 
 @Composable
-fun AttractionDetailScreen() {
+fun AttractionDetailScreen(
+    controller: NavController
+) {
     val viewModel = hiltViewModel<AttractionDetailViewModel>()
-    AttractionDetailScreen(viewModel)
+    AttractionDetailScreen(
+        viewModel = viewModel,
+        controller = controller
+    )
 }
 
 @Composable
 internal fun AttractionDetailScreen(
-    viewModel: AttractionDetailViewModel
+    viewModel: AttractionDetailViewModel,
+    controller: NavController
 ) {
     val screenState by viewModel.screenState.collectAsState()
 
     AttractionDetailScreen(screenState = screenState) { action ->
-        viewModel.postAction(action)
+        when (action) {
+            is ClickedRelated -> controller.navigate(Screen.Attraction.route(action.id))
+            else -> viewModel.postAction(action)
+        }
     }
 }
 
@@ -71,7 +84,8 @@ internal fun AttractionDetailScreen(
             is FetchState.Success -> AttractionDetailList(
                 attraction = fetchState.data,
                 isLiked = screenState.isLiked,
-                onLikeClicked = { actionDispatcher(ClickLiked(fetchState.data.toLikedAttraction())) }
+                onLikeClicked = { actionDispatcher(ClickLiked(fetchState.data.toLikedAttraction())) },
+                onRelatedAttractionClicked = { id -> actionDispatcher(ClickedRelated(id)) }
             )
         }
     }
@@ -81,12 +95,14 @@ internal fun AttractionDetailScreen(
 private fun AttractionDetailList(
     attraction: DetailModel,
     isLiked: Boolean,
-    onLikeClicked: () -> Unit
+    onLikeClicked: () -> Unit,
+    onRelatedAttractionClicked: (id: String) -> Unit
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
         state = listState,
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier
+            .fillMaxHeight()
     ) {
         item {
             PosterImage(
@@ -110,7 +126,10 @@ private fun AttractionDetailList(
                         attraction.name
                     )
                 ) {
-                    RelatedAttractions(attraction.relatedAttractions)
+                    RelatedAttractions(
+                        attractions = attraction.relatedAttractions,
+                        onRelatedAttractionClicked = onRelatedAttractionClicked
+                    )
                 }
             }
         }
@@ -224,7 +243,7 @@ private fun UnderlineTitle(
             Icon(
                 imageVector = icon,
                 contentDescription = description,
-                tint = Color.White,
+                tint = MaterialTheme.colors.onBackground
             )
         }
     }
@@ -312,13 +331,18 @@ private fun RowWithNoDate(reason: String, venue: String) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun RelatedAttractions(attractions: List<RelatedAttractionViewModel>) {
-    LazyRow {
+private fun RelatedAttractions(
+    attractions: List<RelatedAttractionViewModel>,
+    onRelatedAttractionClicked: (id: String) -> Unit
+) {
+    LazyRow(modifier = Modifier.navigationBarsPadding()) {
         items(attractions) { attraction ->
             Image(
                 modifier = Modifier
-                    .width(128.dp)
-                    .height(128.dp),
+                    .height(128.dp)
+                    .padding(bottom = 16.dp)
+                    .aspectRatio(1.5f)
+                    .clickable { onRelatedAttractionClicked(attraction.id) },
                 painter = rememberCoilPainter(request = attraction.imageUrl),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds

@@ -38,7 +38,7 @@ internal data class EmbeddedEvent(
 internal data class Venue(val name: String?)
 
 internal data class Images(
-    val ratio: String,
+    val ratio: String?,
     val url: String,
     val width: Int,
     val height: Int,

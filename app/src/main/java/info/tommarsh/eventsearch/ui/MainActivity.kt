@@ -52,7 +52,9 @@ internal class MainActivity : AppCompatActivity() {
                     uriPattern = Screen.Attraction.deeplink
                 })
             ) {
-                AttractionDetailScreen()
+                AttractionDetailScreen(
+                    controller = controller
+                )
             }
             composable(Screen.Category.route) { backStackEntry ->
                 CategoryScreen(

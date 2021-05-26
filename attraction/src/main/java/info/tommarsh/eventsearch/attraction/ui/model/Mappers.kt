@@ -30,7 +30,7 @@ internal fun AttractionDetailModel.toViewModel(): AttractionDetailViewModel {
 internal fun AttractionModel.toViewModel(): RelatedAttractionViewModel {
     return RelatedAttractionViewModel(
         id = id,
-        imageUrl = searchImage
+        imageUrl = detailImage
     )
 }
 

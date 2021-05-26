@@ -42,7 +42,7 @@ data class GenreResponse(
 )
 
 data class ImageResponse(
-    val ratio: String,
+    val ratio: String?,
     val url: String,
     val width: Int,
     val height: Int,
