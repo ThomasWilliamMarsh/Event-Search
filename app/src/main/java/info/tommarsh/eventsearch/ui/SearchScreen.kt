@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -122,7 +125,7 @@ internal fun SearchScreen(
 
                 itemsIndexed(attractions) { _, attraction ->
                     if (attraction != null) {
-                       AttractionCard(
+                        AttractionCard(
                             name = attraction.name,
                             numberOfEvents = attraction.numberOfEvents,
                             imageUrl = attraction.searchImage,

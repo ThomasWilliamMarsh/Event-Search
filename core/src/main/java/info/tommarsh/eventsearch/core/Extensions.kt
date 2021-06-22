@@ -11,11 +11,12 @@ fun NavBackStackEntry.stringArg(id: String, default: String = ""): String {
 }
 //EndRegion
 
-suspend inline fun <reified T> fetch(crossinline block: suspend () -> T): Flow<FetchState<T>> = flow {
-    emit(FetchState.Loading(true))
-    try {
-        emit(FetchState.Success(block()))
-    } catch (throwable: Throwable) {
-        emit(FetchState.Failure<T>(throwable))
+suspend inline fun <reified T> fetch(crossinline block: suspend () -> T): Flow<FetchState<T>> =
+    flow {
+        emit(FetchState.Loading(true))
+        try {
+            emit(FetchState.Success(block()))
+        } catch (throwable: Throwable) {
+            emit(FetchState.Failure<T>(throwable))
+        }
     }
-}

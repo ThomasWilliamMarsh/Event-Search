@@ -11,11 +11,9 @@ import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import info.tommarsh.eventsearch.attraction.R
-import info.tommarsh.eventsearch.core.theme.gray200
 import info.tommarsh.eventsearch.core.theme.gray600
 import info.tommarsh.eventsearch.core.theme.red200
 

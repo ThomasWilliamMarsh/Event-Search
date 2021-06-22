@@ -28,9 +28,9 @@ import info.tommarsh.eventsearch.category.ui.model.CategoryAttractionViewModel
 import info.tommarsh.eventsearch.category.ui.model.CategoryScreenAction
 import info.tommarsh.eventsearch.category.ui.model.CategoryScreenAction.ClickedAttractions
 import info.tommarsh.eventsearch.core.navigation.Screen
+import info.tommarsh.eventsearch.core.stringArg
 import info.tommarsh.eventsearch.core.theme.CategoryTheme
 import info.tommarsh.eventsearch.core.ui.*
-import info.tommarsh.eventsearch.core.stringArg
 import kotlinx.coroutines.launch
 
 @Composable
