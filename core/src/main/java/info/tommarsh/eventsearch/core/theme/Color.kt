@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 
 //Light
 val gray200 = Color(0xFFEEEEEE)
+val gray600 = Color(0xFF757575)
 val blueGray300 = Color(0xFF90A4AE)
 val blueGray900 = Color(0xFF263238)
 val blueGray700 = Color(0xFF455A64)

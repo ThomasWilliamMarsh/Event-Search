@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,6 +37,7 @@ import info.tommarsh.eventsearch.core.navigation.Screen
 import info.tommarsh.eventsearch.core.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.core.ui.CenteredCircularProgress
 import info.tommarsh.eventsearch.core.ui.ErrorSnackbar
+import info.tommarsh.eventsearch.core.util.rememberScreenWidthResolver
 import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailViewModel as DetailModel
 import java.util.*
 
@@ -143,8 +145,9 @@ private fun PosterImage(
     isLiked: Boolean,
     onLikedClicked: () -> Unit
 ) {
-    val description = stringResource(if (isLiked) R.string.favourite else R.string.unFavourite)
-    val icon = if (isLiked) Icons.Outlined.Favorite else Icons.Outlined.FavoriteBorder
+    val screenWidthResolver = rememberScreenWidthResolver()
+    val minWidth = screenWidthResolver.get()
+    val minHeight = minWidth * 0.77f
 
     Box(
         modifier = modifier
@@ -166,6 +169,7 @@ private fun PosterImage(
                 .matchParentSize()
                 .background(Color.Black.copy(alpha = 0.5f))
         )
+
         Column(
             modifier = Modifier
                 .padding(start = 16.dp, bottom = 16.dp)
@@ -181,21 +185,15 @@ private fun PosterImage(
             )
         }
 
-        IconToggleButton(
-            checked = isLiked,
-            onCheckedChange = { onLikedClicked() },
+        LikedButton(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
                 .statusBarsPadding()
-                .testTag("LikedIcon")
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = description,
-                tint = Color.White,
-            )
-        }
+                .testTag("LikedIcon"),
+            isLiked = isLiked,
+            onLikedClicked = onLikedClicked
+        )
     }
 }
 
