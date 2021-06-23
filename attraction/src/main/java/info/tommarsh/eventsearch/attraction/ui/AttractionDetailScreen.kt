@@ -1,24 +1,18 @@
 package info.tommarsh.eventsearch.attraction.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -100,39 +94,36 @@ private fun AttractionDetailList(
     onLikeClicked: () -> Unit,
     onRelatedAttractionClicked: (id: String) -> Unit
 ) {
-    val listState = rememberLazyListState()
-    LazyColumn(
-        state = listState,
+    val scrollState = rememberScrollState()
+    Column(
         modifier = Modifier
             .fillMaxHeight()
+            .verticalScroll(scrollState)
     ) {
-        item {
-            PosterImage(
-                attraction = attraction,
-                isLiked = isLiked,
-                onLikedClicked = { onLikeClicked() }
-            )
-        }
+        PosterImage(
+            modifier = Modifier.graphicsLayer {
+                alpha = 1f.coerceAtMost(1 - (scrollState.value / 600f))
+                translationY = -scrollState.value * 0.1f
+            },
+            attraction = attraction,
+            isLiked = isLiked,
+            onLikedClicked = { onLikeClicked() }
+        )
 
-        item {
-            CollapsableSection(sectionName = stringResource(id = R.string.event_details_title)) {
-                CalendarList(attraction.events)
+        Section(sectionName = stringResource(id = R.string.event_details_title)) {
+            attraction.events.forEach { event ->
+                CalendarItem(event = event)
             }
         }
 
         if (attraction.relatedAttractions.isNotEmpty()) {
-            item {
-                CollapsableSection(
-                    sectionName = stringResource(
-                        id = R.string.similar_to_section,
-                        attraction.name
-                    )
-                ) {
-                    RelatedAttractions(
-                        attractions = attraction.relatedAttractions,
-                        onRelatedAttractionClicked = onRelatedAttractionClicked
-                    )
-                }
+            Section(
+                sectionName = stringResource(id = R.string.similar_to_section, attraction.name)
+            ) {
+                RelatedAttractions(
+                    attractions = attraction.relatedAttractions,
+                    onRelatedAttractionClicked = onRelatedAttractionClicked
+                )
             }
         }
     }
@@ -193,68 +184,30 @@ private fun PosterImage(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun CollapsableSection(sectionName: String, content: @Composable () -> Unit) {
-    val (expanded, setExpanded) = remember { mutableStateOf(true) }
-    Column {
-        UnderlineTitle(text = sectionName, isExpanded = expanded) { setExpanded(!expanded) }
-        AnimatedVisibility(visible = expanded) {
-            content()
-        }
-    }
-}
-
-@Composable
-private fun UnderlineTitle(
-    text: String,
-    isExpanded: Boolean,
-    onToggleExpanded: () -> Unit,
+private fun Section(
+    sectionName: String,
+    content: @Composable () -> Unit
 ) {
-    val icon = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown
-    val description = stringResource(id = R.string.toggle_section)
-    Row(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    ) {
-
-        Column {
-            Text(text = text.capitalize(Locale.ENGLISH), style = MaterialTheme.typography.h5)
-            Box(
-                Modifier
-                    .background(color = MaterialTheme.colors.onBackground)
-                    .height(2.dp)
-                    .width(24.dp)
-            )
-        }
-
-        IconToggleButton(
-            checked = isExpanded,
-            onCheckedChange = { onToggleExpanded() },
-            modifier = Modifier.align(Alignment.CenterVertically)
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = description,
-                tint = MaterialTheme.colors.onBackground
-            )
-        }
+    Column(modifier = Modifier.padding(16.dp)) {
+        UnderlineTitle(text = sectionName)
+        content()
     }
 }
 
 @Composable
-private fun CalendarList(events: List<EventViewModel>) {
-    Column(
-        modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp)
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .testTag("Calendar List")
-    ) {
-        events.forEach { event ->
-            CalendarItem(event = event)
-        }
+private fun UnderlineTitle(text: String) {
+    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(
+            text = text.capitalize(Locale.ENGLISH),
+            style = MaterialTheme.typography.h5
+        )
+        Box(
+            Modifier
+                .background(color = MaterialTheme.colors.onBackground)
+                .height(2.dp)
+                .width(24.dp)
+        )
     }
 }
 
@@ -334,7 +287,6 @@ private fun RelatedAttractions(
             Image(
                 modifier = Modifier
                     .height(128.dp)
-                    .padding(bottom = 16.dp)
                     .aspectRatio(1.5f)
                     .clickable { onRelatedAttractionClicked(attraction.id) },
                 painter = rememberCoilPainter(request = attraction.imageUrl),

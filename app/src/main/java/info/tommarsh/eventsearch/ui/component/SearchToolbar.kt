@@ -146,11 +146,3 @@ private fun CategoriesList(
         }
     }
 }
-
-@Composable
-private fun ErrorText() {
-    Text(
-        text = stringResource(id = R.string.failed_to_load_categories),
-        color = Color.Red
-    )
-}
