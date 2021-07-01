@@ -1,13 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
+@Suppress("AndroidGradlePluginVersion") buildscript {
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.0.0-beta01")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
+        classpath("com.android.tools.build:gradle:7.1.0-alpha02")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.dagger}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
     }
 }
 
@@ -25,9 +25,9 @@ subprojects {
             )
             // Set JVM target to 1.8
             jvmTarget = Versions.java
-            useIR = true
         }
     }
+
 }
 
 allprojects {

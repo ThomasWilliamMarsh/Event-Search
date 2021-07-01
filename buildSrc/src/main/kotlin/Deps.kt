@@ -53,7 +53,7 @@ object Deps {
         const val uiUtil = "androidx.compose.ui:ui-util:${Versions.compose}"
         const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
         const val navigation =
-            "androidx.navigation:navigation-compose:${Versions.composeNavigation}"
+            "androidx.navigation:navigation-compose:${Versions.navigation}"
         const val viewModel =
             "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}"
         const val navigationHilt =
@@ -61,9 +61,9 @@ object Deps {
     }
 
     object DI {
-        const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hilt}"
+        const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.dagger}"
         const val hiltAndroidCompiler =
-            "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+            "com.google.dagger:hilt-android-compiler:${Versions.dagger}"
         const val hiltCompiler = "androidx.hilt:hilt-compiler:${Versions.hiltJetpack}"
     }
 
