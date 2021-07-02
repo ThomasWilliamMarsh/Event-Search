@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.accompanist.insets.statusBarsPadding
@@ -26,7 +26,7 @@ import info.tommarsh.eventsearch.settings.ui.model.SettingsScreenState
 
 @Composable
 fun SettingsScreen(controller: NavHostController) {
-    val viewModel = hiltNavGraphViewModel<SettingsViewModel>()
+    val viewModel = hiltViewModel<SettingsViewModel>()
     SettingsScreen(
         viewModel = viewModel,
         controller = controller

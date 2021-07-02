@@ -6,4 +6,6 @@
     <string name="error_loading_event_details">Error loading event details</string>
     <string name="toggle_section">Toggle section</string>
     <string name="similar_to_section">Similar to %1$s</string>
+    <string name="remind_me">Remind me</string>
+    <string name="remove_reminder">dont remind</string>
 </resources>

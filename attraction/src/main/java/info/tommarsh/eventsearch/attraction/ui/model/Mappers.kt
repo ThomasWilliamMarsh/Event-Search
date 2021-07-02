@@ -6,7 +6,7 @@ import info.tommarsh.eventsearch.core.data.events.model.domain.EventModel
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import org.joda.time.DateTime
 
-internal fun AttractionDetailViewModel.toLikedAttraction(): LikedAttractionModel {
+internal fun AttractionViewModel.toLikedAttraction(): LikedAttractionModel {
     return LikedAttractionModel(
         id = id,
         name = name,
@@ -14,8 +14,8 @@ internal fun AttractionDetailViewModel.toLikedAttraction(): LikedAttractionModel
     )
 }
 
-internal fun AttractionDetailModel.toViewModel(): AttractionDetailViewModel {
-    return AttractionDetailViewModel(
+internal fun AttractionDetailModel.toViewModel(): AttractionViewModel {
+    return AttractionViewModel(
         id = attraction.id,
         name = attraction.name,
         description = attraction.description,
@@ -37,8 +37,8 @@ internal fun AttractionModel.toViewModel(): RelatedAttractionViewModel {
 internal fun EventModel.toViewModel(): EventViewModel {
     val start = dates.start
     val date = when {
-        start.dateTBA -> EventDateViewModel.TBA
-        start.dateTBD -> EventDateViewModel.TBC
+        start.dateTBA -> EventDateViewModel.NoDate("TBA")
+        start.dateTBD -> EventDateViewModel.NoDate("TBC")
         else -> {
             val dateTime = DateTime(start.dateTime)
             EventDateViewModel.Date(

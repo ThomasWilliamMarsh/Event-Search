@@ -58,6 +58,8 @@ object Deps {
             "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}"
         const val navigationHilt =
             "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigation}"
+        const val constraintLayout =
+            "androidx.constraintlayout:constraintlayout-compose:${Versions.constraintLayout}"
     }
 
     object DI {

@@ -85,4 +85,5 @@ dependencies {
     api(Deps.Compose.navigation)
     api(Deps.Compose.viewModel)
     api(Deps.Compose.navigationHilt)
+    api(Deps.Compose.constraintLayout)
 }

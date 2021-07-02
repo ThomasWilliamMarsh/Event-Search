@@ -15,16 +15,11 @@ import info.tommarsh.eventsearch.attraction.ui.AttractionDetailScreen
 import info.tommarsh.eventsearch.category.ui.CategoryScreen
 import info.tommarsh.eventsearch.core.navigation.Screen
 import info.tommarsh.eventsearch.settings.ui.SettingsScreen
-import info.tommarsh.eventsearch.ui.reminder.ReminderDialog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 internal class MainActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var reminderDialog: ReminderDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +39,7 @@ internal class MainActivity : AppCompatActivity() {
             startDestination = Screen.Search.route
         ) {
             composable(Screen.Search.route) {
-                SearchScreen(controller = controller, reminderDialog = reminderDialog)
+                SearchScreen(controller = controller)
             }
             composable(
                 route = Screen.Attraction.route,

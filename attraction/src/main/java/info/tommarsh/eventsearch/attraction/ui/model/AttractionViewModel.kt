@@ -1,6 +1,6 @@
 package info.tommarsh.eventsearch.attraction.ui.model
 
-internal data class AttractionDetailViewModel(
+internal data class AttractionViewModel(
     val id: String,
     val name: String,
     val genre: String,

@@ -6,18 +6,21 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.coil.rememberCoilPainter
@@ -32,8 +35,6 @@ import info.tommarsh.eventsearch.core.navigation.Screen
 import info.tommarsh.eventsearch.core.theme.AttractionDetailTheme
 import info.tommarsh.eventsearch.core.ui.CenteredCircularProgress
 import info.tommarsh.eventsearch.core.ui.ErrorSnackbar
-import java.util.*
-import info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailViewModel as DetailModel
 
 @Composable
 fun AttractionDetailScreen(
@@ -89,7 +90,7 @@ internal fun AttractionDetailScreen(
 
 @Composable
 private fun AttractionDetailList(
-    attraction: DetailModel,
+    attraction: AttractionViewModel,
     isLiked: Boolean,
     onLikeClicked: () -> Unit,
     onRelatedAttractionClicked: (id: String) -> Unit
@@ -132,7 +133,7 @@ private fun AttractionDetailList(
 @Composable
 private fun PosterImage(
     modifier: Modifier = Modifier,
-    attraction: info.tommarsh.eventsearch.attraction.ui.model.AttractionDetailViewModel,
+    attraction: AttractionViewModel,
     isLiked: Boolean,
     onLikedClicked: () -> Unit
 ) {
@@ -199,7 +200,7 @@ private fun Section(
 private fun UnderlineTitle(text: String) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
-            text = text.capitalize(Locale.ENGLISH),
+            text = text.replaceFirstChar { it.uppercase() },
             style = MaterialTheme.typography.h5
         )
         Box(
@@ -211,68 +212,119 @@ private fun UnderlineTitle(text: String) {
     }
 }
 
+@Preview
+@Composable
+fun CalendarItemPreview() = AttractionDetailTheme {
+    CalendarItem(
+        event = EventViewModel(
+            date = EventDateViewModel.Date(
+                day = "21",
+                month = "Sep",
+                dowAndTime = "Mon - 11:00"
+            ),
+            venue = "test theatre"
+        )
+    )
+}
+
 @Composable
 private fun CalendarItem(event: EventViewModel) {
     when (event.date) {
         is EventDateViewModel.Date -> {
-            RowWithDate(date = event.date, venue = event.venue)
+            CalendarItem(date = event.date, venueName = event.venue)
         }
-        EventDateViewModel.TBA -> {
-            RowWithNoDate(reason = "TBA", venue = event.venue)
-        }
-        EventDateViewModel.TBC -> {
-            RowWithNoDate(reason = "TBC", venue = event.venue)
+        is EventDateViewModel.NoDate -> {
+            CalendarItem(reason = event.date.reason, venueName = event.venue)
         }
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun RowWithDate(date: EventDateViewModel.Date, venue: String) {
-    CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
-        Row(modifier = Modifier.testTag("Row With Date")) {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 16.dp)
-                    .defaultMinSize(minWidth = 64.dp)
-            ) {
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = date.month, textAlign = TextAlign.Center)
-                }
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-                    Text(text = date.day, textAlign = TextAlign.Center)
-                }
-            }
-            Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)) {
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = date.dowAndTime)
-                }
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-                    Text(text = venue)
-                }
-            }
-        }
-    }
-}
+internal fun CalendarItem(date: EventDateViewModel.Date, venueName: String) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp)
+    ) {
+        val (month, day, dowAndTime, venue) = createRefs()
+        val dateBarrier = createEndBarrier(month, day)
 
-@Composable
-private fun RowWithNoDate(reason: String, venue: String) {
-    CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.body1) {
-        Row(
-            Modifier
-                .padding(horizontal = 8.dp, vertical = 16.dp)
-                .testTag("Row With No Date")
-        ) {
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(
-                    text = reason, modifier = Modifier
-                        .padding(end = 16.dp)
-                        .defaultMinSize(minWidth = 64.dp)
+        Text(
+            modifier = Modifier.constrainAs(day) {
+                linkTo(
+                    top = parent.top,
+                    bottom = month.top,
+                    start = month.start,
+                    end = month.end,
                 )
-            }
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-                Text(text = venue)
-            }
-        }
+            },
+            text = date.day
+        )
+
+        Text(
+            modifier = Modifier.constrainAs(month) {
+                linkTo(
+                    top = day.bottom,
+                    start = parent.start,
+                    end = dateBarrier,
+                    bottom = parent.bottom,
+                    horizontalBias = 0.0f
+                )
+            },
+            text = date.month
+        )
+        Text(
+            modifier = Modifier
+                .constrainAs(dowAndTime) {
+                    linkTo(
+                        top = parent.top,
+                        start = dateBarrier,
+                        bottom = venue.top,
+                        end = parent.end,
+                        startMargin = 16.dp,
+                        horizontalBias = 0.0f
+                    )
+                }
+                .alpha(ContentAlpha.medium),
+            text = date.dowAndTime
+        )
+        Text(
+            modifier = Modifier.constrainAs(venue) {
+                linkTo(
+                    top = dowAndTime.bottom,
+                    start = dateBarrier,
+                    bottom = parent.bottom,
+                    end = parent.end,
+                    startMargin = 16.dp,
+                    horizontalBias = 0.0f
+                )
+                width = Dimension.preferredWrapContent
+            },
+            text = venueName
+        )
+    }
+}
+
+@Preview
+@Composable
+fun NoDateCalenderItem() = AttractionDetailTheme {
+    CalendarItem(reason = "TBC", venueName = "Test theatre")
+}
+
+@Composable
+internal fun CalendarItem(reason: String, venueName: String) {
+    Row(
+        Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            modifier = Modifier.padding(end = 16.dp),
+            text = reason
+        )
+
+        Text(text = venueName)
     }
 }
 

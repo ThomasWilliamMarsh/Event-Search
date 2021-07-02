@@ -13,9 +13,8 @@ import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionMod
 import info.tommarsh.eventsearch.model.SearchAttractionViewModel
 import info.tommarsh.eventsearch.model.toViewModel
 import info.tommarsh.eventsearch.ui.model.SearchScreenAction
-import info.tommarsh.eventsearch.ui.model.SearchScreenAction.*
-import info.tommarsh.eventsearch.ui.model.SearchScreenEffect
-import info.tommarsh.eventsearch.ui.model.SearchScreenEffect.ShowReminderDialog
+import info.tommarsh.eventsearch.ui.model.SearchScreenAction.AttractionDeleted
+import info.tommarsh.eventsearch.ui.model.SearchScreenAction.QueryEntered
 import info.tommarsh.eventsearch.ui.model.SearchScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,9 +35,6 @@ internal class SearchViewModel @Inject constructor(
 
     private val _screenState = MutableStateFlow(SearchScreenState())
     val screenState = _screenState.asStateFlow()
-
-    private val _effects = MutableSharedFlow<SearchScreenEffect>()
-    val effects = _effects.asSharedFlow()
 
     init {
 
@@ -61,20 +57,7 @@ internal class SearchViewModel @Inject constructor(
         when (action) {
             is AttractionDeleted -> deleteLikedAttraction(action.model)
             is QueryEntered -> setQuery(action.query)
-            is SetReminder -> sendShowDialogEffect(action.attraction)
             else -> throw NotImplementedError("Not handling action: $action")
-        }
-    }
-
-    private fun sendShowDialogEffect(attraction: LikedAttractionModel) {
-        viewModelScope.launch {
-            _effects.emit(
-                ShowReminderDialog(
-                    id = attraction.id,
-                    name = attraction.name,
-                    image = attraction.imageUrl
-                )
-            )
         }
     }
 

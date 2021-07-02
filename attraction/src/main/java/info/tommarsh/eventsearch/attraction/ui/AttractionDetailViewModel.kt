@@ -53,6 +53,7 @@ internal class AttractionDetailViewModel @Inject constructor(
     fun postAction(action: AttractionDetailScreenAction) {
         when (action) {
             is ClickLiked -> toggleLiked(action.attraction)
+            else -> throw IllegalArgumentException("action $action not supported.")
         }
     }
 

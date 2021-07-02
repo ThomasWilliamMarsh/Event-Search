@@ -11,7 +11,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,23 +36,18 @@ import info.tommarsh.eventsearch.ui.component.LikedAttractionCard
 import info.tommarsh.eventsearch.ui.component.SearchToolbar
 import info.tommarsh.eventsearch.ui.model.SearchScreenAction
 import info.tommarsh.eventsearch.ui.model.SearchScreenAction.*
-import info.tommarsh.eventsearch.ui.model.SearchScreenEffect.ShowReminderDialog
 import info.tommarsh.eventsearch.ui.model.SearchScreenState
-import info.tommarsh.eventsearch.ui.reminder.ReminderDialog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 internal fun SearchScreen(
-    controller: NavController,
-    reminderDialog: ReminderDialog
+    controller: NavController
 ) {
     val viewModel = hiltViewModel<SearchViewModel>()
     SearchScreen(
         viewModel = viewModel,
-        reminderDialog = reminderDialog,
         controller = controller
     )
 }
@@ -57,7 +55,6 @@ internal fun SearchScreen(
 @Composable
 internal fun SearchScreen(
     viewModel: SearchViewModel,
-    reminderDialog: ReminderDialog,
     controller: NavController
 ) {
     val screenState by viewModel.screenState.collectAsState()
@@ -72,14 +69,6 @@ internal fun SearchScreen(
             is AttractionClicked -> controller.navigate(Screen.Attraction.route(action.id))
             is CategoryClicked -> controller.navigate(Screen.Category.route(action.id, action.name))
             else -> viewModel.postAction(action)
-        }
-    }
-
-    LaunchedEffect(viewModel) {
-        viewModel.effects.collectLatest { effect ->
-            when (effect) {
-                is ShowReminderDialog -> reminderDialog.show(effect.id, effect.name, effect.image)
-            }
         }
     }
 }

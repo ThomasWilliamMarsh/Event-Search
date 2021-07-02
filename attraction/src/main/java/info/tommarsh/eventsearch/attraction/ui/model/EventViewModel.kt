@@ -9,6 +9,5 @@ internal sealed class EventDateViewModel {
     data class Date(val month: String, val day: String, val dowAndTime: String) :
         EventDateViewModel()
 
-    object TBA : EventDateViewModel()
-    object TBC : EventDateViewModel()
+    data class NoDate(val reason: String) : EventDateViewModel()
 }

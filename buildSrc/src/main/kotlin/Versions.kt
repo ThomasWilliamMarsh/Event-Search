@@ -31,4 +31,5 @@ object Versions {
     const val material = "1.3.0"
     const val room = "2.3.0"
     const val appStartup = "1.0.0"
+    const val constraintLayout = "1.0.0-alpha08"
 }
