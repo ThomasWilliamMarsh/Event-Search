@@ -20,6 +20,7 @@ subprojects {
                 "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-Xopt-in=kotlinx.coroutines.ExperimentalAnimationApi",
                 "-Xopt-in=androidx.compose.foundation.lazy.ExperimentalLazyDsl",
+                "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
                 "-Xskip-prerelease-check",
                 "-Xopt-in=kotlin.Experimental"
             )

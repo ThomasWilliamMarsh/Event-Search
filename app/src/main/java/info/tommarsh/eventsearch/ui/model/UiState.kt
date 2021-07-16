@@ -11,7 +11,6 @@ internal data class SearchScreenState(
 
 internal sealed class SearchScreenAction {
     object SettingsButtonClicked : SearchScreenAction()
-    data class SetReminder(val attraction: LikedAttractionModel) : SearchScreenAction()
     data class CategoryClicked(val id: String, val name: String) : SearchScreenAction()
     data class AttractionClicked(val id: String) : SearchScreenAction()
     data class QueryEntered(val query: String) : SearchScreenAction()

@@ -10,10 +10,8 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.coil.rememberCoilPainter
-import info.tommarsh.eventsearch.R
 import info.tommarsh.eventsearch.core.data.likes.model.domain.LikedAttractionModel
 import info.tommarsh.eventsearch.core.theme.red200
 import info.tommarsh.eventsearch.core.ui.EventSearchHorizontalCard
@@ -22,7 +20,6 @@ import info.tommarsh.eventsearch.core.ui.EventSearchHorizontalCard
 @Composable
 internal fun LikedAttractionCard(
     likedModel: LikedAttractionModel,
-    setAttractionReminder: (LikedAttractionModel) -> Unit,
     deleteLikedAttraction: (LikedAttractionModel) -> Unit,
     navigateToAttraction: (id: String) -> Unit
 ) {
@@ -31,10 +28,6 @@ internal fun LikedAttractionCard(
             DismissValue.DismissedToEnd -> {
                 deleteLikedAttraction(likedModel)
                 return@rememberDismissState true
-            }
-            DismissValue.DismissedToStart -> {
-                setAttractionReminder(likedModel)
-                return@rememberDismissState false
             }
             else -> false
         }

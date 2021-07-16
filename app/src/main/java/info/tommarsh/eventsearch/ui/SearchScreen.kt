@@ -89,7 +89,6 @@ internal fun SearchScreen(
         drawerContent = {
             SavedEventsDrawer(
                 likedAttractions = screenState.likedAttractions,
-                setAttractionReminder = { model -> actionDispatcher(SetReminder(model)) },
                 deleteLikedAttraction = { model -> actionDispatcher(AttractionDeleted(model)) },
                 navigateToAttraction = { id -> actionDispatcher(AttractionClicked(id)) }
             )
@@ -151,7 +150,6 @@ internal fun SearchScreen(
 private fun SavedEventsDrawer(
     likedAttractions: List<LikedAttractionModel>,
     navigateToAttraction: (id: String) -> Unit,
-    setAttractionReminder: (LikedAttractionModel) -> Unit,
     deleteLikedAttraction: (LikedAttractionModel) -> Unit
 ) {
     LazyColumn(modifier = Modifier.statusBarsPadding()) {
@@ -159,7 +157,6 @@ private fun SavedEventsDrawer(
         items(likedAttractions) { attraction ->
             LikedAttractionCard(
                 likedModel = attraction,
-                setAttractionReminder = setAttractionReminder,
                 navigateToAttraction = navigateToAttraction,
                 deleteLikedAttraction = deleteLikedAttraction
             )

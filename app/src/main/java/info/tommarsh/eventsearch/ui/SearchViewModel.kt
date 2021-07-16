@@ -16,7 +16,6 @@ import info.tommarsh.eventsearch.ui.model.SearchScreenAction
 import info.tommarsh.eventsearch.ui.model.SearchScreenAction.AttractionDeleted
 import info.tommarsh.eventsearch.ui.model.SearchScreenAction.QueryEntered
 import info.tommarsh.eventsearch.ui.model.SearchScreenState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -82,9 +81,7 @@ internal class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun deleteLikedAttraction(model: LikedAttractionModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            likesRepository.removeLikedAttraction(model)
-        }
+    private fun deleteLikedAttraction(model: LikedAttractionModel) = viewModelScope.launch {
+        likesRepository.removeLikedAttraction(model)
     }
 }
